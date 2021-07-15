@@ -71,7 +71,6 @@ import { useRouter } from "vue-router";
 
 export default {
   name: "main-header",
-
   props: {
     height: {
       type: String,

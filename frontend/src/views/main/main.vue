@@ -21,7 +21,7 @@
   />
   <sign-up-dialog
     :open="signUpDialogOpen"
-    @closeLoginDialog="onCloseSignUpDialog"
+    @closeSignUpDialog="onCloseSignUpDialog"
   />
 </template>
 <style>
@@ -54,15 +54,19 @@ export default {
   },
   methods: {
     onOpenLoginDialog() {
+      console.log("로그인 모달 오픈");
       this.loginDialogOpen = true;
     },
     onCloseLoginDialog() {
+      console.log("로그인 모달 클로즈");
       this.loginDialogOpen = false;
     },
     onOpenSignUpDialog() {
+      console.log("회원가입 모달 오픈");
       this.signUpDialogOpen = true;
     },
     onCloseSignUpDialog() {
+      console.log("회원가입 모달 클로즈");
       this.signUpDialogOpen = false;
     }
   }

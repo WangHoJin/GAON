@@ -130,6 +130,9 @@ export default {
       form: {
         id: "",
         password: "",
+        name: "",
+        department: "",
+        repassword: "",
         align: "left"
       },
       rules: {
@@ -167,7 +170,7 @@ export default {
     });
 
     const clickSignUp = function() {
-      // 로그인 클릭 시 validate 체크 후 그 결과 값에 따라, 로그인 API 호출 또는 경고창 표시
+      // 회원가입 클릭 시 validate 체크 후 그 결과 값에 따라, 로그인 API 호출 또는 경고창 표시
       signUpForm.value.validate(valid => {
         if (valid) {
           console.log("submit");
@@ -181,6 +184,7 @@ export default {
             })
             .then(function(result) {
               alert("accessToken: " + result.data.accessToken);
+              emit("closeSignUpDialog");
             })
             .catch(function(err) {
               alert(err);
@@ -194,6 +198,10 @@ export default {
     const handleClose = function() {
       state.form.id = "";
       state.form.password = "";
+      state.form.repassword = "";
+      state.form.name = "";
+      state.form.department = "";
+      state.form.position = "";
       emit("closeSignUpDialog");
     };
 
