@@ -123,6 +123,7 @@ export default {
       });
     };
 
+    //test
     const clickLogin = () => {
       emit("openLoginDialog");
     };
