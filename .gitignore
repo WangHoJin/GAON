@@ -58,3 +58,5 @@ build
 # Tracked gradle-wrapper
 !/backend/gradle/wrapper/gradle-wrapper.jar
 backend/ssafy-web.log.2021-07-12.0.gz
+frontend/src/views/main/components/main-sidebar.vue
+backend/ssafy-web.log.2021-07-15.0.gz

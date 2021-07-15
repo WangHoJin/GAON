@@ -138,14 +138,11 @@ export default {
       rules: {
         department: [
           {
-            required: true,
             message: "Please input department",
             trigger: "blur"
           }
         ],
-        position: [
-          { required: true, message: "Please input position", trigger: "blur" }
-        ],
+        position: [{ message: "Please input position", trigger: "blur" }],
         name: [
           { required: true, message: "Please input name", trigger: "blur" }
         ],
@@ -183,7 +180,8 @@ export default {
               password: state.form.password
             })
             .then(function(result) {
-              alert("accessToken: " + result.data.accessToken);
+              // alert("accessToken: " + result.data.accessToken);
+              alert("회원가입 성공");
               emit("closeSignUpDialog");
             })
             .catch(function(err) {

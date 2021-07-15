@@ -125,8 +125,11 @@ export default {
               password: state.form.password
             })
             .then(function(result) {
-              alert("accessToken: " + result.data.accessToken);
+              let token = result.data.accessToken;
+              alert("accessToken: " + token);
+              localStorage.setItem("token", token);
               emit("closeLoginDialog");
+              store.dispatch("root/verifyAuth");
             })
             .catch(function(err) {
               alert(err);

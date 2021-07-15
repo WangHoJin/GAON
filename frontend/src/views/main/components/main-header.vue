@@ -13,9 +13,15 @@
           >
           </el-input>
         </div>
+
         <div class="button-wrapper">
-          <el-button @click="clickSignUp">회원가입</el-button>
-          <el-button type="primary" @click="clickLogin">로그인</el-button>
+          <div v-if="!state.isLogin">
+            <el-button @click="clickSignUp">회원가입</el-button>
+            <el-button type="primary" @click="clickLogin">로그인</el-button>
+          </div>
+          <div v-if="state.isLogin">
+            <el-button @click="clickLogout">로그아웃</el-button>
+          </div>
         </div>
       </div>
     </div>
@@ -31,33 +37,44 @@
         <div class="mobile-sidebar">
           <div class="mobile-sidebar-tool-wrapper">
             <div class="logo-wrapper"><div class="ic ic-logo" /></div>
-            <el-button
-              type="primary"
-              class="mobile-sidebar-btn login-btn"
-              @click="clickLogin"
-              >로그인</el-button
+            <div v-if="!state.isLogin">
+              <el-button
+                type="primary"
+                class="mobile-sidebar-btn login-btn"
+                @click="clickLogin"
+                >로그인</el-button
+              >
+              <el-button
+                class="mobile-sidebar-btn register-btn"
+                @click="clickSignUp"
+                >회원가입</el-button
+              >
+            </div>
+            <div v-if="state.isLogin">
+              <el-button
+                type="primary"
+                class="mobile-sidebar-btn login-btn"
+                @click="clickLogout"
+                >로그아웃</el-button
+              >
+            </div>
+            <el-menu
+              v-if="state.isLogin"
+              :default-active="String(state.activeIndex)"
+              active-text-color="#ffd04b"
+              class="el-menu-vertical-demo"
+              @select="menuSelect"
             >
-            <el-button
-              class="mobile-sidebar-btn register-btn"
-              @click="clickSignUp"
-              >회원가입</el-button
-            >
+              <el-menu-item
+                v-for="(item, index) in state.menuItems"
+                :key="index"
+                :index="index.toString()"
+              >
+                <i v-if="item.icon" :class="['ic', item.icon]" />
+                <span>{{ item.title }}</span>
+              </el-menu-item>
+            </el-menu>
           </div>
-          <el-menu
-            :default-active="String(state.activeIndex)"
-            active-text-color="#ffd04b"
-            class="el-menu-vertical-demo"
-            @select="menuSelect"
-          >
-            <el-menu-item
-              v-for="(item, index) in state.menuItems"
-              :key="index"
-              :index="index.toString()"
-            >
-              <i v-if="item.icon" :class="['ic', item.icon]" />
-              <span>{{ item.title }}</span>
-            </el-menu-item>
-          </el-menu>
         </div>
         <div class="mobile-sidebar-backdrop" @click="changeCollapse"></div>
       </div>
@@ -65,7 +82,7 @@
   </el-row>
 </template>
 <script>
-import { reactive, computed } from "vue";
+import { onBeforeMount, reactive, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
@@ -82,6 +99,7 @@ export default {
     const store = useStore();
     const router = useRouter();
     const state = reactive({
+      isLogin: computed(() => store.getters["root/getAuth"]),
       searchValue: null,
       isCollapse: true,
       menuItems: computed(() => {
@@ -135,12 +153,34 @@ export default {
       state.isCollapse = !state.isCollapse;
     };
 
+    const clickLogout = () => {
+      localStorage.removeItem("token");
+      clickLogo();
+      store.dispatch("root/verifyAuth");
+      console.log(state.isLogin);
+    };
+
+    onBeforeMount(() => {
+      store.dispatch("root/verifyAuth");
+      // .then(function(result) {
+      //   // alert("accessToken: " + result.data.accessToken);
+      //   //로그인 상태
+      //   console.log("인가됨", result.data);
+      //   state.isLogin = true;
+      // })
+      // .catch(function(err) {
+      //   alert(err);
+      //   state.isLogin = false;
+      // });
+    });
+
     return {
       state,
       menuSelect,
       clickLogo,
       clickLogin,
       clickSignUp,
+      clickLogout,
       changeCollapse
     };
   }
