@@ -6,6 +6,7 @@
     @close="handleClose"
   >
     <el-form
+      v-loading="state.loading"
       :model="state.form"
       :rules="state.rules"
       ref="loginForm"
@@ -107,7 +108,8 @@ export default {
         ]
       },
       dialogVisible: computed(() => props.open),
-      formLabelWidth: "120px"
+      formLabelWidth: "120px",
+      loading: false
     });
 
     onMounted(() => {
@@ -125,14 +127,22 @@ export default {
               password: state.form.password
             })
             .then(function(result) {
-              let token = result.data.accessToken;
-              alert("accessToken: " + token);
-              localStorage.setItem("token", token);
-              emit("closeLoginDialog");
-              store.dispatch("root/verifyAuth");
+              state.loading = true;
+              setTimeout(() => {
+                let token = result.data.accessToken;
+                alert("accessToken: " + token);
+                localStorage.setItem("token", token);
+                store.dispatch("root/verifyAuth");
+                emit("closeLoginDialog");
+                handleClose();
+              }, 1000);
             })
             .catch(function(err) {
-              alert(err);
+              state.loading = true;
+              setTimeout(() => {
+                handleClose();
+                alert(err);
+              }, 1000);
             });
         } else {
           alert("Validate error!");
@@ -143,6 +153,7 @@ export default {
     const handleClose = function() {
       state.form.id = "";
       state.form.password = "";
+      state.loading = false;
       emit("closeLoginDialog");
     };
 

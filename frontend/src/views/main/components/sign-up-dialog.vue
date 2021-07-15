@@ -6,6 +6,7 @@
     @close="handleClose"
   >
     <el-form
+      v-loading="state.loading"
       :model="state.form"
       :rules="state.rules"
       ref="signUpForm"
@@ -159,7 +160,8 @@ export default {
         ]
       },
       dialogVisible: computed(() => props.open),
-      formLabelWidth: "120px"
+      formLabelWidth: "120px",
+      loading: false
     });
 
     onMounted(() => {
@@ -181,11 +183,19 @@ export default {
             })
             .then(function(result) {
               // alert("accessToken: " + result.data.accessToken);
-              alert("회원가입 성공");
-              emit("closeSignUpDialog");
+              state.loading = true;
+              setTimeout(() => {
+                handleClose();
+                alert("회원 가입이 완료되었습니다.");
+                emit("closeSignUpDialog");
+              }, 1000);
             })
             .catch(function(err) {
-              alert(err);
+              state.loading = true;
+              setTimeout(() => {
+                handleClose();
+                alert("회원 가입에 실패하였습니다.");
+              }, 2000);
             });
         } else {
           alert("Validate error!");
@@ -200,6 +210,7 @@ export default {
       state.form.name = "";
       state.form.department = "";
       state.form.position = "";
+      state.loading = false;
       emit("closeSignUpDialog");
     };
 
