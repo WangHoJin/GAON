@@ -102,9 +102,26 @@ export default {
         align: "left"
       },
       rules: {
-        id: [{ required: true, message: "Please input ID", trigger: "blur" }],
+        id: [
+          { required: true, message: "필수 입력 항목입니다.", trigger: "blur" },
+          {
+            max: 16,
+            message: "최대 16 글자까지 입력 가능합니다.",
+            trigger: "change"
+          }
+        ],
         password: [
-          { required: true, message: "Please input password", trigger: "blur" }
+          { required: true, message: "필수 입력 항목입니다.", trigger: "blur" },
+          {
+            min: 9,
+            message: "최소 9 글자를 입력해야 합니다",
+            trigger: "change"
+          },
+          {
+            max: 16,
+            message: "최대 16 글자까지 입력 가능합니다.",
+            trigger: "change"
+          }
         ]
       },
       dialogVisible: computed(() => props.open),
