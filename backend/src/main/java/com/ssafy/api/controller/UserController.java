@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,5 +77,22 @@ public class UserController {
 		User user = userService.getUserByUserId(userId);
 		
 		return ResponseEntity.status(200).body(UserRes.of(user));
+	}
+	
+	
+	@GetMapping("/{userId}")
+	@ApiOperation(value = "유저 정보", notes = "<strong>존재하는 회원 확인용</strong></br>로그인 한 사용자가 아닌 경우에만 응답한다.") 
+    @ApiResponses({
+        @ApiResponse(code = 409, message = "이미 존재하는 사용자 ID 입니다.")
+    })
+	public ResponseEntity<? extends BaseResponseBody> isExistUser(
+			@PathVariable @ApiParam(value="userId", required = true) String userId) {
+		try {
+			User user = userService.getUserByUserId(userId);
+			System.out.println(user);
+			return ResponseEntity.status(200).body(BaseResponseBody.of(409, "이미 존재하는 사용자 ID 입니다."));
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }
