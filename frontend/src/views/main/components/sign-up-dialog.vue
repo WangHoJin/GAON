@@ -151,14 +151,14 @@ export default {
           {
             max: 30,
             message: "최대 30자까지 입력 가능합니다.",
-            trigger: "blur"
+            trigger: "change"
           }
         ],
         position: [
           {
             max: 30,
             message: "최대 30자까지 입력 가능합니다.",
-            trigger: "blur"
+            trigger: "change"
           }
         ],
         name: [
@@ -166,7 +166,7 @@ export default {
           {
             max: 30,
             message: "최대 30자까지 입력 가능합니다.",
-            trigger: "blur"
+            trigger: "change"
           }
         ],
         id: [
@@ -174,27 +174,31 @@ export default {
           {
             max: 16,
             message: "최대 16자까지 입력 가능합니다.",
-            trigger: "blur"
+            trigger: "change"
           }
         ],
         password: [
-          { required: true, message: "필수 입력 항목입니다.", trigger: "blur" },
+          {
+            required: true,
+            message: "필수 입력 항목입니다.",
+            trigger: "change"
+          },
           {
             min: 9,
             message: "최소 9 글자를 입력해야 합니다",
-            trigger: "blur"
+            trigger: "change"
           },
           {
             max: 16,
             message: "최대 16 글자까지 입력 가능합니다.",
-            trigger: "blur"
+            trigger: "change"
           }
         ],
         repassword: [
           {
             validator: validateRePass,
             required: true,
-            trigger: "blur"
+            trigger: "change"
           }
         ]
       },
