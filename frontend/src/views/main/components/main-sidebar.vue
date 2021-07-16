@@ -1,12 +1,8 @@
 <template>
-  <el-row
-    class="main-sidebar"
-    :gutter="10"
-    :style="{ width: width }"
-    v-if="state.isLogin"
-  >
+  <el-row class="main-sidebar" :gutter="10" :style="{ width: width }">
     <div class="hide-on-small">
       <el-menu
+        v-if="state.isLogin"
         :default-active="String(state.activeIndex)"
         active-text-color="#ffd04b"
         class="el-menu-vertical-demo"
@@ -19,6 +15,21 @@
         >
           <i v-if="item.icon" :class="['ic', item.icon]" />
           <span>{{ item.title }}</span>
+        </el-menu-item>
+      </el-menu>
+      <el-menu
+        v-if="!state.isLogin"
+        :default-active="String(state.activeIndex)"
+        active-text-color="#ffd04b"
+        class="el-menu-vertical-demo"
+        @select="menuSelect"
+      >
+        <el-menu-item>
+          <i
+            v-if="state.menuItems[0].icon"
+            :class="['ic', state.menuItems[0].icon]"
+          />
+          <span>{{ state.menuItems[0].title }}</span>
         </el-menu-item>
       </el-menu>
     </div>

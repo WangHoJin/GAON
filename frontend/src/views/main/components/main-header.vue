@@ -74,6 +74,21 @@
                 <span>{{ item.title }}</span>
               </el-menu-item>
             </el-menu>
+            <el-menu
+              v-if="!state.isLogin"
+              :default-active="String(state.activeIndex)"
+              active-text-color="#ffd04b"
+              class="el-menu-vertical-demo"
+              @select="menuSelect"
+            >
+              <el-menu-item>
+                <i
+                  v-if="state.menuItems[0].icon"
+                  :class="['ic', state.menuItems[0].icon]"
+                />
+                <span>{{ state.menuItems[0].title }}</span>
+              </el-menu-item>
+            </el-menu>
           </div>
         </div>
         <div class="mobile-sidebar-backdrop" @click="changeCollapse"></div>
