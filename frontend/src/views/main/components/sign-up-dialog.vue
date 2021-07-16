@@ -122,6 +122,16 @@ export default {
     // 마운드 이후 바인딩 될 예정 - 컨텍스트에 노출시켜야함. <return>
     const signUpForm = ref(null);
 
+    var validateRePass = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("필수 입력 항목입니다."));
+      } else if (value !== state.form.password) {
+        callback(new Error("입력한 비밀번호와 일치하지 않습니다."));
+      } else {
+        callback();
+      }
+    };
+
     /*
       // Element UI Validator
       // rules의 객체 키 값과 form의 객체 키 값이 같아야 매칭되어 적용됨
@@ -139,22 +149,51 @@ export default {
       rules: {
         department: [
           {
-            message: "Please input department",
+            max: 30,
+            message: "최대 30자까지 입력 가능합니다.",
             trigger: "blur"
           }
         ],
-        position: [{ message: "Please input position", trigger: "blur" }],
-        name: [
-          { required: true, message: "Please input name", trigger: "blur" }
+        position: [
+          {
+            max: 30,
+            message: "최대 30자까지 입력 가능합니다.",
+            trigger: "blur"
+          }
         ],
-        id: [{ required: true, message: "Please input ID", trigger: "blur" }],
+        name: [
+          { required: true, message: "필수 입력 항목입니다.", trigger: "blur" },
+          {
+            max: 30,
+            message: "최대 30자까지 입력 가능합니다.",
+            trigger: "blur"
+          }
+        ],
+        id: [
+          { required: true, message: "필수 입력 항목입니다.", trigger: "blur" },
+          {
+            max: 16,
+            message: "최대 16자까지 입력 가능합니다.",
+            trigger: "blur"
+          }
+        ],
         password: [
-          { required: true, message: "Please input password", trigger: "blur" }
+          { required: true, message: "필수 입력 항목입니다.", trigger: "blur" },
+          {
+            min: 9,
+            message: "최소 9 글자를 입력해야 합니다",
+            trigger: "blur"
+          },
+          {
+            max: 16,
+            message: "최대 16 글자까지 입력 가능합니다.",
+            trigger: "blur"
+          }
         ],
         repassword: [
           {
+            validator: validateRePass,
             required: true,
-            message: "Please input repassword",
             trigger: "blur"
           }
         ]
