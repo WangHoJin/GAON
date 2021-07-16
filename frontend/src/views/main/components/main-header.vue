@@ -19,10 +19,14 @@
             <el-button icon="el-icon-circle-plus-outline" @click="clickSignUp"
               >회원가입</el-button
             >
-            <el-button type="primary" @click="clickLogin">로그인</el-button>
+            <el-button type="primary" icon="el-icon-key" @click="clickLogin"
+              >로그인</el-button
+            >
           </div>
           <div v-if="state.isLogin">
-            <el-button @click="clickLogout">로그아웃</el-button>
+            <el-button @click="clickLogout" icon="el-icon-switch-button"
+              >로그아웃</el-button
+            >
           </div>
         </div>
       </div>
@@ -44,6 +48,7 @@
                 type="primary"
                 class="mobile-sidebar-btn login-btn"
                 @click="clickLogin"
+                icon="el-icon-key"
                 >로그인</el-button
               >
               <el-button
@@ -57,6 +62,7 @@
               <el-button
                 type="primary"
                 class="mobile-sidebar-btn login-btn"
+                icon="el-icon-switch-button"
                 @click="clickLogout"
                 >로그아웃</el-button
               >
