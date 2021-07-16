@@ -16,7 +16,9 @@
 
         <div class="button-wrapper">
           <div v-if="!state.isLogin">
-            <el-button @click="clickSignUp">회원가입</el-button>
+            <el-button icon="el-icon-circle-plus-outline" @click="clickSignUp"
+              >회원가입</el-button
+            >
             <el-button type="primary" @click="clickLogin">로그인</el-button>
           </div>
           <div v-if="state.isLogin">
@@ -45,6 +47,7 @@
                 >로그인</el-button
               >
               <el-button
+                icon="el-icon-circle-plus-outline"
                 class="mobile-sidebar-btn register-btn"
                 @click="clickSignUp"
                 >회원가입</el-button
