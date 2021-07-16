@@ -15,7 +15,7 @@ export function requestSignUp({ state }, payload) {
   return $axios.post(url, body);
 }
 
-export function verifyAuth({ commit }) {
+export function verifyAuth({ state, commit }) {
   console.log("로그인 한 회원인지 검증");
   let accessToken = localStorage.getItem("token");
   const url = "/users/me";
@@ -27,8 +27,17 @@ export function verifyAuth({ commit }) {
     })
     .then(res => {
       commit("setAuth", res.data);
+      console.log(state.auth);
     })
-    .catch(function(err) {
+    .catch(err => {
+      if (
+        err.response.statusText === "SignatureVerificationException" ||
+        err.response.statusText === "JWTDecodeException"
+      ) {
+        alert("세션이 유효하지 않습니다.");
+      } else if (err.response.statusText === "TokenExpriedException") {
+        alert("세션이 만료되었습니다.");
+      }
       commit("setAuth", null);
     });
 }

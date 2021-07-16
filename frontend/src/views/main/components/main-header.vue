@@ -177,16 +177,6 @@ export default {
 
     onBeforeMount(() => {
       store.dispatch("root/verifyAuth");
-      // .then(function(result) {
-      //   // alert("accessToken: " + result.data.accessToken);
-      //   //로그인 상태
-      //   console.log("인가됨", result.data);
-      //   state.isLogin = true;
-      // })
-      // .catch(function(err) {
-      //   alert(err);
-      //   state.isLogin = false;
-      // });
     });
 
     return {
