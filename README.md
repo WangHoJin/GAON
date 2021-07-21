@@ -12,9 +12,9 @@ gantt
     section 프로젝트 준비
     주제 선정				  :done, 07-14, 5d
     기능 목록 상세 도출		   :done, 07-19, 1d
-    화면 기획				  :active,07-19, 2d
-   	역할 분배 및 Jira 등록		: 07-21, 1d
-    ERD 작성				   :after plan2, 1d
+    화면 기획				  :active,07-20, 2d
+   	역할 분배 및 Jira 등록		: 07-22, 1d
+    ERD 작성				   :07-23, 2d
     
 	section 회원 관리
     로그인/로그아웃		:07-23, 3d
