@@ -10,7 +10,7 @@ gantt
     %% (`excludes` accepts specific dates in YYYY-MM-DD format, days of the week ("sunday") or "weekends", but not the word "weekdays".)
 
     section 프로젝트 준비
-    주제 선정 및 스켈레톤 코드 분석	:done, 07-12, 5d
+    주제 선정 및 스켈레톤 코드 분석	:done, 07-12, 4d
     기능 목록 상세 도출		   :done, 07-19, 1d
     화면 기획				  :dibe,07-20, 2d
    	역할 분배 및 Jira 등록		: 07-22, 1d
