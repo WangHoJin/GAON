@@ -1,5 +1,55 @@
 # 프로젝트 명
 
+## 일정표
+
+```mermaid
+gantt
+    dateFormat  MM-DD
+    title       GAON 일정표
+    %% excludes    weekends
+    %% (`excludes` accepts specific dates in YYYY-MM-DD format, days of the week ("sunday") or "weekends", but not the word "weekdays".)
+
+    section 프로젝트 준비
+    주제 선정 및 스켈레톤 코드 분석	:done, 07-12, 5d
+    기능 목록 상세 도출		   :done, 07-19, 1d
+    화면 기획				  :done,07-20, 2d
+   	Jira 등록		: done, 07-22, 1d
+    ERD 작성		: done, 07-23, 1d
+    역할 분배 및 사전 공부		: active, 07-24, 2d
+   
+    
+	section 회원 관리
+    로그인/로그아웃		:07-26, 3d
+    가입, 수정, 탈퇴		 :07-26, 3d
+     
+    section 채널 관리
+    방 만들기 	: ch1, 07-27, 3d
+    방 초대, 방 참여   :ch2, after ch1, 3d
+    게시판 :after ch2, 3d
+    
+    section Web RTC
+    화상회의 : rtc1, 07-27, 3d
+    채팅     :rtc2, after rtc1, 2d
+    출석체크   : rtc3, after rtc2, 2d
+    접속현황  : rtc4, after rtc3, 2d
+    상단 플로팅 알람 : rtc5, after rtc4, 1d
+    개인 알람 보내기 : after rtc5, 1d
+    
+    section 산출물
+    시퀸스 다이어그램 작성   :07-26, 1d
+    README 작성  			:07-26, 1d
+    QA 및 버그 찾기  	  :08-01, 2d
+    
+    section 기타
+    UCC제작 :08-10, 7d
+    발표준비 :08-17, 3d
+```
+
+## ERD 
+<div align="center"> 
+![ERD](/uploads/2e323de6da887834ccf7cf2a6471edfe/ERD.png)
+</div>
+
 ## 목차
 
 - [프로젝트 소개](#프로젝트-소개)   
