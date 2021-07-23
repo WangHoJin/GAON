@@ -24,4 +24,14 @@ public class UserRepositorySupport {
         if(user == null) return Optional.empty();
         return Optional.ofNullable(user);
     }
+    
+    public int updateUser(User user) {
+    	long res = jpaQueryFactory.update(qUser).set(qUser.department, user.getDepartment())
+    			.set(qUser.name, user.getName())
+    			.set(qUser.position, user.getPosition())
+    			.where(qUser.userId.eq(user.getUserId())).execute();
+    	System.out.println(res);
+    	return (int)res;
+    	
+    }
 }
