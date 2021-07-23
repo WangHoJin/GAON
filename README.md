@@ -14,8 +14,8 @@ gantt
     기능 목록 상세 도출		   :done, 07-19, 1d
     화면 기획				  :done,07-20, 2d
    	Jira 등록		: done, 07-22, 1d
-    ERD 작성		: active, 07-23, 1d
-    역할 분배 및 사전 공부		: 07-24, 2d
+    ERD 작성		: done, 07-23, 1d
+    역할 분배 및 사전 공부		: active, 07-24, 2d
    
     
 	section 회원 관리
@@ -44,6 +44,11 @@ gantt
     UCC제작 :08-10, 7d
     발표준비 :08-17, 3d
 ```
+
+## ERD 
+<div align="center"> 
+![ERD](/uploads/2e323de6da887834ccf7cf2a6471edfe/ERD.png)
+</div>
 
 ## 목차
 
