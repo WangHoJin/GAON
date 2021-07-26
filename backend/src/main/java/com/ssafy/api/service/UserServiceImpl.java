@@ -45,11 +45,4 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
 
-	@Override
-	public boolean updateUser(User user) {
-		int res = userRepository.updateUser(user);
-		if(res>0) return true;
-		else return false;
-	}
-
 }
