@@ -1,11 +1,28 @@
 <template>
   <div>
-    <div id="google-signin-btn"></div>
-    <button type="button" @click="signOut">로그아웃</button>
+    <el-row>
+      <el-col :span="8" :offset="8">
+        <el-card :body-style="{ padding: '0px' }">
+          <img :src="pic" class="googlelogin" />
+          <div style="padding: 40px;">
+            <h1>Google로 시작하기</h1>
+            <div id="google-signin-btn"></div>
+            <!-- <el-button class="button" @click="signOut">로그아웃</el-button> -->
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 <script>
+// import { ref } from "vue";
+import pic from "@/assets/images/sample-img.png";
 export default {
+  data() {
+    return {
+      pic: pic
+    };
+  },
   mounted() {
     window.gapi.signin2.render("google-signin-btn", {
       onsuccess: this.onSignIn,
@@ -34,3 +51,9 @@ export default {
   }
 };
 </script>
+<style scoped>
+.googlelogin {
+  /* height: 300px; */
+  width: 100%;
+}
+</style>

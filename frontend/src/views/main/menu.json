@@ -1,8 +1,8 @@
 {
   "home" : {
-    "name" : "홈",       
+    "name" : "홈",
     "hidden" : false,
-    "path" : "/",
+    "path" : "/home",
     "icon" : "el-icon-s-home",
     "children" : []
   },
@@ -12,5 +12,13 @@
     "path" : "/history",
     "icon" : "el-icon-s-order",
     "children" : []
+  },
+  "google" : {
+    "name" : "맨 처음 로그인 화면",
+    "hidden" : false,
+    "path" : "/",
+    "icon" : "el-icon-s-order",
+    "children" : []
   }
+
 }
