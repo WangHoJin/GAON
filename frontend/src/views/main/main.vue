@@ -1,10 +1,5 @@
 <template>
   <el-container class="main-wrapper">
-    <main-header
-      :height="`70px`"
-      @openLoginDialog="onOpenLoginDialog"
-      @openSignUpDialog="onOpenSignUpDialog"
-    />
     <el-container class="main-container">
       <el-aside class="hide-on-small" width="240px">
         <main-sidebar :width="`240px`" />
@@ -13,7 +8,6 @@
         <router-view></router-view>
       </el-main>
     </el-container>
-    <main-footer :height="`110px`" />
   </el-container>
   <login-dialog
     :open="loginDialogOpen"
@@ -33,16 +27,12 @@
 <script>
 import LoginDialog from "./components/login-dialog";
 import SignUpDialog from "./components/sign-up-dialog";
-import MainHeader from "./components/main-header";
 import MainSidebar from "./components/main-sidebar";
-import MainFooter from "./components/main-footer";
 
 export default {
   name: "Main",
   components: {
-    MainHeader,
     MainSidebar,
-    MainFooter,
     LoginDialog,
     SignUpDialog
   },
