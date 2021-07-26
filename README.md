@@ -18,12 +18,16 @@ gantt
     역할 분배 및 사전 공부		: active, 07-24, 2d
    
     
-	section 회원 관리
-    로그인/로그아웃		:07-26, 3d
-    가입, 수정, 탈퇴		 :07-26, 3d
+	  section 회원 관리
+    로그인/로그아웃		:07-26, 2d
+    가입, 수정, 탈퇴		 :07-26, 2d
      
+   section 백앤드 설정
+    AWS 설정		:07-26, 2d
+    도커, WEB RTC, Socket 환경 설정		 :07-26, 2d
+
     section 채널 관리
-    방 만들기 	: ch1, 07-27, 3d
+    방 만들기 	: ch1, 07-28, 3d
     방 초대, 방 참여   :ch2, after ch1, 3d
     게시판 :after ch2, 3d
     
@@ -36,8 +40,8 @@ gantt
     개인 알람 보내기 : after rtc5, 1d
     
     section 산출물
-    시퀸스 다이어그램 작성   :07-26, 1d
-    README 작성  			:07-26, 1d
+    시퀸스 다이어그램 작성   :07-28, 1d
+    README 작성  			:07-28, 1d
     QA 및 버그 찾기  	  :08-01, 2d
     
     section 기타
