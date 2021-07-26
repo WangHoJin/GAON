@@ -96,17 +96,4 @@ public class UserController {
 			return null;
 		}
 	}
-	
-	@PatchMapping("/{userId}")
-	@ApiOperation(value = "유저 정보 수정", notes = "") 
-	@ApiResponses({
-		@ApiResponse(code = 200, message = "Success")
-	})
-	public ResponseEntity<? extends BaseResponseBody> updateUser(
-			@PathVariable @ApiParam(value="userId", required = true) String userId,
-			@RequestBody @ApiParam(value="user 정보", required = true) User user
-			) {
-			System.out.println(user);
-			return ResponseEntity.status(200).body(BaseResponseBody.of(200,"Success"));
-	}
 }
