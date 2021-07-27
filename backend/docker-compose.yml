@@ -47,6 +47,7 @@ services:
       - 8443:8443
     environment:
       TZ: Asia/Seoul
+      # 수정사항
       #Spring application.properties DB 설정
       #  SPRING_DATASOURCE_URL: 'jdbc:mysql://localhost:3306/gaon?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true'
       SPRING_DATASOURCE_URL: 'jdbc:mysql://db:3306/ssafy_web_db?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true'
