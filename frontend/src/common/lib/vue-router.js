@@ -12,9 +12,10 @@ function makeRoutesFromMenu() {
       return { path: fullMenu[key].path, name: key, component: History };
     }
     // 맨처음 시작화면 google로그인 창 띄우기
-    else if (key === "google") {
-      return { path: fullMenu[key].path, name: key, component: GoogleLogin };
-    } else {
+    // else if (key === "google") {
+    //   return { path: fullMenu[key].path, name: key, component: GoogleLogin };
+    // }
+    else {
       // menu.json 에 들어있는 로그아웃 메뉴
       return null;
     }
