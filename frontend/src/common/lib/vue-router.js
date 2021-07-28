@@ -11,7 +11,18 @@ function makeRoutesFromMenu() {
       return { path: fullMenu[key].path, name: key, component: Home };
     } else if (key === "history") {
       return { path: fullMenu[key].path, name: key, component: History };
+<<<<<<< HEAD
+    } else if (key === "room1") {
+      return { path: fullMenu[key].path, name: key, component: Home };
+    }
+    // 맨처음 시작화면 google로그인 창 띄우기
+    // else if (key === "google") {
+    //   return { path: fullMenu[key].path, name: key, component: GoogleLogin };
+    // }
+    else {
+=======
     } else {
+>>>>>>> master
       // menu.json 에 들어있는 로그아웃 메뉴
       return null;
     }

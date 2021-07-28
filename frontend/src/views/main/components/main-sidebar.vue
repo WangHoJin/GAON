@@ -1,8 +1,7 @@
 <template>
   <el-row class="main-sidebar" :gutter="10" :style="{ width: width }">
     <div class="hide-on-small">
-      <el-menu
-        v-if="state.isLogin"
+      <!-- <el-menu
         :default-active="String(state.activeIndex)"
         active-text-color="#ffd04b"
         class="el-menu-vertical-demo"
@@ -16,25 +15,19 @@
           <i v-if="item.icon" :class="['ic', item.icon]" />
           <span>{{ item.title }}</span>
         </el-menu-item>
-      </el-menu>
+      </el-menu> -->
       <el-menu
-        v-if="!state.isLogin"
         :default-active="String(state.activeIndex)"
         active-text-color="#ffd04b"
         class="el-menu-vertical-demo"
-        @select="menuSelect"
+        @select="conferenceSelect"
       >
-        <el-meu-item v-for="i in state.count" @click="clickConference(i)" :key="i" >
-          <!-- <conference /> -->
-          <h2>i</h2>
-        </el-meu-item>
         <el-menu-item
-          v-for="(item, index) in state.menuItems"
-          :key="index"
-          :index="index.toString()"
+          v-for="i in state.count"
+          :key="i"
+          :index="i"
         >
-          <i v-if="item.icon" :class="['ic', item.icon]" />
-          <span>{{ item.title }}</span>
+          <span>{{ i }}</span>
         </el-menu-item>
       </el-menu>
     </div>
@@ -61,6 +54,7 @@
 }
 </style>
 <script>
+import SidebarTool from './sidebar-tool.vue'
 import { reactive, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -68,6 +62,9 @@ import { useRouter } from "vue-router";
 export default {
   name: "main-header",
 
+  components: {
+    SidebarTool
+  },
 
   props: {
     width: {
@@ -80,6 +77,7 @@ export default {
     const router = useRouter();
 
     const state = reactive({
+      count: computed(() => store.getters["root/getNumberOfConferneces"]),
       isLogin: computed(() => store.getters["root/getAuth"]),
       searchValue: null,
       menuItems: computed(() => {
@@ -111,7 +109,16 @@ export default {
       });
     };
 
-    return { state, menuSelect };
+    const conferenceSelect = function(param) {
+      store.commit("root/setConferenceActive", param);
+      const MenuItems = store.getters["root/getMenus"];
+      let keys = Object.keys(MenuItems);
+      router.push({
+        name: keys[param]
+      });
+    };
+
+    return { state, menuSelect, conferenceSelect };
   }
 };
 </script>
