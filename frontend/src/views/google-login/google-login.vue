@@ -7,7 +7,7 @@
           <div style="padding: 40px;">
             <h1>Google로 시작하기</h1>
             <div id="google-signin-btn"></div>
-            <!-- <el-button class="button" @click="signOut">로그아웃</el-button> -->
+            <el-button class="button" @click="signOut">로그아웃</el-button>
           </div>
         </el-card>
       </el-col>
@@ -17,6 +17,7 @@
 <script>
 // import { ref } from "vue";
 import pic from "@/assets/images/sample-img.png";
+import axios from "../../common/lib/axios";
 export default {
   data() {
     return {
@@ -31,9 +32,10 @@ export default {
       longtitle: true,
       theme: "dark"
     });
+    console.log("구글로그인들어왔름");
   },
   methods: {
-    onSignIn(googleUser) {
+    async onSignIn(googleUser) {
       const profile = googleUser.getBasicProfile();
       console.log("ID: " + profile.getId());
       console.log("Full Name: " + profile.getName());
@@ -43,6 +45,13 @@ export default {
       console.log("Email: " + profile.getEmail());
 
       const id_token = googleUser.getAuthResponse().id_token;
+      const access_token = googleUser.getAuthResponse().access_token;
+      console.log("access_token");
+      console.log(access_token);
+      // axios.post(" ", access_token).then(res => {
+      //   console.log("access_token 전달 성공 ");
+      // });
+
       console.log("ID Token: " + id_token);
     },
     signOut() {

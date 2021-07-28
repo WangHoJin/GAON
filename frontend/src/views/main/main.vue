@@ -1,5 +1,6 @@
 <template>
-  <el-container class="main-wrapper">
+  <google-login v-if="true"></google-login>
+  <el-container class="main-wrapper" v-else>
     <el-container class="main-container">
       <el-aside class="hide-on-small" width="120px">
         <main-sidebar :width="`120px`" />
@@ -28,13 +29,30 @@
 import LoginDialog from "./components/login-dialog";
 import SignUpDialog from "./components/sign-up-dialog";
 import MainSidebar from "./components/main-sidebar";
+import GoogleLogin from "../google-login/google-login.vue";
+
+import { computed, reactive } from "vue";
 
 export default {
   name: "Main",
   components: {
     MainSidebar,
     LoginDialog,
-    SignUpDialog
+    SignUpDialog,
+    GoogleLogin
+  },
+  setup(props) {
+    let state = reactive({
+      // isLogin: computed(()=> checkLogin(isLogin))
+      // isLogin: computed(()=> checkLogin(isLogin))
+    });
+    // const checkLogin = (isLogin) => {
+    //   if(isLogin) return true;
+    //   else return false;
+    // }
+    return {
+      state
+    };
   },
   data() {
     return {
