@@ -1,6 +1,7 @@
 <template>
-  <google-login v-if="true"></google-login>
-  <el-container class="main-wrapper" v-else>
+  <el-button class="button" @click="signOut">로그아웃</el-button>
+  <google-login v-if="!isLogin"></google-login>
+  <el-container v-else class="main-wrapper">
     <el-container class="main-container">
       <el-aside class="hide-on-small" width="120px">
         <main-sidebar :width="`120px`" />
@@ -31,8 +32,8 @@ import SignUpDialog from "./components/sign-up-dialog";
 import MainSidebar from "./components/main-sidebar";
 import GoogleLogin from "../google-login/google-login.vue";
 
-import { computed, reactive } from "vue";
-
+import { computed, reactive, toRefs, ref } from "vue";
+import { useStore } from "vuex";
 export default {
   name: "Main",
   components: {
@@ -41,24 +42,17 @@ export default {
     SignUpDialog,
     GoogleLogin
   },
-  setup(props) {
-    let state = reactive({
-      // isLogin: computed(()=> checkLogin(isLogin))
-      // isLogin: computed(()=> checkLogin(isLogin))
-    });
-    // const checkLogin = (isLogin) => {
-    //   if(isLogin) return true;
-    //   else return false;
-    // }
-    return {
-      state
-    };
-  },
   data() {
     return {
       loginDialogOpen: false,
-      signUpDialogOpen: false
+      signUpDialogOpen: false,
+      isLogin: false
     };
+  },
+  computed: {
+    isLogin() {
+      return this.$store.state.root.isLogin;
+    }
   },
   methods: {
     onOpenLoginDialog() {
@@ -72,6 +66,15 @@ export default {
     },
     onCloseSignUpDialog() {
       this.signUpDialogOpen = false;
+    },
+    signOut() {
+      console.log("로그아웃버튼누름");
+      window.gapi.auth2.getAuthInstance().disconnect();
+      sessionStorage.removeItem("userInfo");
+      this.$store.commit("root/setLogin", false);
+
+      // this.isLogin = false;
+      // this.$router.push("/");
     }
   }
 };

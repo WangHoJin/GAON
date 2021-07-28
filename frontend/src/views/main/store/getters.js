@@ -16,3 +16,6 @@ export function getAuth(state) {
   console.log("state.auth", state.auth);
   return state.auth;
 }
+export function getLogin(state) {
+  return state.isLogin;
+}
