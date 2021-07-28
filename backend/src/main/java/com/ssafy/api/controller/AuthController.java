@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.api.request.GuserLoginPostReq;
 import com.ssafy.api.request.UserLoginPostReq;
+import com.ssafy.api.response.GoogleUserLoginPostRes;
 import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.common.util.JwtTokenUtil;
+import com.ssafy.db.entity.Guser;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.UserRepositorySupport;
 
@@ -67,9 +69,14 @@ public class AuthController {
         @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
         @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-	public void glogin(@RequestBody @ApiParam(value="구글로그인정보", required = true) GuserLoginPostReq loginInfo) {
+	public ResponseEntity<GoogleUserLoginPostRes> glogin(@RequestBody @ApiParam(value="구글로그인정보", required = true) GuserLoginPostReq loginInfo) {
+		String email = loginInfo.getEmail();
+		String nickname = loginInfo.getNickname();			
+		Guser guser = new Guser();
+		guser.setEmail(email);
+		guser.setNickname(nickname);
 		System.out.println("로그인 정보 전달 받았다");
-		System.out.println("email: "+loginInfo.getEmail());
-		System.out.println("nickname: "+loginInfo.getNickname());
+		System.out.println(guser);
+		return ResponseEntity.ok(GoogleUserLoginPostRes.of(200, "Success", guser));
 	}
 }
