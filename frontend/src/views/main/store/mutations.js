@@ -15,3 +15,6 @@ export function setMenuActiveMenuName(state, menuName) {
 export function setAuth(state, auth) {
   state.auth = auth;
 }
+export function setLogin(state, isLogin) {
+  state.isLogin = isLogin;
+}
