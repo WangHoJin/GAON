@@ -1,8 +1,7 @@
 <template>
-  <el-row class="main-sidebar" :gutter="10" :style="{ width: width }">
-    <div class="hide-on-small">
+  <el-row class="sidebar-tool" :gutter="10" :style="{ width: width }">
+    <div class="sidebar-menu">
       <el-menu
-        v-if="state.isLogin"
         :default-active="String(state.activeIndex)"
         active-text-color="#ffd04b"
         class="el-menu-vertical-demo"
@@ -36,22 +35,22 @@
   </el-row>
 </template>
 <style>
-.main-sidebar .el-menu {
+.sidebar-tool .el-menu {
   margin-top: 0;
   padding-left: 0;
 }
-.main-sidebar .hide-on-small {
+.sidebar-tool .sidebar-menu {
   height: 100%;
   position: fixed;
 }
-.main-sidebar .hide-on-small .el-menu {
+.sidebar-tool .sidebar-menu .el-menu {
   height: 100%;
 }
-.main-sidebar .el-menu .el-menu-item {
+.sidebar-tool .el-menu .el-menu-item {
   cursor: pointer;
   border-right: none;
 }
-.main-sidebar .el-menu .el-menu-item .ic {
+.sidebar-tool .el-menu .el-menu-item .ic {
   margin-right: 5px;
 }
 </style>
@@ -61,7 +60,7 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
 export default {
-  name: "main-header",
+  name: "sidebar-tool",
 
   props: {
     width: {
@@ -76,17 +75,17 @@ export default {
     const state = reactive({
       isLogin: computed(() => store.getters["root/getAuth"]),
       searchValue: null,
-      menuItems: computed(() => {
-        const MenuItems = store.getters["root/getMenus"];
-        let keys = Object.keys(MenuItems);
-        let menuArray = [];
+      sidebarTools: computed(() => {
+        const SidebarTools = store.getters["root/getSidebarTools"];
+        let keys = Object.keys(SidebarTools);
+        let sidebarToolArray = [];
         for (let i = 0; i < keys.length; ++i) {
-          let menuObject = {};
-          menuObject.icon = MenuItems[keys[i]].icon;
-          menuObject.title = MenuItems[keys[i]].name;
-          menuArray.push(menuObject);
+          let sidebarToolObject = {};
+          sidebarToolObject.icon = SidebarTools[keys[i]].icon;
+          sidebarToolObject.title = SidebarTools[keys[i]].name;
+          sidebarToolArray.push(sidebarToolObject);
         }
-        return menuArray;
+        return sidebarToolArray;
       }),
       activeIndex: computed(() => store.getters["root/getActiveMenuIndex"])
     });

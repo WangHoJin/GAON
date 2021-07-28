@@ -7,7 +7,6 @@
           <div style="padding: 40px;">
             <h1>Google로 시작하기</h1>
             <div id="google-signin-btn"></div>
-            <!-- <el-button class="button" @click="signOut">로그아웃</el-button> -->
           </div>
         </el-card>
       </el-col>
@@ -17,6 +16,7 @@
 <script>
 // import { ref } from "vue";
 import pic from "@/assets/images/sample-img.png";
+import axios from "../../common/lib/axios";
 export default {
   data() {
     return {
@@ -35,6 +35,7 @@ export default {
   methods: {
     onSignIn(googleUser) {
       const profile = googleUser.getBasicProfile();
+
       console.log("ID: " + profile.getId());
       console.log("Full Name: " + profile.getName());
       console.log("Given Name: " + profile.getGivenName());
@@ -43,10 +44,52 @@ export default {
       console.log("Email: " + profile.getEmail());
 
       const id_token = googleUser.getAuthResponse().id_token;
-      console.log("ID Token: " + id_token);
-    },
-    signOut() {
-      window.gapi.auth2.getAuthInstance().disconnect();
+      const access_token = googleUser.getAuthResponse().access_token;
+      let token = id_token;
+      // console.log("access_token");
+      // console.log(access_token);
+
+      // http post 요청으로 서버에 id토큰 유효성 검사
+      const CLIENT_ID =
+        "890408784203-ko60b9fublcta8prgu5lll4ccpilqsoo.apps.googleusercontent.com";
+      const { OAuth2Client } = require("google-auth-library");
+      const client = new OAuth2Client(CLIENT_ID);
+      async function verify() {
+        const ticket = await client.verifyIdToken({
+          idToken: token,
+          audience: CLIENT_ID
+        });
+        const payload = ticket.getPayload();
+        const userid = payload["sub"];
+
+        // console.log("Google API 클라이언트 라이브러리 사용으로 받아온 값");
+        // console.log(payload);
+        // console.log(userid);
+        //내정보가있는지
+
+        // 회원가입 + 로그인
+        const userInfo = {
+          nickname: profile.getName(),
+          email: profile.getEmail()
+        };
+        /*
+        axios.post("/auth/glogin", userInfo).then(res => {
+          // const store = use Store();
+          // store.commit("root/setUserInfo", res);
+          // console.log("access_token 전달 성공 ");
+        });
+        */
+        sessionStorage.setItem(
+          "userInfo",
+          JSON.stringify({
+            nickname: profile.getName(),
+            email: profile.getEmail(),
+            imgUrl: profile.getImageUrl()
+          })
+        );
+      }
+      verify().catch(console.error);
+      this.$store.commit("root/setLogin", true);
     }
   }
 };

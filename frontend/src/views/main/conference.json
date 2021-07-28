@@ -1,0 +1,30 @@
+{
+  "room1" : {
+    "name" : "room1",
+    "hidden" : false,
+    "path" : "/room1",
+    "icon" : "el-icon-s-home",
+    "children" : []
+  },
+  "room2" : {
+    "name" : "room2",
+    "hidden" : false,
+    "path" : "/room2",
+    "icon" : "el-icon-s-home",
+    "children" : []
+  },
+  "room3" : {
+    "name" : "room3",
+    "hidden" : false,
+    "path" : "/room3",
+    "icon" : "el-icon-s-home",
+    "children" : []
+  },
+  "room4" : {
+    "name" : "room4",
+    "hidden" : false,
+    "path" : "/room4",
+    "icon" : "el-icon-s-home",
+    "children" : []
+  }
+}

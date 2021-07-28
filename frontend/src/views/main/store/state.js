@@ -1,5 +1,7 @@
 // ROOT STATE 변수 정의 및 기본값 대입
 const menuData = require("@/views/main/menu.json");
+const sidebarToolData = require("@/views/main/sidebar-tool.json");
+const conferenceData = require("@/views/main/conference.json");
 
 /**
  * 플랫폼 관련 정보로 데스크탑인지, 모바일인지 판별 - 하이브리드 앱 대비
@@ -38,5 +40,15 @@ export default {
   isDesktopPlatform: IsDesktop,
   activeMenu: "home",
   menus: menuData,
-  auth: null
+  conferences: conferenceData,
+  sidebarTools: sidebarToolData,
+  auth: null,
+  isLogin: false,
+  userInfo: {
+    nickname: "김채연",
+    id: "113928141584500664937",
+    email: "tomybaru@naver.com",
+    imgUrl:
+      "https://lh3.googleusercontent.com/a-/AOh14Ghp2cbxsqvAFSb7CWnlmPQAWIUH0j4bLauu3i7O=s96-c"
+  }
 };

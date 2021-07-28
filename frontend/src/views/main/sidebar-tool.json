@@ -1,0 +1,37 @@
+{
+  "notification" : {
+    "name" : "공지사항",
+    "hidden" : false,
+    "path" : "/",
+    "icon" : "el-icon-s-home",
+    "children" : []
+  },
+  "submit assignment" : {
+    "name" : "과제 제출",
+    "hidden" : false,
+    "path" : "/",
+    "icon" : "el-icon-s-home",
+    "children" : []
+  },
+  "Learning materials" : {
+    "name" : "학습자료",
+    "hidden" : false,
+    "path" : "/room2",
+    "icon" : "el-icon-s-home",
+    "children" : []
+  },
+  "attendance book" : {
+    "name" : "출석부",
+    "hidden" : true,
+    "path" : "/",
+    "icon" : "el-icon-s-order",
+    "children" : []
+  },
+  "chatting channel" : {
+    "name" : "채팅 채널",
+    "hidden" : false,
+    "path" : "/",
+    "icon" : "el-icon-s-order",
+    "children" : []
+  }
+}
