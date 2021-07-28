@@ -6,6 +6,20 @@
     "icon" : "el-icon-s-home",
     "children" : []
   },
+  "room1" : {
+    "name" : "room1",
+    "hidden" : false,
+    "path" : "/room1",
+    "icon" : "el-icon-s-home",
+    "children" : []
+  },
+  "room2" : {
+    "name" : "room2",
+    "hidden" : false,
+    "path" : "/room2",
+    "icon" : "el-icon-s-home",
+    "children" : []
+  },
   "history" : {
     "name" : "지난 회의 이력",
     "hidden" : false,

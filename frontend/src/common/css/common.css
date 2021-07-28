@@ -10,9 +10,9 @@ body {
 }
 
 @media (max-width: 1269px) {
-  .hide-on-small {
+  /* .hide-on-small {
     display: none !important;
-  }
+  } */
   .hide-on-big {
     display: block;
   }

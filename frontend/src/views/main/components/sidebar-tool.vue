@@ -24,17 +24,12 @@
         class="el-menu-vertical-demo"
         @select="menuSelect"
       >
-        <el-meu-item v-for="i in state.count" @click="clickConference(i)" :key="i" >
-          <!-- <conference /> -->
-          <h2>i</h2>
-        </el-meu-item>
-        <el-menu-item
-          v-for="(item, index) in state.menuItems"
-          :key="index"
-          :index="index.toString()"
-        >
-          <i v-if="item.icon" :class="['ic', item.icon]" />
-          <span>{{ item.title }}</span>
+        <el-menu-item>
+          <i
+            v-if="state.menuItems[0].icon"
+            :class="['ic', state.menuItems[0].icon]"
+          />
+          <span>{{ state.menuItems[0].title }}</span>
         </el-menu-item>
       </el-menu>
     </div>
@@ -67,7 +62,6 @@ import { useRouter } from "vue-router";
 
 export default {
   name: "main-header",
-
 
   props: {
     width: {
