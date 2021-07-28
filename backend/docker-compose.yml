@@ -60,6 +60,5 @@ services:
     #   - kurento
     networks:
       - backend
-volumes:
 networks:
   backend:
