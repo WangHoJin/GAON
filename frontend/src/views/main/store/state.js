@@ -42,5 +42,13 @@ export default {
   menus: menuData,
   conferences: conferenceData,
   sidebarTools: sidebarToolData,
-  auth: null
+  auth: null,
+  isLogin: false,
+  userInfo: {
+    nickname: "김채연",
+    id: "113928141584500664937",
+    email: "tomybaru@naver.com",
+    imgUrl:
+      "https://lh3.googleusercontent.com/a-/AOh14Ghp2cbxsqvAFSb7CWnlmPQAWIUH0j4bLauu3i7O=s96-c"
+  }
 };
