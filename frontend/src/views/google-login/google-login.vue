@@ -73,14 +73,23 @@ export default {
           nickname: profile.getName(),
           email: profile.getEmail()
         };
-        console.log("전달전");
+        //로그인 기능
+        var email = "";
+        var nickname = "";
+
         $axios.post("/auth/glogin", userInfo).then(res => {
           // const store = use Store();
           // store.commit("root/setUserInfo", res);
-          console.log("구글 계정 정보 전달 성공 ", res);
+          console.log("구글 계정 정보, 요청 전달 성공 ");
+          console.log("백엔드로부터 전달 받은 response :" + res);
+          console.log("ResponseEntity/data/guserinfo : " + res.data.guserinfo);
+          email = res.data.guserinfo.email;
+          nickname = res.data.guserinfo.nickname;
+          console.log(
+            nickname + "님 환영합니다 \n 당신의 이메일주소는" + email
+          );
         });
 
-        console.log("전달후");
         sessionStorage.setItem(
           "userInfo",
           JSON.stringify({
