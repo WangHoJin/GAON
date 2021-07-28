@@ -1,5 +1,7 @@
 // ROOT STATE 변수 정의 및 기본값 대입
 const menuData = require("@/views/main/menu.json");
+const sidebarToolData = require("@/views/main/sidebar-tool.json");
+const conferenceData = require("@/views/main/conference.json");
 
 /**
  * 플랫폼 관련 정보로 데스크탑인지, 모바일인지 판별 - 하이브리드 앱 대비
@@ -38,5 +40,7 @@ export default {
   isDesktopPlatform: IsDesktop,
   activeMenu: "home",
   menus: menuData,
+  conferences: conferenceData,
+  sidebarTools: sidebarToolData,
   auth: null
 };
