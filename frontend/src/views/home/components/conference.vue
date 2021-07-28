@@ -36,7 +36,7 @@
   text-overflow:ellipsis;
 }
 /* 테블릿, 모바일의 경우 두 줄 말줄임표시 */
-@media (max-width: 1269px) {
+@media (max-width: 1270px) {
   .el-card .bottom {
     -webkit-line-clamp: 2;
     height:42px;

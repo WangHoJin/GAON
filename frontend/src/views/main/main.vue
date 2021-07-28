@@ -1,8 +1,8 @@
 <template>
   <el-container class="main-wrapper">
     <el-container class="main-container">
-      <el-aside class="hide-on-small" width="240px">
-        <main-sidebar :width="`240px`" />
+      <el-aside class="hide-on-small" width="120px">
+        <main-sidebar :width="`120px`" />
       </el-aside>
       <el-main>
         <router-view></router-view>

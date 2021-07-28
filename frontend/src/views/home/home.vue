@@ -1,5 +1,5 @@
 <template>
-  <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto">
+  <ul class="infinite-list" style="overflow:auto">
     <li v-for="i in state.count" @click="clickConference(i)" class="infinite-list-item" :key="i" >
       <conference />
     </li>
@@ -46,12 +46,8 @@ export default {
     const router = useRouter()
 
     const state = reactive({
-      count: 12
+      count: 4
     })
-
-    const load = function () {
-      state.count += 4
-    }
 
     const clickConference = function (id) {
       router.push({
@@ -62,7 +58,7 @@ export default {
       })
     }
 
-    return { state, load, clickConference }
+    return { state, clickConference }
   }
 }
 </script>
