@@ -17,6 +17,7 @@
 // import { ref } from "vue";
 import pic from "@/assets/images/sample-img.png";
 import axios from "../../common/lib/axios";
+import $axios from "axios";
 export default {
   data() {
     return {
@@ -72,13 +73,14 @@ export default {
           nickname: profile.getName(),
           email: profile.getEmail()
         };
-        /*
-        axios.post("/auth/glogin", userInfo).then(res => {
+        console.log("전달전");
+        $axios.post("/auth/glogin", userInfo).then(res => {
           // const store = use Store();
           // store.commit("root/setUserInfo", res);
-          // console.log("access_token 전달 성공 ");
+          console.log("구글 계정 정보 전달 성공 ", res);
         });
-        */
+
+        console.log("전달후");
         sessionStorage.setItem(
           "userInfo",
           JSON.stringify({

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.api.request.GuserLoginPostReq;
 import com.ssafy.api.request.UserLoginPostReq;
 import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.service.UserService;
@@ -55,5 +56,20 @@ public class AuthController {
 		}
 		// 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
 		return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "Invalid Password", null));
+	}
+	
+	
+	@PostMapping("/glogin")
+	@ApiOperation(value = "구글로그인", notes = "구글로그인") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
+        @ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
+        @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
+        @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+    })
+	public void glogin(@RequestBody @ApiParam(value="구글로그인정보", required = true) GuserLoginPostReq loginInfo) {
+		System.out.println("로그인 정보 전달 받았다");
+		System.out.println("email: "+loginInfo.getEmail());
+		System.out.println("nickname: "+loginInfo.getNickname());
 	}
 }
