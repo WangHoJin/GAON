@@ -60,3 +60,4 @@ build
 backend/ssafy-web.log.2021-07-12.0.gz
 frontend/src/views/main/components/main-sidebar.vue
 backend/ssafy-web.log.2021-07-15.0.gz
+backend/src/main/resources/application.properties

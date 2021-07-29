@@ -26,6 +26,8 @@ public class RoomServiceImpl implements RoomService {
 	
 	@Override
 	public Room createRoom(Room roomInfo) {
+//		System.out.println("받은 roomInfo");
+//		System.out.println(roomInfo.getPassword());
 //		roomInfo.setPassword(passwordEncoder.encode(roomInfo.getPassword()));
 //		Room room = new Room();
 //		room.setName(roomInfo.getName());
@@ -34,6 +36,11 @@ public class RoomServiceImpl implements RoomService {
 //		room.setCode(roomInfo.getCode());
 //		room.setDescription(roomInfo.getDescription());
 		return roomRepository.save(roomInfo);
+	}
+
+	@Override
+	public Room getRoomByCode(String code) {
+		return roomRepositorySupport.findRoomByCode(code).get();
 	}
 
 }

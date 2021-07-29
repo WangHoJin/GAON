@@ -1,7 +1,9 @@
 package com.ssafy.db.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.db.entity.QRoom;
 import com.ssafy.db.entity.QUser;
+import com.ssafy.db.entity.Room;
 import com.ssafy.db.entity.User;
 
 import java.util.Optional;
@@ -16,13 +18,14 @@ import org.springframework.stereotype.Repository;
 public class RoomRepositorySupport {
     @Autowired
     private JPAQueryFactory jpaQueryFactory;
-//    QUser qUser = QUser.user;
-//
-//    public Optional<User> findUserByUserId(String userId) {
-//        User user = jpaQueryFactory.select(qUser).from(qUser)
-//                .where(qUser.userId.eq(userId)).fetchOne();
-//        if(user == null) return Optional.empty();
-//        return Optional.ofNullable(user);
-//    }
-    
+    QRoom qRoom = QRoom.room;
+    public Optional<Room> findRoomByCode(String code){
+    	Room room = jpaQueryFactory.select(qRoom).from(qRoom).where(qRoom.code.eq(code)).fetchOne();
+    	System.out.println("-------------");
+    	System.out.println(code);
+    	System.out.println(room);
+    	System.out.println("--------------");
+    	if(room == null) return Optional.empty();
+    	return Optional.ofNullable(room);
+    }
 }

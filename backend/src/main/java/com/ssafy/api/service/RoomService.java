@@ -7,4 +7,5 @@ import com.ssafy.db.entity.Room;
  */
 public interface RoomService {
 	Room createRoom(Room room);
+	Room getRoomByCode(String code);
 }
