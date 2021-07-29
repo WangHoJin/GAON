@@ -3,10 +3,9 @@
   <google-login v-if="!isLogin"></google-login>
   <el-container v-else class="main-wrapper">
     <el-container class="main-container">
-      <el-aside class="hide-on-small" width="120px">
-        <main-sidebar :width="`120px`" />
-      </el-aside>
-      <el-main>
+      <el-aside width="120px">
+        <main-sidebar id="room-sidebar" :width="`120px`" /> </el-aside
+      ><el-main>
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -79,3 +78,10 @@ export default {
   }
 };
 </script>
+<style>
+#room-sidebar {
+  height: 100%;
+  border-right: solid 1px;
+  background-color: yellow;
+}
+</style>

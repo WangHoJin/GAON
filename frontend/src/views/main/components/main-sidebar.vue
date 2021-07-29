@@ -1,7 +1,12 @@
 <template>
-  <el-row class="main-sidebar" :gutter="10" :style="{ width: width }">
-    <div class="hide-on-small">
-      <!-- <el-menu
+  <el-row
+    id="fix-ml"
+    class="main-sidebar"
+    :gutter="10"
+    :style="{ width: width }"
+  >
+    <!-- <div class="hide-on-small"> -->
+    <!-- <el-menu
         :default-active="String(state.activeIndex)"
         active-text-color="#ffd04b"
         class="el-menu-vertical-demo"
@@ -16,21 +21,17 @@
           <span>{{ item.title }}</span>
         </el-menu-item>
       </el-menu> -->
-      <el-menu
-        :default-active="1"
-        active-text-color="#ffd04b"
-        class="el-menu-vertical-demo"
-        @select="conferenceSelect"
-      >
-        <el-menu-item
-          v-for="i in state.count"
-          :key="i"
-          :index="i"
-        >
-          <span>{{ i }}</span>
-        </el-menu-item>
-      </el-menu>
-    </div>
+    <el-menu
+      :default-active="1"
+      active-text-color="#ffd04b"
+      class="el-menu-vertical-demo"
+      @select="conferenceSelect"
+    >
+      <el-menu-item v-for="i in state.count" :key="i" :index="i">
+        <span>{{ i }} + {{ $route.params.conferenceId }}</span>
+      </el-menu-item>
+    </el-menu>
+    <!-- </div> -->
   </el-row>
 </template>
 <style>
@@ -52,12 +53,15 @@
 .main-sidebar .el-menu .el-menu-item .ic {
   margin-right: 5px;
 }
+#fix-ml {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
 </style>
 <script>
 import { reactive, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-
 export default {
   name: "main-header",
 
@@ -87,7 +91,9 @@ export default {
         }
         return menuArray;
       }),
-      activeConferenceIndex: computed(() => store.getters["root/getActiveConferenceIndex"]),
+      activeConferenceIndex: computed(
+        () => store.getters["root/getActiveConferenceIndex"]
+      ),
       activeIndex: computed(() => store.getters["root/getActiveMenuIndex"])
     });
 
@@ -111,12 +117,12 @@ export default {
     };
 
     const conferenceSelect = function(id) {
-       router.push({
-        name: 'conference-detail',
+      router.push({
+        name: "conference-detail",
         params: {
           conferenceId: id
         }
-      })
+      });
     };
 
     return { state, menuSelect, conferenceSelect };
