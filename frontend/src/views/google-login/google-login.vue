@@ -78,7 +78,7 @@ export default {
         var email = "";
         var nickname = "";
 
-        $axios.post("/auth/glogin", userInfo).then(res => {
+        $axios.post("/users/glogin", userInfo).then(res => {
           // const store = use Store();
           // store.commit("root/setUserInfo", res);
           console.log("구글 계정 정보, 요청 전달 성공 ");

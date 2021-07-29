@@ -14,12 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.api.request.UserLoginPostReq;
 import com.ssafy.api.request.UserRegisterPostReq;
+import com.ssafy.api.response.GoogleUserLoginPostRes;
 import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.response.UserRes;
+import com.ssafy.api.service.GoogleUserService;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.common.util.JwtTokenUtil;
+import com.ssafy.db.entity.Guser;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.UserRepositorySupport;
 
@@ -40,6 +43,95 @@ public class UserController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	GoogleUserService googleuserService;
+	
+	
+	
+	@PostMapping("/glogin")
+	@ApiOperation(value = "구글로그인", notes = "구글로그인") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
+        @ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
+        @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
+        @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+    })
+	public ResponseEntity<GoogleUserLoginPostRes> glogin(@RequestBody @ApiParam(value="구글로그인정보", required = true) Guser loginInfo) {
+		String email = loginInfo.getEmail();
+		String nickname = loginInfo.getNickname();
+		Guser guser = new Guser();
+		System.out.println(":::: 로그인시도 : "+email+" | "+nickname+"   ::::");
+		try {
+			System.out.println(":::::  접속한 계정의 정보가 DB에 있는지 확인합니다.  ::::");
+			guser = googleuserService.getGuserByEmail(email);
+		}catch (Exception e) {
+			System.out.println("::::  저장된 계정의 정보가 없습니다. 회원 정보를  DB에 저장합니다.	::::");
+			guser = googleuserService.saveGuser(loginInfo);
+			System.out.println("::::	신규 유저추가 완료: "+guser.getEmail()+" | "+guser.getNickname()+" 	::::");
+			return ResponseEntity.ok(GoogleUserLoginPostRes.of(200, "Success", guser));			
+		}		
+		
+		System.out.println("DB에 등록된 유저입니다. 등록하지 않고 로그인을 진행합니다.");	
+		System.out.println(email+" 의 "+" google닉네임 : "+nickname+" / DB에 저장된 닉네임 : "+guser.getNickname());		
+		return ResponseEntity.ok(GoogleUserLoginPostRes.of(200, "Success", guser));
+	}
+	
+	@PostMapping("/gupdate")
+	@ApiOperation(value = "구글 회원 닉네임 변경", notes = "구글 로그인 중인 회원의 닉네임을 변경한다. {email:data, nickname:data} 형식의 데이터를 필요로함") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
+        @ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
+        @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
+        @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+    })
+	public ResponseEntity<GoogleUserLoginPostRes> update(@RequestBody @ApiParam(value="수정될 회원정보", required = true) Guser loginInfo) {
+		
+		String email = loginInfo.getEmail();
+		String nickname = loginInfo.getNickname();
+		System.out.println("::::::::   "+email+"의 닉네임을 "+nickname+"로 변경 요청     ::::::::");
+		
+		Guser user = new Guser();
+		user.setEmail(email);
+		user.setNickname(nickname);		
+		googleuserService.updateGuser(user);
+		return ResponseEntity.ok(GoogleUserLoginPostRes.of(200, "Success", user));
+	}
+	
+	
+	@GetMapping("/delete/{email}")
+	@ApiOperation(value = "구글로그인 유저 데이터 삭제", notes = "구글로그인 유저의 데이터를 삭제한다. email값을 파라미터로함") 
+    @ApiResponses({
+        @ApiResponse(code = 409, message = "삭제완료")
+    })
+	public ResponseEntity<? extends BaseResponseBody> deleteGoogleUser(
+			@PathVariable @ApiParam(value="email", required = true) String email) {
+		try {
+			System.out.println("::::::::    "+email+" 계정 삭제요청    :::::::");			
+			googleuserService.deleteGuser(email);
+			
+			return ResponseEntity.status(200).body(BaseResponseBody.of(409, "이미 존재하는 사용자 ID 입니다."));
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/////////////////////////
+	
+	
+	
+	
+	
+	
+	
 	
 	@PostMapping()
 	@ApiOperation(value = "회원 가입", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.") 

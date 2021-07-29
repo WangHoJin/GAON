@@ -29,7 +29,7 @@ public class QRoom extends EntityPathBase<Room> {
 
     public final StringPath password = createString("password");
 
-    public final NumberPath<Integer> rid = createNumber("rid", Integer.class);
+    public final NumberPath<Long> rid = createNumber("rid", Long.class);
 
     public QRoom(String variable) {
         super(Room.class, forVariable(variable));
