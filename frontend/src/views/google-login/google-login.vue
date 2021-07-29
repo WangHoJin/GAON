@@ -6,7 +6,7 @@
           <img :src="pic" class="googlelogin" />
           <div style="padding: 40px;">
             <h1>Google로 시작하기</h1>
-            <div id="google-signin-btn"></div>
+            <div id="google-signin-btn" @click="googleSignIn()"></div>
           </div>
         </el-card>
       </el-col>
@@ -34,6 +34,7 @@ export default {
     });
   },
   methods: {
+    googleSignIn() {},
     onSignIn(googleUser) {
       const profile = googleUser.getBasicProfile();
 
@@ -85,19 +86,19 @@ export default {
           console.log("ResponseEntity/data/guserinfo : " + res.data.guserinfo);
           email = res.data.guserinfo.email;
           nickname = res.data.guserinfo.nickname;
+
+          sessionStorage.setItem(
+            "userInfo",
+            JSON.stringify({
+              nickname: nickname,
+              email: email,
+              imgUrl: profile.getImageUrl()
+            })
+          );
           console.log(
             nickname + "님 환영합니다 \n 당신의 이메일주소는" + email
           );
         });
-
-        sessionStorage.setItem(
-          "userInfo",
-          JSON.stringify({
-            nickname: profile.getName(),
-            email: profile.getEmail(),
-            imgUrl: profile.getImageUrl()
-          })
-        );
       }
       verify().catch(console.error);
       this.$store.commit("root/setLogin", true);

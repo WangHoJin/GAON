@@ -16,19 +16,17 @@
           <span>{{ item.title }}</span>
         </el-menu-item>
       </el-menu> -->
+
       <el-menu
         :default-active="String(state.activeIndex)"
         active-text-color="#ffd04b"
         class="el-menu-vertical-demo"
         @select="conferenceSelect"
       >
-        <el-menu-item
-          v-for="i in state.count"
-          :key="i"
-          :index="i"
-        >
+        <el-menu-item v-for="i in state.count" :key="i" :index="i">
           <span>{{ i }}</span>
         </el-menu-item>
+        <el-button class="button" @click="signOut">로그아웃</el-button>
       </el-menu>
     </div>
   </el-row>
@@ -54,14 +52,21 @@
 }
 </style>
 <script>
-import SidebarTool from './sidebar-tool.vue'
+import SidebarTool from "./sidebar-tool.vue";
 import { reactive, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
 export default {
   name: "main-header",
-
+  methods: {
+    signOut() {
+      console.log("로그아웃버튼누름");
+      window.gapi.auth2.getAuthInstance().disconnect();
+      sessionStorage.removeItem("userInfo");
+      this.$store.commit("root/setLogin", false);
+    }
+  },
   components: {
     SidebarTool
   },
