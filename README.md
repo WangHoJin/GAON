@@ -19,17 +19,17 @@ gantt
    
     
 	  section 회원 관리
-    로그인/로그아웃		: active, 07-26, 3d
-    가입, 수정, 탈퇴		 : active, 07-26, 3d
+    로그인/로그아웃		: active, 07-26, 4d
+    가입, 수정, 탈퇴		 : active, 07-26, 5d
      
    section 백앤드 설정
     AWS 설정		:done, 07-26, 2d
-    AWS 도커 연동 : active, 07-27, 2d
-    도커, WEB RTC, Socket 환경 설정		 : active, 07-26, 3d
+    AWS 도커 연동 : done, 07-27, 2d
+    도커, WEB RTC, Socket 환경 설정		 : active, 07-28, 3d
 
     section 채널 관리
-    방 만들기 	: ch1, 07-29, 3d
-    방 초대, 방 참여   :ch2, after ch1, 3d
+    방 만들기 	: active, ch1, 07-29, 3d
+    방 초대, 방 참여   : active, ch2, after ch1, 3d
     게시판 :after ch2, 3d
     
     section Web RTC
