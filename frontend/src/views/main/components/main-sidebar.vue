@@ -17,7 +17,7 @@
         </el-menu-item>
       </el-menu> -->
       <el-menu
-        :default-active="String(state.activeIndex)"
+        :default-active="1"
         active-text-color="#ffd04b"
         class="el-menu-vertical-demo"
         @select="conferenceSelect"
@@ -54,17 +54,12 @@
 }
 </style>
 <script>
-import SidebarTool from './sidebar-tool.vue'
 import { reactive, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
 export default {
   name: "main-header",
-
-  components: {
-    SidebarTool
-  },
 
   props: {
     width: {
@@ -92,11 +87,17 @@ export default {
         }
         return menuArray;
       }),
+      activeConferenceIndex: computed(() => store.getters["root/getActiveConferenceIndex"]),
       activeIndex: computed(() => store.getters["root/getActiveMenuIndex"])
     });
 
     if (state.activeIndex === -1) {
       state.activeIndex = 0;
+      store.commit("root/setMenuActive", 0);
+    }
+
+    if (state.activeConferenceIndex === -1) {
+      state.activeConferenceIndex = 0;
       store.commit("root/setMenuActive", 0);
     }
 
@@ -109,13 +110,13 @@ export default {
       });
     };
 
-    const conferenceSelect = function(param) {
-      store.commit("root/setConferenceActive", param);
-      const MenuItems = store.getters["root/getMenus"];
-      let keys = Object.keys(MenuItems);
-      router.push({
-        name: keys[param]
-      });
+    const conferenceSelect = function(id) {
+       router.push({
+        name: 'conference-detail',
+        params: {
+          conferenceId: id
+        }
+      })
     };
 
     return { state, menuSelect, conferenceSelect };

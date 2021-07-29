@@ -1,15 +1,29 @@
 <template>
-  {{ $route.params.conferenceId + '번 방 상세 보기 페이지' }}
+  <el-container class="main-wrapper">
+    <el-contianer class="main-container">
+      <el-aside class="hide-on-small" width="120px">
+        <conference-sidebar :width="`120px`" />
+      </el-aside>
+      <el-main>
+        {{ $route.params.conferenceId + '번 방 상세 보기 페이지' }}
+      </el-main>
+    </el-contianer>
+  </el-container>
 </template>
 <style>
+@import "./conferences.css";
 </style>
 <script>
 import { reactive, onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
+import ConferenceSidebar from './components/conference-sidebar';
 
 export default {
   name: 'conference-detail',
+  components: {
+    ConferenceSidebar
+  },
 
   setup () {
     const route = useRoute()
