@@ -1,5 +1,7 @@
 package com.ssafy.api.service;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,7 +27,7 @@ public class RoomServiceImpl implements RoomService {
 	PasswordEncoder passwordEncoder;
 	
 	@Override
-	public Room createRoom(Room roomInfo) {
+	public Room saveRoom(Room roomInfo) {
 //		System.out.println("받은 roomInfo");
 //		System.out.println(roomInfo.getPassword());
 //		roomInfo.setPassword(passwordEncoder.encode(roomInfo.getPassword()));
@@ -39,8 +41,17 @@ public class RoomServiceImpl implements RoomService {
 	}
 
 	@Override
+	public Room getRoomById(Long rid) {
+		return roomRepository.findById(rid).get();
+	}
+	@Override
 	public Room getRoomByCode(String code) {
 		return roomRepositorySupport.findRoomByCode(code).get();
 	}
 
+	@Override
+	public void removeRoom(Long rid) {
+		System.out.println("진입2 "+rid);
+		roomRepository.deleteById(rid);
+	}
 }

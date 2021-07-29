@@ -26,7 +26,7 @@ import org.checkerframework.common.aliasing.qual.Unique;
 public class Room{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer rid = null;
+    Long rid = null;
     
     String name;
     Integer host_id;
