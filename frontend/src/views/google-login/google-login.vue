@@ -6,7 +6,7 @@
           <img :src="pic" class="googlelogin" />
           <div style="padding: 40px;">
             <h1>Google로 시작하기</h1>
-            <div id="google-signin-btn" @click="googleSignIn()"></div>
+            <div id="google-signin-btn"></div>
           </div>
         </el-card>
       </el-col>
@@ -18,6 +18,7 @@
 import pic from "@/assets/images/sample-img.png";
 import axios from "../../common/lib/axios";
 import $axios from "axios";
+
 export default {
   data() {
     return {
@@ -34,10 +35,9 @@ export default {
     });
   },
   methods: {
-    googleSignIn() {},
     onSignIn(googleUser) {
       const profile = googleUser.getBasicProfile();
-
+      var self = this;
       console.log("ID: " + profile.getId());
       console.log("Full Name: " + profile.getName());
       console.log("Given Name: " + profile.getGivenName());
@@ -48,8 +48,6 @@ export default {
       const id_token = googleUser.getAuthResponse().id_token;
       const access_token = googleUser.getAuthResponse().access_token;
       let token = id_token;
-      // console.log("access_token");
-      // console.log(access_token);
 
       // http post 요청으로 서버에 id토큰 유효성 검사
       const CLIENT_ID =
@@ -63,12 +61,6 @@ export default {
         });
         const payload = ticket.getPayload();
         const userid = payload["sub"];
-
-        // console.log("Google API 클라이언트 라이브러리 사용으로 받아온 값");
-        // console.log(payload);
-        // console.log(userid);
-        //내정보가있는지
-
         // 회원가입 + 로그인
         const userInfo = {
           nickname: profile.getName(),
@@ -79,29 +71,34 @@ export default {
         var nickname = "";
 
         $axios.post("/users/glogin", userInfo).then(res => {
-          // const store = use Store();
-          // store.commit("root/setUserInfo", res);
-          console.log("구글 계정 정보, 요청 전달 성공 ");
-          console.log("백엔드로부터 전달 받은 response :" + res);
-          console.log("ResponseEntity/data/guserinfo : " + res.data.guserinfo);
-          email = res.data.guserinfo.email;
-          nickname = res.data.guserinfo.nickname;
+          if (res.status === 200) {
+            console.log("구글 계정 정보, 요청 전달 성공 ");
+            console.log("백엔드로부터 전달 받은 response :" + res);
+            console.log(
+              "ResponseEntity/data/guserinfo : " + res.data.guserinfo
+            );
+            email = res.data.guserinfo.email;
+            nickname = res.data.guserinfo.nickname;
 
-          sessionStorage.setItem(
-            "userInfo",
-            JSON.stringify({
-              nickname: nickname,
-              email: email,
-              imgUrl: profile.getImageUrl()
-            })
-          );
-          console.log(
-            nickname + "님 환영합니다 \n 당신의 이메일주소는" + email
-          );
+            sessionStorage.setItem(
+              "userInfo",
+              JSON.stringify({
+                nickname: nickname,
+                email: email,
+                imgUrl: profile.getImageUrl()
+              })
+            );
+            console.log(
+              nickname + "님 환영합니다 \n 당신의 이메일주소는" + email
+            );
+            // 화살표 함수 안에서는 this참조가 되지않기때문에 self 등록해준다.
+            self.$store.commit("root/setLogin", true);
+          } else {
+            alert("서버와 연결이 불안정합니다");
+          }
         });
       }
       verify().catch(console.error);
-      this.$store.commit("root/setLogin", true);
     }
   }
 };
