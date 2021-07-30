@@ -11,13 +11,11 @@
           <span>{{ item.title }}</span>
         </el-menu-item>
           1 + 방번호{{m> -->
-        <el-menu-item
-          >1 + 방번호 {{ $route.params.conferenceId }}
-        </el-menu-item>
+        <el-menu-item>1 </el-menu-item>
         <el-menu-item>
-          2 + 방번호{{ $route.params.conferenceId }}
+          2
         </el-menu-item>
-        <el-menu-item> 3+ 방번호{{ $route.params.conferenceId }} </el-menu-item>
+        <el-menu-item> 3</el-menu-item>
       </el-menu>
     </div>
   </el-row>
@@ -40,9 +38,6 @@
 }
 .sidebar-tool .el-menu .el-menu-item .ic {
   margin-right: 5px;
-}
-.sidebar-menu {
-  background-color: red;
 }
 </style>
 <script>

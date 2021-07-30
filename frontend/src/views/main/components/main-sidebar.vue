@@ -28,7 +28,7 @@
       @select="conferenceSelect"
     >
       <el-menu-item v-for="i in state.count" :key="i" :index="i">
-        <span>{{ i }} + {{ $route.params.conferenceId }}</span>
+        <span>{{ i }} </span>
       </el-menu-item>
     </el-menu>
     <!-- </div> -->

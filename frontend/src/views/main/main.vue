@@ -81,7 +81,7 @@ export default {
 <style>
 #room-sidebar {
   height: 100%;
-  border-right: solid 1px;
-  background-color: yellow;
+  /* border-right: solid 1px; */
+  /* background-color: yellow; */
 }
 </style>

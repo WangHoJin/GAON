@@ -1,9 +1,10 @@
 <template>
   <el-container class="main-wrapper">
     <el-contianer class="main-container">
-      <!-- <el-aside class="hide-on-small" width="120px"> -->
-      <conference-sidebar :width="`120px`" />
-      <!-- </el-aside> -->
+      <!-- 얘떄문에 conference-sidber가 밀려보였던거 -->
+      <el-aside class="hide-on-small" width="120px">
+        <conference-sidebar :width="`120px`" />
+      </el-aside>
       <el-main>
         {{ $route.params.conferenceId + "번 방 상세 보기 페이지" }}
       </el-main>
