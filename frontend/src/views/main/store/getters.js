@@ -6,6 +6,10 @@ export function getIsDesktopPlatform(state) {
 export function getMenus(state) {
   return state.menus;
 }
+// conference 객체 가져오기
+export function getConferences(state) {
+  return state.conferences;
+}
 // Active된 메뉴 인덱스 가져오기
 export function getActiveMenuIndex(state) {
   const keys = Object.keys(state.menus);
@@ -14,6 +18,11 @@ export function getActiveMenuIndex(state) {
 // 사이드바 툴 가져오기
 export function getSidebarTools(state) {
   return state.sidbarTools;
+}
+// Active된 메뉴 인덱스 가져오기
+export function getActiveConferenceIndex(state) {
+  const keys = Object.keys(state.conferences);
+  return keys.findIndex(item => item === state.activeConference);
 }
 // conference 갯수 가져오기
 export function getNumberOfConferneces(state) {

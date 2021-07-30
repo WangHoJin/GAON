@@ -16,7 +16,7 @@
   "Learning materials" : {
     "name" : "학습자료",
     "hidden" : false,
-    "path" : "/room2",
+    "path" : "/",
     "icon" : "el-icon-s-home",
     "children" : []
   },

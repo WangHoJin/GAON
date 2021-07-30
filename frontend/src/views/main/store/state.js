@@ -39,6 +39,7 @@ const IsDesktop = getIsDesktop();
 export default {
   isDesktopPlatform: IsDesktop,
   activeMenu: "home",
+  activeConference: "1",
   menus: menuData,
   conferences: conferenceData,
   sidebarTools: sidebarToolData,

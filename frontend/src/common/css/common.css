@@ -1,5 +1,6 @@
 /* 공통으로 적용되어야할 css */
-html, body {
+html,
+body {
   height: 100vh;
 }
 
@@ -8,18 +9,19 @@ body {
   font-family: SpoqaHanSansNeo;
   font-weight: 400;
 }
-
+/* 작은 화면일때 보이는거 */
 @media (max-width: 1269px) {
-  /* .hide-on-small {
+  .hide-on-small {
     display: none !important;
-  } */
+  }
   .hide-on-big {
     display: block;
   }
 }
-
+/* pc화면일때 (클때)보이는거 */
 @media (min-width: 1270px) {
-  html, body {
+  html,
+  body {
     min-width: 1270px;
   }
 
@@ -32,17 +34,17 @@ body {
 }
 
 @font-face {
-  font-family: 'SpoqaHanSansNeo';
+  font-family: "SpoqaHanSansNeo";
   font-weight: 600;
-  src: url('../../assets/fonts/SpoqaHanSansNeo-Bold.ttf');
+  src: url("../../assets/fonts/SpoqaHanSansNeo-Bold.ttf");
 }
 @font-face {
-  font-family: 'SpoqaHanSansNeo';
+  font-family: "SpoqaHanSansNeo";
   font-weight: 500;
-  src: url('../../assets/fonts/SpoqaHanSansNeo-Medium.ttf');
+  src: url("../../assets/fonts/SpoqaHanSansNeo-Medium.ttf");
 }
 @font-face {
-  font-family: 'SpoqaHanSansNeo';
+  font-family: "SpoqaHanSansNeo";
   font-weight: 400;
-  src: url('../../assets/fonts/SpoqaHanSansNeo-Regular.ttf');
+  src: url("../../assets/fonts/SpoqaHanSansNeo-Regular.ttf");
 }
