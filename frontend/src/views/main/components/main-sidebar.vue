@@ -1,7 +1,12 @@
 <template>
-  <el-row class="main-sidebar" :gutter="10" :style="{ width: width }">
-    <div class="hide-on-small">
-      <!-- <el-menu
+  <el-row
+    id="fix-ml"
+    class="main-sidebar"
+    :gutter="10"
+    :style="{ width: width }"
+  >
+    <!-- <div class="hide-on-small"> -->
+    <!-- <el-menu
         :default-active="String(state.activeIndex)"
         active-text-color="#ffd04b"
         class="el-menu-vertical-demo"
@@ -17,18 +22,17 @@
         </el-menu-item>
       </el-menu> -->
 
-      <el-menu
-        :default-active="String(state.activeIndex)"
-        active-text-color="#ffd04b"
-        class="el-menu-vertical-demo"
-        @select="conferenceSelect"
-      >
-        <el-menu-item v-for="i in state.count" :key="i" :index="i">
-          <span>{{ i }}</span>
-        </el-menu-item>
-        <el-button class="button" @click="signOut">로그아웃</el-button>
-      </el-menu>
-    </div>
+    <el-menu
+      :default-active="String(state.activeIndex)"
+      active-text-color="#ffd04b"
+      class="el-menu-vertical-demo"
+      @select="conferenceSelect"
+    >
+      <el-menu-item v-for="i in state.count" :key="i" :index="i">
+        <span>{{ i }}</span>
+      </el-menu-item>
+      <el-button class="button" @click="signOut">로그아웃</el-button>
+    </el-menu>
   </el-row>
 </template>
 <style>
@@ -50,13 +54,15 @@
 .main-sidebar .el-menu .el-menu-item .ic {
   margin-right: 5px;
 }
+#fix-ml {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
 </style>
 <script>
-import SidebarTool from "./sidebar-tool.vue";
 import { reactive, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-
 export default {
   name: "main-header",
   methods: {
@@ -67,10 +73,6 @@ export default {
       this.$store.commit("root/setLogin", false);
     }
   },
-  components: {
-    SidebarTool
-  },
-
   props: {
     width: {
       type: String,
@@ -97,11 +99,19 @@ export default {
         }
         return menuArray;
       }),
+      activeConferenceIndex: computed(
+        () => store.getters["root/getActiveConferenceIndex"]
+      ),
       activeIndex: computed(() => store.getters["root/getActiveMenuIndex"])
     });
 
     if (state.activeIndex === -1) {
       state.activeIndex = 0;
+      store.commit("root/setMenuActive", 0);
+    }
+
+    if (state.activeConferenceIndex === -1) {
+      state.activeConferenceIndex = 0;
       store.commit("root/setMenuActive", 0);
     }
 
@@ -114,12 +124,12 @@ export default {
       });
     };
 
-    const conferenceSelect = function(param) {
-      store.commit("root/setConferenceActive", param);
-      const MenuItems = store.getters["root/getMenus"];
-      let keys = Object.keys(MenuItems);
+    const conferenceSelect = function(id) {
       router.push({
-        name: keys[param]
+        name: "conference-detail",
+        params: {
+          conferenceId: id
+        }
       });
     };
 
