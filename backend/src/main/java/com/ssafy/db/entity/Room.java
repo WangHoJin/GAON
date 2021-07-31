@@ -23,11 +23,7 @@ import org.checkerframework.common.aliasing.qual.Unique;
 @Getter
 @Setter
 @ToString
-public class Room{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long rid = null;
-    
+public class Room extends BaseEntity{    
     String name;
     Integer host_id;
     String password;

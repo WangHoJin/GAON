@@ -19,17 +19,20 @@ public class QRoom extends EntityPathBase<Room> {
 
     public static final QRoom room = new QRoom("room");
 
+    public final QBaseEntity _super = new QBaseEntity(this);
+
     public final StringPath code = createString("code");
 
     public final StringPath description = createString("description");
 
     public final NumberPath<Integer> host_id = createNumber("host_id", Integer.class);
 
+    //inherited
+    public final NumberPath<Long> id = _super.id;
+
     public final StringPath name = createString("name");
 
     public final StringPath password = createString("password");
-
-    public final NumberPath<Long> rid = createNumber("rid", Long.class);
 
     public QRoom(String variable) {
         super(Room.class, forVariable(variable));
