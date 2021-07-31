@@ -9,7 +9,7 @@ export function setMenuActive(state, index) {
 }
 
 export function setConferenceActive(state, index) {
-  console.log("setMenuActive", state, index);
+  console.log("setConferenceActive", state, index);
   const keys = Object.keys(state.conferences);
   state.activeMenu = keys[index];
 }
