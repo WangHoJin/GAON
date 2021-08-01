@@ -1,44 +1,42 @@
 <template>
-  <el-row
-    id="fix-ml"
-    class="main-sidebar"
-    :gutter="10"
-    :style="{ width: width }"
-  >
-    <!-- <div class="hide-on-small"> -->
-    <!-- <el-menu
-        :default-active="String(state.activeIndex)"
-        active-text-color="#ffd04b"
-        class="el-menu-vertical-demo"
-        @select="menuSelect"
-      >
-        <el-menu-item
-          v-for="(item, index) in state.menuItems"
-          :key="index"
-          :index="index.toString()"
+  <div class="main-sidebar">
+    <el-row class="sidebar-tool">
+      <div class="sidebar-menu">
+        <el-menu
+          :default-active="String(state.activeIndex)"
+          active-text-color="#ffd04b"
+          align="center"
         >
-          <i v-if="item.icon" :class="['ic', item.icon]" />
-          <span>{{ item.title }}</span>
-        </el-menu-item>
-      </el-menu> -->
-
-    <el-menu
-      :default-active="String(state.activeIndex)"
-      active-text-color="#ffd04b"
-      class="el-menu-vertical-demo"
-      @select="conferenceSelect"
-    >
-      <el-menu-item v-for="i in state.count" :key="i" :index="i">
-        <span>{{ i }}</span>
-      </el-menu-item>
-      <el-button class="button" @click="signOut">로그아웃</el-button>
-    </el-menu>
-  </el-row>
+          <el-menu-item>
+            <span @click="$router.push({ name: 'conference-main' })">홈</span>
+          </el-menu-item>
+          <el-menu-item
+            v-for="i in 10"
+            :key="i"
+            :index="i"
+            @click="conferenceSelect(i)"
+          >
+            <span>{{ i }}</span>
+          </el-menu-item>
+          <el-button type="warning"
+            ><div
+              class="iconify"
+              data-inline="false"
+              data-icon="entypo:squared-plus"
+              style="font-size: 20px;"
+            ></div
+          ></el-button>
+          <!-- <el-button class="button" @click="signOut">로그아웃</el-button> -->
+        </el-menu>
+      </div>
+    </el-row>
+  </div>
 </template>
 <style>
 .main-sidebar .el-menu {
   margin-top: 0;
   padding-left: 0;
+  background-color: #ffd344 !important;
 }
 .main-sidebar .hide-on-small {
   height: 100%;
@@ -52,11 +50,15 @@
   border-right: none;
 }
 .main-sidebar .el-menu .el-menu-item .ic {
-  margin-right: 5px;
+  /* margin-right: 5px; */
 }
-#fix-ml {
-  margin-left: 0px !important;
-  margin-right: 0px !important;
+/* 방 생성 버튼에 대한 css */
+.el-button--warning {
+  padding: revert !important;
+  position: fixed;
+  bottom: 10px;
+  left: 30px;
+  /* margin-left: 10px; */
 }
 </style>
 <script>
@@ -73,12 +75,12 @@ export default {
       this.$store.commit("root/setLogin", false);
     }
   },
-  props: {
-    width: {
-      type: String,
-      default: "240px"
-    }
-  },
+  // props: {
+  //   width: {
+  //     type: String,
+  //     default: "240px"
+  //   }
+  // },
   setup() {
     const store = useStore();
     const router = useRouter();
@@ -123,17 +125,34 @@ export default {
         name: keys[param]
       });
     };
-
-    const conferenceSelect = function(id) {
-      router.push({
+    // 각 룸넘버마다 보여질 상세 페이지
+    // const conferenceSelect = function(id) {
+    //   router.push({
+    //     name: "conference-detail",
+    //     params: {
+    //       conferenceId: id
+    //     }
+    //   });
+    // };
+    return { state, menuSelect };
+  },
+  methods: {
+    conferenceSelect(conferenceId) {
+      console.log("메인 네비에서 방 번호 고름");
+      console.log(this.$router);
+      console.log(this.$route.params.conferenceId);
+      this.$router.push({
         name: "conference-detail",
         params: {
-          conferenceId: id
+          conferenceId: conferenceId
         }
       });
-    };
-
-    return { state, menuSelect, conferenceSelect };
+    }
   }
 };
 </script>
+<style scoped>
+.main-sidebar {
+  text-align: center;
+}
+</style>

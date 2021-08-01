@@ -1,10 +1,8 @@
 <template>
   <el-container class="main-wrapper">
-    <conference-sidevar />
     <el-contianer class="main-container">
       <el-main>
-        {{ $route.params.conferenceId + "번 방 상세 보기 페이지" }}
-        <router-view></router-view>
+        메인페이지입니다
       </el-main>
     </el-contianer>
   </el-container>
@@ -13,16 +11,12 @@
 @import "./conferences.css";
 </style>
 <script>
-import ConferenceSidevar from "../conferences/components/conference-sidebar.vue";
 import { reactive, onMounted, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 
 export default {
-  components: {
-    ConferenceSidevar
-  },
-  name: "conference-detail",
+  name: "conference-main",
   // setup() {
   //   const route = useRoute();
   //   const store = useStore();

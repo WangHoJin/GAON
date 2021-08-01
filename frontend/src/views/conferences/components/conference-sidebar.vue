@@ -1,30 +1,34 @@
 <template>
-  <el-row class="sidebar-tool" :gutter="50" :style="{ width: width }">
-    <div class="sidebar-menu">
-      <el-menu active-text-color="#ffd04b">
-        <!-- <el-menu-item
-          v-for="(item, index) in state.sidebarTools"
-          :key="index"
-          :index="index.toString()"
-        >
-          <i v-if="item.icon" :class="['ic', item.icon]" />
-          <span>{{ item.title }}</span>
-        </el-menu-item>
-          1 + 방번호{{m> -->
-        <el-menu-item>1 </el-menu-item>
-        <el-menu-item>
-          2
-        </el-menu-item>
-        <el-menu-item> 3</el-menu-item>
-      </el-menu>
-    </div>
-  </el-row>
+  <div>
+    <el-row class="sidebar-tool">
+      <div class="sidebar-menu">
+        <el-menu active-text-color="#ffd04b">
+          <el-menu-item @click="noticeSelect()">
+            공지사항
+          </el-menu-item>
+          <el-menu-item @click="hwSelect()">
+            과제 제출
+          </el-menu-item>
+          <el-menu-item @click="studyMaterialSelect()">
+            학습 자료
+          </el-menu-item>
+          <el-menu-item @click="rollBookSelect()">
+            출석부
+          </el-menu-item>
+        </el-menu>
+      </div>
+    </el-row>
+  </div>
 </template>
 <style>
+.sidebar-menu .el-menu-item {
+  width: 100px;
+}
 .sidebar-tool .el-menu {
   margin-top: 0;
   padding-left: 0;
 }
+
 .sidebar-tool .sidebar-menu {
   height: 100%;
   position: fixed;
@@ -52,6 +56,28 @@ export default {
     width: {
       type: String,
       default: "240px"
+    }
+  },
+  methods: {
+    noticeSelect() {
+      this.$router.push({
+        name: "conference-notice"
+      });
+    },
+    hwSelect() {
+      this.$router.push({
+        name: "conference-homework"
+      });
+    },
+    studyMaterialSelect() {
+      this.$router.push({
+        name: "conference-studymaterial"
+      });
+    },
+    rollBookSelect() {
+      this.$router.push({
+        name: "conference-rollbook"
+      });
     }
   }
   // setup() {

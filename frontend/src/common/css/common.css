@@ -4,9 +4,22 @@ body {
   height: 100vh;
 }
 
+@font-face {
+  src: url("../../assets/fonts/BMJUA_ttf.ttf");
+  font-family: "jua";
+}
+
+* {
+  font-family: "jua" !important;
+}
+/*
+body {
+  font-family: BMHANNAPro !important;
+} */
+
 body {
   margin: 0;
-  font-family: SpoqaHanSansNeo;
+  /* font-family: SpoqaHanSansNeo; */
   font-weight: 400;
 }
 /* 작은 화면일때 보이는거 */

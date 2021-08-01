@@ -5,7 +5,8 @@
   }
 }
 
-#app, .main-wrapper {
+#app,
+.main-wrapper {
   /* height: 100%; */
   display: block !important;
 }
