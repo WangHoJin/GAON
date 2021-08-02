@@ -21,12 +21,13 @@
           <el-button type="warning"
             ><div
               class="iconify"
+              id="main-sidebar-make-room"
               data-inline="false"
               data-icon="entypo:squared-plus"
               style="font-size: 20px;"
             ></div
           ></el-button>
-          <!-- <el-button class="button" @click="signOut">로그아웃</el-button> -->
+          <el-button class="button" @click="signOut">로그아웃</el-button>
         </el-menu>
       </div>
     </el-row>
@@ -53,7 +54,7 @@
   /* margin-right: 5px; */
 }
 /* 방 생성 버튼에 대한 css */
-.el-button--warning {
+#main-sidebar-make-room {
   padding: revert !important;
   position: fixed;
   bottom: 10px;
@@ -67,20 +68,7 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 export default {
   name: "main-header",
-  methods: {
-    signOut() {
-      console.log("로그아웃버튼누름");
-      window.gapi.auth2.getAuthInstance().disconnect();
-      sessionStorage.removeItem("userInfo");
-      this.$store.commit("root/setLogin", false);
-    }
-  },
-  // props: {
-  //   width: {
-  //     type: String,
-  //     default: "240px"
-  //   }
-  // },
+
   setup() {
     const store = useStore();
     const router = useRouter();
@@ -147,6 +135,14 @@ export default {
           conferenceId: conferenceId
         }
       });
+    },
+    async signOut() {
+      console.log("로그아웃버튼누름");
+      await window.gapi.auth2.getAuthInstance().disconnect();
+      console.log("user Signed Out");
+      sessionStorage.removeItem("userInfo");
+      this.$store.commit("root/setLogin", false);
+      this.$router.push("/");
     }
   }
 };
