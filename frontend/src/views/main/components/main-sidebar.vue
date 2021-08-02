@@ -7,8 +7,8 @@
           active-text-color="#ffd04b"
           align="center"
         >
-          <el-menu-item>
-            <span @click="$router.push({ name: 'conference-main' })">홈</span>
+          <el-menu-item @click="$router.push('/')">
+            <span>홈</span>
           </el-menu-item>
           <el-menu-item
             v-for="i in 10"
