@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 import org.checkerframework.common.aliasing.qual.Unique;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 /**
  * 방 모델 정의.
@@ -37,4 +41,9 @@ public class Room extends BaseEntity{
     @ManyToOne
     @JoinColumn(name="host_id", nullable=false)
     Guser host;
+    
+    @CreatedDate
+    LocalDateTime created_time;
+    @LastModifiedDate
+    LocalDateTime modified_time;
 }

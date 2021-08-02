@@ -90,4 +90,10 @@ public class RoomServiceImpl implements RoomService {
 			return false;
 		}
 	}
+
+	@Override
+	public String makeCode(Room room) {
+		
+		return null;
+	}
 }
