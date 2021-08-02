@@ -28,6 +28,10 @@
             ></div
           ></el-button>
           <el-button class="button" @click="signOut">로그아웃</el-button>
+          <div>
+            <el>{{ username }}</el>
+          </div>
+          <img :src="`${img}`" style="width : 30px; border-radius: 70%" />
         </el-menu>
       </div>
     </el-row>
@@ -67,6 +71,14 @@ import { reactive, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 export default {
+  data() {
+    if (sessionStorage.getItem("userInfo") != null) {
+      return {
+        username: JSON.parse(sessionStorage.getItem("userInfo")).nickname,
+        img: JSON.parse(sessionStorage.getItem("userInfo")).imgUrl
+      };
+    }
+  },
   name: "main-header",
 
   setup() {
