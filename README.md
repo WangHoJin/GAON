@@ -20,7 +20,7 @@ gantt
     
 	  section 회원 관리
     [F] 로그인/로그아웃		: active, 07-26, 4d
-    [B] 로그인/로그아웃		: active, 07-26, 4d
+    [B] 로그인/로그아웃		: done, 07-26, 4d
     [F] 가입, 수정, 탈퇴		 : active, 07-26, 5d
     [B] 가입, 수정, 탈퇴		 : active, 07-26, 5d
      

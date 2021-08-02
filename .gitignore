@@ -62,3 +62,4 @@ frontend/src/views/main/components/main-sidebar.vue
 backend/ssafy-web.log.2021-07-15.0.gz
 backend/src/main/resources/application.properties
 backend/ssafy-web.log.2021-07-29.0.gz
+frontend/package-lock.json
