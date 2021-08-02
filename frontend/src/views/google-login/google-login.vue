@@ -67,29 +67,30 @@ export default {
           email: profile.getEmail()
         };
         //로그인 기능
-        var email = "";
-        var nickname = "";
 
         $axios.post("/users/glogin", userInfo).then(res => {
           if (res.status === 200) {
             console.log("구글 계정 정보, 요청 전달 성공 ");
             console.log("백엔드로부터 전달 받은 response :" + res);
-            console.log(
-              "ResponseEntity/data/guserinfo : " + res.data.guserinfo
-            );
-            email = res.data.guserinfo.email;
-            nickname = res.data.guserinfo.nickname;
 
             sessionStorage.setItem(
               "userInfo",
               JSON.stringify({
-                nickname: nickname,
-                email: email,
+                id: res.data.guserinfo.id,
+                nickname: res.data.guserinfo.nickname,
+                email: res.data.guserinfo.email,
                 imgUrl: profile.getImageUrl()
               })
             );
+            var uinfo = JSON.parse(sessionStorage.getItem("userInfo"));
+            console.log(uinfo);
             console.log(
-              nickname + "님 환영합니다 \n 당신의 이메일주소는" + email
+              "uid:" +
+                uinfo.id +
+                " " +
+                uinfo.nickname +
+                "님 환영합니다 \n 당신의 이메일주소는" +
+                uinfo.email
             );
             // 화살표 함수 안에서는 this참조가 되지않기때문에 self 등록해준다.
             self.$store.commit("root/setLogin", true);
