@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,6 +25,7 @@ import javax.persistence.OneToMany;
 import org.checkerframework.common.aliasing.qual.Unique;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * 방 모델 정의.
@@ -32,6 +34,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 @Getter
 @Setter
 @ToString
+//Entity 영속성 및 업데이트에 대한 Auditing 정보를 캡처하는 JPA Entity Listener
+@EntityListeners(AuditingEntityListener.class)
 public class Room extends BaseEntity{    
     String name;
     @JsonIgnore

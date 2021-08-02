@@ -72,7 +72,7 @@ public class RoomController {
 			Room room = roomService.createRoom(roomInfo);
 			return ResponseEntity.ok(RoomRes.of(200, "Success", room));
 		} catch (Exception e) {
-//			e.printStackTrace();
+			e.printStackTrace();
 			return ResponseEntity.status(404).body(RoomRes.of(404, "No matching guser for host_id", null));
 		}
 	}
@@ -85,16 +85,13 @@ public class RoomController {
         @ApiResponse(code = 401, message = "인증 실패"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	public RoomRes findById(
+	public ResponseEntity<RoomRes> findById(
 			@PathVariable @ApiParam(value="방 코드", required = true) Long id) {
 		try {
 			Room room = roomService.getRoomById(id);
-			System.out.println(room);
-			return RoomRes.of(room);
+			return ResponseEntity.ok(RoomRes.of(200, "Success", room));
 		} catch (Exception e) {
-			System.out.println("해당 코드의 방이 존재하지 않음");
-			System.out.println(e);
-			return null;
+			return ResponseEntity.status(404).body(RoomRes.of(404, "Room does not exist using this code", null));
 		}
 	}
 	

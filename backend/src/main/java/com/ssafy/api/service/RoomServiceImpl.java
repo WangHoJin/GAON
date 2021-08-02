@@ -1,10 +1,15 @@
 package com.ssafy.api.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Base64;
+import java.util.Base64.Encoder;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.api.request.RoomRegisterPostReq;
 import com.ssafy.db.entity.Guser;
@@ -32,6 +37,7 @@ public class RoomServiceImpl implements RoomService {
 	PasswordEncoder passwordEncoder;
 	
 	@Override
+	@Transactional
 	public Room createRoom(RoomRegisterPostReq roomInfo) {
 		Room room = new Room();
 		Guser host = guserService.getGuserById(roomInfo.getHost_id());
@@ -39,8 +45,10 @@ public class RoomServiceImpl implements RoomService {
 		room.setHost(host);
 		room.setDescription(roomInfo.getDescription());
 		// 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
-		room.setPassword(passwordEncoder.encode(roomInfo.getPassword()));		
-		return roomRepository.save(room);
+		room.setPassword(passwordEncoder.encode(roomInfo.getPassword()));	
+		Room res = roomRepository.save(room);
+		res.setCode(makeCode(res));
+		return roomRepository.save(res);
 	}
 
 	@Override
@@ -93,7 +101,16 @@ public class RoomServiceImpl implements RoomService {
 
 	@Override
 	public String makeCode(Room room) {
+		String id = room.getId().toString();
+		String createdAt = room.getCreated_time().format(DateTimeFormatter.ofPattern("yyMMddhhmmss"));
+		String random = Integer.toString((int)Math.floor(Math.random() * 100));
+		String text = id + createdAt + random;
+//		System.out.println(createdAt);
+//		System.out.println(random);
+//		System.out.println(text);
 		
-		return null;
+		Encoder encoder = Base64.getEncoder(); 
+		byte[] encodedBytes  = encoder.encode(text.getBytes());
+		return new String(encodedBytes);
 	}
 }

@@ -26,12 +26,16 @@ public class QRoom extends EntityPathBase<Room> {
 
     public final StringPath code = createString("code");
 
+    public final DateTimePath<java.time.LocalDateTime> created_time = createDateTime("created_time", java.time.LocalDateTime.class);
+
     public final StringPath description = createString("description");
 
     public final QGuser host;
 
     //inherited
     public final NumberPath<Long> id = _super.id;
+
+    public final DateTimePath<java.time.LocalDateTime> modified_time = createDateTime("modified_time", java.time.LocalDateTime.class);
 
     public final StringPath name = createString("name");
 
