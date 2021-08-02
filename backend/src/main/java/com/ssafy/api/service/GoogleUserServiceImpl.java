@@ -52,8 +52,8 @@ public class GoogleUserServiceImpl implements GoogleUserService{
 	}
 
 	@Override
-	public void deleteGuser(String email) {
-		googleuserRepositorySupport.deleteByEmail(email);
+	public void deleteGuser(Long id) {
+		googleuserRepositorySupport.deleteByEmail(id);
 		
 	}
 	

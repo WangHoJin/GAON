@@ -71,14 +71,14 @@ export default {
         $axios.post("/users/glogin", userInfo).then(res => {
           if (res.status === 200) {
             console.log("구글 계정 정보, 요청 전달 성공 ");
-            console.log("백엔드로부터 전달 받은 response :" + res);
-
+            console.log("백엔드로부터 전달 받은 response :");
+            console.log(res);
             sessionStorage.setItem(
               "userInfo",
               JSON.stringify({
-                id: res.data.guserinfo.id,
-                nickname: res.data.guserinfo.nickname,
-                email: res.data.guserinfo.email,
+                id: res.data.id,
+                nickname: res.data.nickname,
+                email: res.data.email,
                 imgUrl: profile.getImageUrl()
               })
             );
