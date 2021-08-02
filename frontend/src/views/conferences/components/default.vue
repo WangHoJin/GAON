@@ -214,13 +214,13 @@ export default {
         name: this.form.name,
         password: this.form.password,
         description: this.form.description,
-        host_id: 1, // 방 생성자 아이디
-        code: "123", // 코드 임의생성
-        id: 1 // 룸 아이디 임의생성
+        host_id: JSON.parse(sessionStorage.getItem("userInfo")).id, // 방 생성자 아이디
+        code: "123" // 코드 임의생성
+        // id: 1 // 룸 아이디 임의생성
       };
       console.log(roomInfo);
       $axios
-        .post("/room", roomInfo)
+        .post("/rooms", roomInfo)
         .then(res => {
           if (res.status === 200) {
             console.log("방 생성 성공");
