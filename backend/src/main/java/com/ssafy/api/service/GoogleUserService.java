@@ -14,6 +14,6 @@ public interface GoogleUserService {
 	Guser getGuserById(Long id);
 	Guser getGuserByEmail(String email);
 	void updateGuser(Guser user);
-	void deleteGuser(String email);
+	void deleteGuser(Long id);
 
 }

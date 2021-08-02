@@ -47,12 +47,13 @@ public class GoogleUserRepositorySupport {
     }
     
     @Transactional
-    public void deleteByEmail(String email) {
+    public void deleteByEmail(Long id) {
+    	
     	Long affectedRow = jpaQueryFactory.delete(qGuser)
-                .where(qGuser.email.eq(email))
+                .where(qGuser.id.eq(id))
                 .execute();
     	if(affectedRow != 0) {
-     	   System.out.println("::::   "+email+" 삭제완료   ::::::");
+     	   System.out.println("::::   "+id+" 삭제완료   ::::::");
         }         
     }
     
