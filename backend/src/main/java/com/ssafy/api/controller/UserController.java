@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -89,17 +90,19 @@ public class UserController {
 		
 		String email = loginInfo.getEmail();
 		String nickname = loginInfo.getNickname();
-		System.out.println("::::::::   "+email+"의 닉네임을 "+nickname+"로 변경 요청     ::::::::");
+		Long id = loginInfo.getId();
+		System.out.println("::::::::   id:  "+id+" | "+email+"의 닉네임을 "+nickname+"로 변경 요청     ::::::::");
 		
 		Guser user = new Guser();
 		user.setEmail(email);
-		user.setNickname(nickname);		
+		user.setNickname(nickname);
+		user.setId(id);
 		googleuserService.updateGuser(user);
 		return ResponseEntity.ok(GoogleUserLoginPostRes.of(200, "Success", user));
 	}
 	
 	
-	@GetMapping("/delete/{email}")
+	@DeleteMapping("/{email}")
 	@ApiOperation(value = "구글로그인 유저 데이터 삭제", notes = "구글로그인 유저의 데이터를 삭제한다. email값을 파라미터로함") 
     @ApiResponses({
         @ApiResponse(code = 409, message = "삭제완료")
