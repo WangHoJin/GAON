@@ -34,8 +34,8 @@ public class Guser extends BaseEntity{
     private List<Room> rooms = new ArrayList<Room>();
     
     
-    @OneToMany(fetch = FetchType.LAZY, orphanRemoval= true, cascade=CascadeType.ALL,mappedBy = "user")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<RoomMember> roomMembers = new ArrayList<RoomMember>();
+//    @OneToMany(fetch = FetchType.LAZY, orphanRemoval= true, cascade=CascadeType.ALL,mappedBy = "user")
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    private List<RoomMember> roomMembers = new ArrayList<RoomMember>();
 
 }
