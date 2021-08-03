@@ -58,7 +58,7 @@ public class Room extends BaseEntity{
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<RoomMember> roomMembers = new ArrayList<RoomMember>();
     
-    @OneToMany(fetch = FetchType.EAGER, orphanRemoval= true, cascade=CascadeType.ALL,mappedBy = "room")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Board> boards = new ArrayList<Board>();
+    // @OneToMany(fetch = FetchType.EAGER, orphanRemoval= true, cascade=CascadeType.ALL,mappedBy = "room")
+    // @OnDelete(action = OnDeleteAction.CASCADE)
+    // private List<Board> boards = new ArrayList<Board>();
 }
