@@ -155,12 +155,25 @@ export default {
       });
     },
     async signOut() {
-      console.log("로그아웃버튼누름");
-      await window.gapi.auth2.getAuthInstance().disconnect();
-      console.log("user Signed Out");
-      sessionStorage.removeItem("userInfo");
-      this.$store.commit("root/setLogin", false);
-      this.$router.push("/");
+      // console.log("로그아웃버튼누름");
+      // await window.gapi.auth2.getAuthInstance().disconnect();
+      // console.log("user Signed Out");
+      // sessionStorage.removeItem("userInfo");
+      // this.$store.commit("root/setLogin", false);
+      // this.$router.push("/");
+      try {
+        console.log("try disconnect");
+        await window.gapi.auth2.getAuthInstance().signOut();
+        sessionStorage.removeItem("userInfo");
+        this.$store.commit("root/setLogin", false);
+        this.$router.push("/");
+      } catch (error) {
+        console.log("****disconnect 실패 : " + error);
+        console.log("fn --- user Signed Out");
+        sessionStorage.removeItem("userInfo");
+        this.$store.commit("root/setLogin", false);
+        this.$router.push("/");
+      }
     },
     mr() {
       console.log("마우스 우클릭");
