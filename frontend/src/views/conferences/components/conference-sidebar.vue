@@ -15,14 +15,29 @@
           <el-menu-item @click="rollBookSelect()">
             출석부
           </el-menu-item>
+
+          <el-button @click="meetingSelect()" id="meeting-btn">
+            <span
+              class="iconify"
+              data-inline="false"
+              data-icon="noto:school"
+              style="font-size: 100px;"
+            ></span
+          ></el-button>
         </el-menu>
       </div>
     </el-row>
   </div>
 </template>
 <style>
+#meeting-btn {
+  bottom: 0;
+  padding: 10px 10px;
+  border: none;
+  outline: none;
+}
 .sidebar-menu .el-menu-item {
-  width: 100px;
+  width: 100%;
 }
 .sidebar-tool .el-menu {
   margin-top: 0;
@@ -78,39 +93,13 @@ export default {
       this.$router.push({
         name: "conference-rollbook"
       });
+    },
+    meetingSelect() {
+      console.log("click startMeetingBtn");
+      this.$router.push({
+        name: "conference-meeting"
+      });
     }
   }
-  // setup() {
-  //   const store = useStore();
-  //   const router = useRouter();
-
-  //   const state = reactive({
-  //     isLogin: computed(() => store.getters["root/getAuth"]),
-  //     searchValue: null,
-  //     sidebarTools: computed(() => {
-  //       const SidebarTools = store.getters["root/getSidebarTools"];
-  //       let keys = Object.keys(SidebarTools);
-  //       let sidebarToolArray = [];
-  //       for (let i = 0; i < keys.length; ++i) {
-  //         let sidebarToolObject = {};
-  //         sidebarToolObject.icon = SidebarTools[keys[i]].icon;
-  //         sidebarToolObject.title = SidebarTools[keys[i]].name;
-  //         sidebarToolArray.push(sidebarToolObject);
-  //       }
-  //       return sidebarToolArray;
-  //     })
-  //   });
-
-  //   const sidebarToolSelect = function(param) {
-  //     // store.commit("root/setSidebarToolActive", param);
-  //     const MenuItems = store.getters["root/getMenus"];
-  //     let keys = Object.keys(MenuItems);
-  //     router.push({
-  //       name: keys[param]
-  //     });
-  //   };
-
-  //   return { state, sidebarToolSelect };
-  // }
 };
 </script>
