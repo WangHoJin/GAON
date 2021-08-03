@@ -69,8 +69,8 @@
           </el-form>
           <template #footer>
             <span class="dialog-footer">
-              <el-button @click="dialogFormVisible = false">Cancel</el-button>
-              <el-button type="primary" @click="dialogFormVisible = false">Confirm</el-button>
+              <el-button type="info" @click="dialogFormVisible = false">취소</el-button>
+              <el-button type="primary" class="gaon-button" @click="dialogFormVisible = false">과제 제출</el-button>
             </span>
           </template>
         </el-dialog>
@@ -144,5 +144,8 @@
         float: right;
         width: 110px;
       }
+  .gaon-button {
+  background-color: #ffd04b;
+  border: none;
+}
 </style>
-ㄴ
