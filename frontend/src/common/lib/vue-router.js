@@ -1,37 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-// import Home from "@/views/home/home";
-// import History from "@/views/history/history";
-// import { nextTick } from "vue";
-// import GoogleLogin from "@/views/google-login/google-login.vue";
-// const fullMenu = require("@/views/main/menu.json");
-// function makeRoutesFromMenu() {
-//   let routes = Object.keys(fullMenu).map(key => {
-//     if (key === "home") {
-//       return { path: fullMenu[key].path, name: key, component: Home };
-//     } else if (key === "history") {
-//       return { path: fullMenu[key].path, name: key, component: History };
-//     } else if (key === "room1") {
-//       return { path: fullMenu[key].path, name: key, component: Home };
-//     }
-//     // 맨처음 시작화면 google로그인 창 띄우기
-//     // else if (key === "google") {
-//     //   return { path: fullMenu[key].path, name: key, component: GoogleLogin };
-//     // }
-//     else {
-//       // menu.json 에 들어있는 로그아웃 메뉴
-//       return null;
-//     }
-//   });
-//   // 로그아웃 파싱한 부분 제거
-//   routes = routes.filter(item => item);
-//   // menu 자체에는 나오지 않는 페이지 라우터에 추가(방 상세보기)
-//   routes.push({
-//     path: "/conferences/:conferenceId",
-//     name: "conference-detail",
-//     component: ConferencesDetail
-//   });
-//   return routes;
-// }
 
 const routes = [
   {
@@ -77,6 +44,13 @@ const routes = [
         name: "conference-rollbook",
         component: () =>
           import("../../views/conferences/components/rollbook.vue")
+      },
+      {
+        // 화상회의 start
+        path: "rollbook",
+        name: "conference-meeting",
+        component: () =>
+          import("../../views/conferences/components/meeting.vue")
       }
     ]
   }
