@@ -1,8 +1,8 @@
 <template>
   <div>
-    <google-login v-if="!isLogin"></google-login>
+    <google-login v-if="!$store.state.root.isLogin"></google-login>
     <el-row v-else>
-      <el-col :span="2"> <main-sidebar /></el-col>
+      <el-col :span="2" @contextmenu.prevent> <main-sidebar /></el-col>
       <el-col :span="22"> <router-view></router-view> </el-col>
     </el-row>
   </div>
@@ -27,11 +27,12 @@ export default {
     MainSidebar,
     ConferenceSidevar
   },
-  computed: {
-    isLogin() {
-      return this.$store.state.root.isLogin;
-    }
+  mounted() {
+    console.log("beforeMounted");
+    console.log(this.$store.state.root.isLogin);
+    // this.isLogin();
   },
+
   methods: {
     onOpenLoginDialog() {
       this.loginDialogOpen = true;
@@ -45,6 +46,9 @@ export default {
     onCloseSignUpDialog() {
       this.signUpDialogOpen = false;
     }
+    // isLogin() {
+    //   return this.$store.state.root.isLogin;
+    // }
   }
 };
 </script>

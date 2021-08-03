@@ -51,5 +51,7 @@ export default {
     email: "tomybaru@naver.com",
     imgUrl:
       "https://lh3.googleusercontent.com/a-/AOh14Ghp2cbxsqvAFSb7CWnlmPQAWIUH0j4bLauu3i7O=s96-c"
-  }
+  },
+  roomInfo: {}, //현재 접속하고 있는 방 정보
+  rooms: [] //사용자가 참여하고 있는 방들
 };

@@ -41,3 +41,105 @@ export function verifyAuth({ state, commit }) {
       commit("setAuth", null);
     });
 }
+
+// 방 생성 success
+export async function createRoom({ state, commit }, payload) {
+  console.log("방 생성 action 작동");
+  const url = "/rooms";
+  let response = "";
+  await $axios
+    .post(url, payload)
+    .then(res => {
+      console.log(res.data);
+      // 사용자가 방을 추가했을때 사용자가 참여하고 있는 방들의 정보 업데이트 -> 추후
+      // commit("CREATE_ROOM", res.data);
+      // console.log("state의 rooms : 현재 사용자가 참여하고 있는 방들의 정보");
+      // console.log(state.rooms);
+      this.response = res.data.code;
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  return this.response;
+}
+// 방 수정
+export function modifyRoom({ state, commit }, payload) {
+  console.log("방 수정 action 작동");
+  const url = "/rooms";
+  $axios
+    .put(url + payload)
+    .then(res => {
+      commit("MODIFY_ROOM", res.data);
+      console.log(res.data);
+      console.log("state의 rooms : 현재 사용자가 참여하고 있는 방들의 정보");
+      console.log(state.rooms);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+// 방 삭제
+// export function deleteRoom({ state, commit }, payload) {
+//   console.log("방 삭제 action 작동");
+//   const url = "/room";
+//   $axios
+//     .delete(url + payload)
+//     .then(res => {
+//       commit("DELETE_ROOM", res.data);
+//       console.log(res.data);
+//       console.log("state의 rooms : 현재 사용자가 참여하고 있는 방들의 정보");
+//       console.log(state.rooms);
+//     })
+//     .catch(err => {
+//       console.log(err);
+//     });
+// }
+
+// 방 정보를 코드로 찾기 success
+export async function getRoomByCode({ state, commit }, payload) {
+  console.log("방 정보 code로 찾기 action 작동");
+  const url = "/rooms/code/";
+  let response = "";
+  await $axios
+    .get(url + payload)
+    .then(res => {
+      console.log("state의 rooms : code로 찾은 방의 정보");
+      console.log(res.data);
+      response = res.data;
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  return response;
+}
+//방 정보를 id로 찾기
+export function getRoomById({ state, commit }, payload) {
+  console.log("방 정보 id로 찾기 action 작동");
+  const url = "/rooms/id/";
+  $axios
+    .get(url + payload)
+    .then(res => {
+      console.log("state의 rooms : id로 찾은 방의 정보");
+      console.log(res.data);
+      return res.data;
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+// 방에 참여하기
+export function joinRoom({ state, commit }, payload) {
+  console.log("code와 password로 방의 패스워드가 일치하는지 확인");
+  const url = "/rooms/join";
+  $axios
+    .post(url, payload)
+    .then(res => {
+      console.log("code와 password로 일치하는지 여부");
+      console.log(res.data.message);
+      console.log(res.data.statusCode);
+      return res.data;
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
