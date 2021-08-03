@@ -3,7 +3,7 @@
     <google-login v-if="!$store.state.root.isLogin"></google-login>
     <el-row v-else>
       <el-col :span="2" @contextmenu.prevent> <main-sidebar /></el-col>
-      <el-col :span="22"> <router-view></router-view> </el-col>
+      <el-col :span="22" align="center"> <router-view></router-view> </el-col>
     </el-row>
   </div>
 </template>
@@ -13,6 +13,14 @@
 @import "./main.css";
 @import "../../common/css/common.css";
 @import "../../common/css/element-plus.css";
+.el-main {
+  height: 100%;
+  width: 100% !important;
+  display: inline-block;
+  color: #333;
+  text-align: center;
+  overflow-x: hidden;
+}
 </style>
 <script>
 import MainSidebar from "./components/main-sidebar";
@@ -30,9 +38,7 @@ export default {
   mounted() {
     console.log("beforeMounted");
     console.log(this.$store.state.root.isLogin);
-    // this.isLogin();
   },
-
   methods: {
     onOpenLoginDialog() {
       this.loginDialogOpen = true;
@@ -46,9 +52,6 @@ export default {
     onCloseSignUpDialog() {
       this.signUpDialogOpen = false;
     }
-    // isLogin() {
-    //   return this.$store.state.root.isLogin;
-    // }
   }
 };
 </script>

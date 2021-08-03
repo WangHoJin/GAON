@@ -80,7 +80,7 @@ public class UserController {
 		return ResponseEntity.ok(GoogleUserLoginPostRes.of(200, "Success", guser));
 	}
 	
-	@PutMapping("/")
+	@PutMapping()
 	@ApiOperation(value = "구글 회원 닉네임 변경", notes = "구글 로그인 중인 회원의 닉네임을 변경한다. {email:data, nickname:data} 형식의 데이터를 필요로함") 
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
