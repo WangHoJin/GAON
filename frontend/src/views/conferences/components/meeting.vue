@@ -68,7 +68,7 @@ import UserVideo from "./meeting-components/UserVideo.vue";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-const OPENVIDU_SERVER_URL = "https://3.36.51.233";
+const OPENVIDU_SERVER_URL = "https://3.36.51.233:8443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
 export default {
