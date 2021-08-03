@@ -1,13 +1,12 @@
 <template>
-  <el-container class="main-wrapper">
-    <conference-sidevar />
-    <el-contianer class="main-container">
+  <el-row align="center">
+    <el-col :span="2"> <conference-sidevar /></el-col>
+    <el-col :span="22">
       <el-main>
         {{ $route.params.conferenceId + "번 방 상세 보기 페이지" }}
-        <router-view></router-view>
-      </el-main>
-    </el-contianer>
-  </el-container>
+        <router-view></router-view> </el-main
+    ></el-col>
+  </el-row>
 </template>
 <style>
 @import "./conferences.css";
@@ -23,30 +22,7 @@ export default {
     ConferenceSidevar
   },
   name: "conference-detail",
-  // setup() {
-  //   const route = useRoute();
-  //   const store = useStore();
-  //   const state = reactive({
-  //     conferenceId: ""
-  //   });
-
-  //   // 페이지 진입시 불리는 훅
-  //   onMounted(() => {
-  //     // state.conferenceId = route.params.conferenceId;
-  //     // console(state.conferenceId);
-  //     console("console(state.conferenceId);");
-  //     store.commit("root/setMenuActiveMenuName", "home");
-  //   });
-
-  //   // 페이지 이탈시 불리는 훅
-  //   onUnmounted(() => {
-  //     // state.conferenceId = "";
-  //   });
-  //   return { state };
-  // },
   mounted() {
-    console.log("??");
-    console.log("mount됐을때 conferenceId");
     console.log(this.$route.params.conferenceId);
   }
 };

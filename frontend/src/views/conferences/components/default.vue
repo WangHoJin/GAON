@@ -54,7 +54,7 @@
         <el-input
           v-model="form.name"
           autocomplete="off"
-          placeholder="방 이름은 중복될 수 없습니다."
+          placeholder=""
         ></el-input>
       </el-form-item>
       <el-form-item
