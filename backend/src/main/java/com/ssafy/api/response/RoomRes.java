@@ -1,5 +1,7 @@
 package com.ssafy.api.response;
 
+import com.ssafy.common.model.response.BaseResponseBody;
+import com.ssafy.db.entity.Guser;
 import com.ssafy.db.entity.Room;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -14,7 +16,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @ApiModel("RoomResponse")
-public class RoomRes {
+public class RoomRes extends BaseResponseBody {
 	
 	@ApiModelProperty(name="방 pk", example="1")
 	Long id;
@@ -27,13 +29,29 @@ public class RoomRes {
 	@ApiModelProperty(name="방 Description", example="room_description")
 	String description;
 	
-	public static RoomRes of(Room room) {
+//	public static RoomRes of(Room room) {
+//		RoomRes res = new RoomRes();
+//		res.setId(room.getId());		
+//		res.setName(room.getName());
+//		res.setDescription(room.getDescription());
+//		res.setHost_id(room.getHost().getId());
+//		res.setCode(room.getCode());
+//		return res;
+//	}
+
+	public static RoomRes of(Integer statusCode , String message, Room room) {
 		RoomRes res = new RoomRes();
-		res.setId(room.getId());		
-		res.setName(room.getName());
-		res.setDescription(room.getDescription());
-		res.setHost_id(room.getHost().getId());
-		res.setCode(room.getCode());
+		res.setStatusCode(statusCode);
+		res.setMessage(message);
+		if(room!=null) {
+			res.setId(room.getId());		
+			res.setName(room.getName());
+			res.setDescription(room.getDescription());
+			res.setHost_id(room.getHost().getId());
+			res.setCode(room.getCode());
+		}
 		return res;
 	}
+	
+	
 }

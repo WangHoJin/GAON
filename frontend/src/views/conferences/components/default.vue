@@ -196,46 +196,38 @@ export default {
     },
     // 회의실로 가기
     async goConference() {
-      var self = this;
-      console.log(this.form2);
       this.dialogFormVisible_2 = false;
       //code를 보내면 rid를 받아옴
-      let roomInfo = await $axios.get("/room/code/" + this.form2.code);
+      console.log(this.form2.code);
+      let roomInfo = await this.$store.dispatch(
+        "root/getRoomByCode",
+        this.form2.code
+      );
       console.log(roomInfo);
       this.$router.push({
         name: "conference-detail",
-        params: { conferenceId: roomInfo.data.id }
+        params: { conferenceId: roomInfo.id }
       });
     },
-    makeRoom() {
-      // this.dialogFormVisible = false;
-      console.log(this.form);
+    async makeRoom() {
       var roomInfo = {
         name: this.form.name,
         password: this.form.password,
         description: this.form.description,
-        host_id: JSON.parse(sessionStorage.getItem("userInfo")).id, // 방 생성자 아이디
-        code: "123" // 코드 임의생성
-        // id: 1 // 룸 아이디 임의생성
+        host_id: JSON.parse(sessionStorage.getItem("userInfo")).id // 방 생성자 아이디
       };
-      console.log(roomInfo);
-      $axios
-        .post("/rooms", roomInfo)
-        .then(res => {
-          if (res.status === 200) {
-            console.log("방 생성 성공");
-            console.log(res);
-            // dialog 데이터 초기화
-            this.form.password = "";
-            this.form.description = "";
-            // 생성 후 새로운 dialog 띄우기 용
-            this.makeRoomFlag = false;
-            this.code = res.data.code;
-          } else {
-            alert("서버와 연결이 불안정합니다");
-          }
-        })
-        .catch(err => console.log(err));
+      const response = await this.$store.dispatch("root/createRoom", roomInfo);
+      this.code = response;
+      // dialog 데이터 초기화
+      this.form.password = "";
+      this.form.description = "";
+      // 생성 후 새로운 dialog 띄우기 용
+      this.makeRoomFlag = false;
+      /* 확인용
+      this.code = this.$store.state.root.roomInfo.code;
+      console.log("this.$store.state.root.roomInfo.code");
+      console.log(this.$store.state.root.roomInfo.code);
+      */
     }
   }
 };

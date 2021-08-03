@@ -24,3 +24,21 @@ export function setAuth(state, auth) {
 export function setLogin(state, isLogin) {
   state.isLogin = isLogin;
 }
+// 방 생성
+export function CREATE_ROOM(state, roomInfo) {
+  state.rooms.push(roomInfo);
+}
+// 방 수정
+export function MODIFY_ROOM(state, modifyRoomInfo) {
+  state.rooms.forEach(element => {
+    if (element.id === modifyRoomInfo.id) {
+      element = modifyRoomInfo;
+    }
+  });
+}
+// 방 삭제
+// export function DELETE_ROOM(state, modifyRoomInfo) {
+//   state.rooms = state.rooms.filter(element => )
+// }
+// 방 정보를 코드로 찾기
+//방 정보를 id로 찾기

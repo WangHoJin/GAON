@@ -52,25 +52,29 @@ public class RoomController {
 			if(roomService.joinRoom(roomInfo)) {
 				return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 			} else {
-				return ResponseEntity.status(200).body(BaseResponseBody.of(401, "password is not correct"));
+				return ResponseEntity.status(401).body(BaseResponseBody.of(401, "password is not correct"));
 			}
 		} catch (Exception e) {
 			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "Room does not exist"));
 		}		
 	}
 	
-	
-	
 	@PostMapping()
 	@ApiOperation(value = "방 생성", notes = "<strong>(방 이름, 비밀번호, 설명, 방장id(pk))로 방을 생성한다.</strong>") 
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
-        @ApiResponse(code = 401, message = "인증 실패"),
+        @ApiResponse(code = 404, message = "host_id에 해당하는 guser가 존재하지 않음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	public RoomRes create(
+	public ResponseEntity<RoomRes> create(
 			@RequestBody @ApiParam(value="방 생성 정보", required = true) RoomRegisterPostReq roomInfo) {
-		return RoomRes.of(roomService.createRoom(roomInfo));
+		try {
+			Room room = roomService.createRoom(roomInfo);
+			return ResponseEntity.ok(RoomRes.of(200, "Success", room));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(404).body(RoomRes.of(404, "No matching guser for host_id", null));
+		}
 	}
 	
 	
@@ -81,16 +85,13 @@ public class RoomController {
         @ApiResponse(code = 401, message = "인증 실패"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	public RoomRes findById(
+	public ResponseEntity<RoomRes> findById(
 			@PathVariable @ApiParam(value="방 코드", required = true) Long id) {
 		try {
 			Room room = roomService.getRoomById(id);
-			System.out.println(room);
-			return RoomRes.of(room);
+			return ResponseEntity.ok(RoomRes.of(200, "Success", room));
 		} catch (Exception e) {
-			System.out.println("catch _ null");
-			System.out.println(e);
-			return null;
+			return ResponseEntity.status(404).body(RoomRes.of(404, "Room does not exist using this code", null));
 		}
 	}
 	
@@ -98,19 +99,16 @@ public class RoomController {
 	@ApiOperation(value = "방 정보 코드로 찾기", notes = "<strong>방 코드로 방을 찾는다</strong>") 
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "성공"),
-		@ApiResponse(code = 401, message = "인증 실패"),
+		@ApiResponse(code = 404, message = "code에 해당하는 방이 존재하지 않음"),
 		@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public RoomRes findByCode(
+	public ResponseEntity<RoomRes> findByCode(
 			@PathVariable @ApiParam(value="방 코드", required = true) String code) {
 		try {
 			Room room = roomService.getRoomByCode(code);
-			System.out.println(room);
-			return RoomRes.of(room);
+			return ResponseEntity.ok(RoomRes.of(200, "Success", room));
 		} catch (Exception e) {
-			System.out.println("catch _ null");
-			System.out.println(e);
-			return null;
+			return ResponseEntity.ok(RoomRes.of(200, "Room does not exist using this code", null));
 		}
 	}
 
@@ -119,18 +117,18 @@ public class RoomController {
 	@ApiOperation(value = "방 수정", notes = "<strong>방 id로 방을 찾아서 수정한다. </strong> </br> 수정하고 싶은 속성을 입력하면 된다 (입력하지 않은 속성은 유지) ") 
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
-        @ApiResponse(code = 401, message = "인증 실패"),
+//        @ApiResponse(code = 401, message = "인증 실패"),
+        @ApiResponse(code = 404, message = "id에 해당하는 방이 존재하지 않음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	public RoomRes update(
+	public ResponseEntity<RoomRes> update(
 			@PathVariable @ApiParam(value="수정하고싶은 방 id", required = true) Long id,
 			@RequestBody @ApiParam(value="수정하고싶은 방 정보", required = true) RoomRegisterPostReq roomInfo) {
 		try {
-			return RoomRes.of(roomService.modifyRoom(id, roomInfo));
+			Room room = roomService.modifyRoom(id, roomInfo);
+			return ResponseEntity.ok(RoomRes.of(200, "Success", room));
 		} catch (Exception e) {
-			System.out.println("해당 id의 room이 없습니다.");
-			e.printStackTrace();
-			return null;
+			return ResponseEntity.status(404).body(RoomRes.of(404, "Room does not exist using this id", null));
 		}
 	}
 	
@@ -138,7 +136,7 @@ public class RoomController {
 	@ApiOperation(value = "방 삭제", notes = "<strong>방 id로 방을 삭제한다.</strong>") 
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "성공"),
-		@ApiResponse(code = 401, message = "인증 실패"),
+//		@ApiResponse(code = 401, message = "인증 실패"),
 		@ApiResponse(code = 404, message = "해당 방 없음"),
 		@ApiResponse(code = 500, message = "서버 오류")
 	})
@@ -148,7 +146,7 @@ public class RoomController {
 			roomService.removeRoom(id);
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 		} catch (Exception e) {
-			return ResponseEntity.status(200).body(BaseResponseBody.of(404, "Room does not exist"));
+			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "Room does not exist"));
 		}
 	}
 }

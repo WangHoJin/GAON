@@ -7,19 +7,18 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+
+import java.time.LocalDateTime;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
 
-import org.checkerframework.common.aliasing.qual.Unique;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * 방 모델 정의.
@@ -27,7 +26,9 @@ import org.checkerframework.common.aliasing.qual.Unique;
 @Entity
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"created_time","modified_time"})
+//Entity 영속성 및 업데이트에 대한 Auditing 정보를 캡처하는 JPA Entity Listener
+@EntityListeners(AuditingEntityListener.class)
 public class Room extends BaseEntity{    
     String name;
     @JsonIgnore
@@ -40,4 +41,9 @@ public class Room extends BaseEntity{
     @ManyToOne
     @JoinColumn(name="host_id", nullable=false)
     Guser host;
+    
+    @CreatedDate
+    LocalDateTime created_time;
+    @LastModifiedDate
+    LocalDateTime modified_time;
 }
