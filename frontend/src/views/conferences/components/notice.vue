@@ -2,7 +2,7 @@
   <el-container class="main-wrapper">
     <el-contianer class="main-container">
       <el-main>
-        공지사항페이지
+        공지사항
       </el-main>
     </el-contianer>
   </el-container>

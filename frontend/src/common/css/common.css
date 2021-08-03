@@ -23,14 +23,7 @@ body {
   font-weight: 400;
 }
 /* 작은 화면일때 보이는거 */
-@media (max-width: 1269px) {
-  .hide-on-small {
-    display: none !important;
-  }
-  .hide-on-big {
-    display: block;
-  }
-}
+@medias
 /* pc화면일때 (클때)보이는거 */
 @media (min-width: 1270px) {
   html,
