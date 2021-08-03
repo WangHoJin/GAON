@@ -11,8 +11,9 @@ import com.ssafy.db.entity.Guser;
  */
 public interface GoogleUserService {
 	Guser saveGuser(Guser loginInfo);
+	Guser getGuserById(Long id);
 	Guser getGuserByEmail(String email);
 	void updateGuser(Guser user);
-	void deleteGuser(String email);
+	void deleteGuser(Long id);
 
 }

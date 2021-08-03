@@ -15,14 +15,20 @@ import lombok.Setter;
 @Setter
 @ApiModel("GoogleUserLoginPostResponse")
 public class GoogleUserLoginPostRes extends BaseResponseBody{
-	@ApiModelProperty(name="유저 정보", example="유저 정보 객체")
-	Guser guserinfo;
+	@ApiModelProperty(name="유저 id(pk)", example="guser_id")
+	Long id;
+	@ApiModelProperty(name="유저 이메일", example="guser_email")
+    String email;
+	@ApiModelProperty(name="유저 닉네임", example="guser_name")
+    String nickname;
 	
 	public static GoogleUserLoginPostRes of(Integer statusCode, String message, Guser userinfo) {
 		GoogleUserLoginPostRes res = new GoogleUserLoginPostRes();
 		res.setStatusCode(statusCode);
 		res.setMessage(message);
-		res.setGuserinfo(userinfo);
+		res.setEmail(userinfo.getEmail());
+		res.setNickname(userinfo.getNickname());
+		res.setId(userinfo.getId());
 		return res;
 	}
 }

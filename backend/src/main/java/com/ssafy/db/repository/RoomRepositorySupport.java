@@ -21,10 +21,6 @@ public class RoomRepositorySupport {
     QRoom qRoom = QRoom.room;
     public Optional<Room> findRoomByCode(String code){
     	Room room = jpaQueryFactory.select(qRoom).from(qRoom).where(qRoom.code.eq(code)).fetchOne();
-    	System.out.println("-------------");
-    	System.out.println(code);
-    	System.out.println(room);
-    	System.out.println("--------------");
     	if(room == null) return Optional.empty();
     	return Optional.ofNullable(room);
     }

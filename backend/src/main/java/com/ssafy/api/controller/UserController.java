@@ -4,14 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.api.request.GuserLoginPostReq;
 import com.ssafy.api.request.UserLoginPostReq;
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.response.GoogleUserLoginPostRes;
@@ -77,7 +80,7 @@ public class UserController {
 		return ResponseEntity.ok(GoogleUserLoginPostRes.of(200, "Success", guser));
 	}
 	
-	@PostMapping("/gupdate")
+	@PutMapping("/")
 	@ApiOperation(value = "구글 회원 닉네임 변경", notes = "구글 로그인 중인 회원의 닉네임을 변경한다. {email:data, nickname:data} 형식의 데이터를 필요로함") 
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
@@ -85,7 +88,7 @@ public class UserController {
         @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
         @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-	public ResponseEntity<GoogleUserLoginPostRes> update(@RequestBody @ApiParam(value="수정될 회원정보", required = true) Guser loginInfo) {
+	public ResponseEntity<GoogleUserLoginPostRes> update(@RequestBody @ApiParam(value="수정될 회원정보", required = true) GuserLoginPostReq loginInfo) {
 		
 		String email = loginInfo.getEmail();
 		String nickname = loginInfo.getNickname();
@@ -93,26 +96,28 @@ public class UserController {
 		
 		Guser user = new Guser();
 		user.setEmail(email);
-		user.setNickname(nickname);		
+		user.setNickname(nickname);
 		googleuserService.updateGuser(user);
 		return ResponseEntity.ok(GoogleUserLoginPostRes.of(200, "Success", user));
 	}
 	
 	
-	@GetMapping("/delete/{email}")
-	@ApiOperation(value = "구글로그인 유저 데이터 삭제", notes = "구글로그인 유저의 데이터를 삭제한다. email값을 파라미터로함") 
+	@DeleteMapping("/{id}")
+	@ApiOperation(value = "구글로그인 유저 데이터 삭제", notes = "구글로그인 유저의 데이터를 삭제한다. 유저 id값을 파라미터로함") 
     @ApiResponses({
-        @ApiResponse(code = 409, message = "삭제완료")
+    	@ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 409, message = "삭제완료"),
+        @ApiResponse(code = 500, message = "서버 오류")
     })
 	public ResponseEntity<? extends BaseResponseBody> deleteGoogleUser(
-			@PathVariable @ApiParam(value="email", required = true) String email) {
+			@PathVariable @ApiParam(value="user id", required = true) Long id) {
 		try {
-			System.out.println("::::::::    "+email+" 계정 삭제요청    :::::::");			
-			googleuserService.deleteGuser(email);
+			System.out.println("::::::::    "+id+" 계정 삭제요청    :::::::");			
+			googleuserService.deleteGuser(id);
 			
-			return ResponseEntity.status(200).body(BaseResponseBody.of(409, "이미 존재하는 사용자 ID 입니다."));
+			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 		} catch (Exception e) {
-			return null;
+			return ResponseEntity.status(200).body(BaseResponseBody.of(404, "User does not exist"));
 		}
 	}
 	

@@ -5,7 +5,7 @@ FROM openjdk:8-jdk-alpine
 ARG JAR_FILE=build/libs/*.jar
 # COPY는 파일을 이미지에 추가합니다. ADD와는 달리 COPY는 압축 파일을 추가할 때 압축을 해제하지 않고, 파일 URL도 사용할 수 없습니다.
 COPY ${JAR_FILE} app.jar
-# ENTRYPOINT는 컨테이너가 시작되었을 때 스크립트 혹은 명령을 실행합니다.
+# ENTRYPOINT는 컨테이너가 시작되었을 때 스크립트 혹은 명령을 실행합니다
 # 셀 없이 바로 실행하기  ENTRYPOINT ["<실행 파일>", "<매개 변수1>", "<매개 변수2>"] 
 ENTRYPOINT [ "java", "-jar", "/app.jar" ]
 

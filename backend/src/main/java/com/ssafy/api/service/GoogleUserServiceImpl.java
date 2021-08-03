@@ -35,11 +35,16 @@ public class GoogleUserServiceImpl implements GoogleUserService{
 		return googleuserRepository.save(loginInfo);
 	}
 
+	
+	@Override
+	public Guser getGuserById(Long id) {
+		return googleuserRepository.findById(id).get();
+	}
+	
 	@Override
 	public Guser getGuserByEmail(String email) {
 		return googleuserRepositorySupport.findGuserByEmail(email).get();
 	}
-	
 	@Override
 	public void updateGuser(Guser guser) {
 		System.out.println("updateGuser active");
@@ -47,8 +52,8 @@ public class GoogleUserServiceImpl implements GoogleUserService{
 	}
 
 	@Override
-	public void deleteGuser(String email) {
-		googleuserRepositorySupport.deleteByEmail(email);
+	public void deleteGuser(Long id) {
+		googleuserRepositorySupport.deleteByEmail(id);
 		
 	}
 	
