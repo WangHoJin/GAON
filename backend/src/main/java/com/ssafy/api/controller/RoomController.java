@@ -1,5 +1,7 @@
 package com.ssafy.api.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.api.request.RoomRegisterPostReq;
+import com.ssafy.api.response.BoardListRes;
+import com.ssafy.api.response.BoardRes;
 import com.ssafy.api.response.RoomRes;
 import com.ssafy.api.service.RoomService;
 import com.ssafy.common.model.response.BaseResponseBody;
+import com.ssafy.db.entity.Board;
 import com.ssafy.db.entity.Room;
 
 import io.swagger.annotations.Api;
@@ -82,11 +87,11 @@ public class RoomController {
 	@ApiOperation(value = "방 정보 id로 찾기", notes = "<strong>방 id로 방을 찾는다</strong>") 
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
-        @ApiResponse(code = 401, message = "인증 실패"),
+        @ApiResponse(code = 404, message = "id에 해당하는 방이 존재하지 않음"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
 	public ResponseEntity<RoomRes> findById(
-			@PathVariable @ApiParam(value="방 코드", required = true) Long id) {
+			@PathVariable @ApiParam(value="방 id(pk)", required = true) Long id) {
 		try {
 			Room room = roomService.getRoomById(id);
 			return ResponseEntity.ok(RoomRes.of(200, "Success", room));
@@ -147,6 +152,24 @@ public class RoomController {
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 		} catch (Exception e) {
 			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "Room does not exist"));
+		}
+	}
+	
+	@GetMapping("/id/{id}/boards")
+	@ApiOperation(value = "방의 게시판들을 찾기", notes = "<strong>해당 방 id의 게시판들을 반환한다</strong>") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 404, message = "id에 해당하는 방이 존재하지 않음"),
+        @ApiResponse(code = 500, message = "서버 오류")
+    })
+	public ResponseEntity<BoardListRes> findBoards(
+			@PathVariable @ApiParam(value="방 id(pk)", required = true) Long id) {
+		try {
+			Room room = roomService.getRoomById(id);
+			List<Board> list = room.getBoards();
+			return ResponseEntity.ok(BoardListRes.of(200, "Success", list));
+		} catch (Exception e) {
+			return ResponseEntity.status(404).body(BoardListRes.of(404, "Room does not exist using this id",null));
 		}
 	}
 }

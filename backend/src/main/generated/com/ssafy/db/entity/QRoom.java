@@ -24,6 +24,8 @@ public class QRoom extends EntityPathBase<Room> {
 
     public final QBaseEntity _super = new QBaseEntity(this);
 
+    public final ListPath<Board, QBoard> boards = this.<Board, QBoard>createList("boards", Board.class, QBoard.class, PathInits.DIRECT2);
+
     public final StringPath code = createString("code");
 
     public final DateTimePath<java.time.LocalDateTime> created_time = createDateTime("created_time", java.time.LocalDateTime.class);
@@ -40,6 +42,8 @@ public class QRoom extends EntityPathBase<Room> {
     public final StringPath name = createString("name");
 
     public final StringPath password = createString("password");
+
+    public final ListPath<RoomMember, QRoomMember> roomMembers = this.<RoomMember, QRoomMember>createList("roomMembers", RoomMember.class, QRoomMember.class, PathInits.DIRECT2);
 
     public QRoom(String variable) {
         this(Room.class, forVariable(variable), INITS);

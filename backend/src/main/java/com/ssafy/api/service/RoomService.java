@@ -1,6 +1,5 @@
 package com.ssafy.api.service;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 
 import com.ssafy.api.request.RoomRegisterPostReq;

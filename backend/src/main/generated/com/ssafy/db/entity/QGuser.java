@@ -29,6 +29,8 @@ public class QGuser extends EntityPathBase<Guser> {
 
     public final StringPath nickname = createString("nickname");
 
+    public final ListPath<RoomMember, QRoomMember> roomMembers = this.<RoomMember, QRoomMember>createList("roomMembers", RoomMember.class, QRoomMember.class, PathInits.DIRECT2);
+
     public final ListPath<Room, QRoom> rooms = this.<Room, QRoom>createList("rooms", Room.class, QRoom.class, PathInits.DIRECT2);
 
     public QGuser(String variable) {
