@@ -15,6 +15,9 @@
             :key="i"
             :index="i"
             @click="conferenceSelect(i)"
+            @mousedown.right="mr()"
+            @mousedown.stop
+            @contextmenu.prevent
           >
             <span>{{ i }}</span>
           </el-menu-item>
@@ -36,6 +39,56 @@
       </div>
     </el-row>
   </div>
+  <!-- 방 정보 수정 확인 dialog -->
+  <el-dialog title="방 정보를 수정하시겠습니까?" v-model="a" width="30%">
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="a = false">아니오</el-button>
+        <el-button type="primary" @click="mvModify()">네</el-button>
+      </span>
+    </template>
+  </el-dialog>
+  <!-- 방 정보 수정 확인 dialog 끝-->
+  <!-- 방 정보 수정 dialog 시작 -->
+  <el-dialog
+    title="방 정보 수정"
+    v-model="dialogFormVisible_modify"
+    center
+    top="10vh"
+  >
+    <el-divider></el-divider>
+    <el-form :model="modifyform">
+      <el-form-item
+        label="방 제목🏠"
+        :label-width="formLabelWidth"
+        id="room-make-form-label"
+      >
+        <el-input
+          v-model="roomInfo.name"
+          autocomplete="off"
+          placeholder=""
+        ></el-input>
+      </el-form-item>
+      <el-form-item
+        label="방 코드🔑"
+        :label-width="formLabelWidth"
+        id="room-make-form-label"
+      >
+        {{ roomInfo.code }}
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button class="gaon-button" type="warning" @click="modifyRoom()"
+          >적용하기</el-button
+        >
+        <el-button @click="dialogFormVisible_modify = false" type="info"
+          >취소</el-button
+        >
+      </span>
+    </template>
+  </el-dialog>
+  <!-- 방 정보 수정 dialog 끝 -->
 </template>
 <style>
 .main-sidebar .el-menu {
@@ -70,17 +123,65 @@
 import { reactive, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import $axios from "axios";
 export default {
   data() {
     if (sessionStorage.getItem("userInfo") != null) {
       return {
         username: JSON.parse(sessionStorage.getItem("userInfo")).nickname,
-        img: JSON.parse(sessionStorage.getItem("userInfo")).imgUrl
+        img: JSON.parse(sessionStorage.getItem("userInfo")).imgUrl,
+        a: false,
+        dialogFormVisible_modify: false,
+        roomInfo: {} //여기저기서 활용될 현재 Room의 정보
+      };
+    } else {
+      return {
+        a: false,
+        dialogFormVisible_modify: false,
+        roomInfo: {} //여기저기서 활용될 현재 Room의 정보
       };
     }
   },
   name: "main-header",
-
+  methods: {
+    conferenceSelect(conferenceId) {
+      console.log("메인 네비에서 방 번호 고름");
+      console.log(this.$router);
+      console.log(this.$route.params.conferenceId);
+      this.$router.push({
+        name: "conference-detail",
+        params: {
+          conferenceId: conferenceId
+        }
+      });
+    },
+    async signOut() {
+      console.log("로그아웃버튼누름");
+      await window.gapi.auth2.getAuthInstance().disconnect();
+      console.log("user Signed Out");
+      sessionStorage.removeItem("userInfo");
+      this.$store.commit("root/setLogin", false);
+      this.$router.push("/");
+    },
+    mr() {
+      console.log("마우스 우클릭");
+      this.a = true;
+    },
+    // 방 정보 수정 창 띄우기
+    async mvModify() {
+      this.a = false;
+      this.roomInfo = await $axios.get(
+        "/room/rid/" + this.$route.params.conferenceId
+      );
+      this.roomInfo = this.roomInfo.data;
+      this.dialogFormVisible_modify = true;
+    },
+    // 방 정보 수정하기
+    async modifyRoom() {
+      this.dialogFormVisible_modify = false;
+      await $axios.put("/room", this.roomInfo);
+    }
+  },
   setup() {
     const store = useStore();
     const router = useRouter();
@@ -125,42 +226,55 @@ export default {
         name: keys[param]
       });
     };
-    // 각 룸넘버마다 보여질 상세 페이지
-    // const conferenceSelect = function(id) {
-    //   router.push({
-    //     name: "conference-detail",
-    //     params: {
-    //       conferenceId: id
-    //     }
-    //   });
-    // };
     return { state, menuSelect };
-  },
-  methods: {
-    conferenceSelect(conferenceId) {
-      console.log("메인 네비에서 방 번호 고름");
-      console.log(this.$router);
-      console.log(this.$route.params.conferenceId);
-      this.$router.push({
-        name: "conference-detail",
-        params: {
-          conferenceId: conferenceId
-        }
-      });
-    },
-    async signOut() {
-      console.log("로그아웃버튼누름");
-      await window.gapi.auth2.getAuthInstance().disconnect();
-      console.log("user Signed Out");
-      sessionStorage.removeItem("userInfo");
-      this.$store.commit("root/setLogin", false);
-      this.$router.push("/");
-    }
   }
 };
 </script>
-<style scoped>
+<style>
+.main-sidebar .el-menu {
+  margin-top: 0;
+  padding-left: 0;
+  background-color: #ffd344 !important;
+}
+.main-sidebar .hide-on-small {
+  height: 100%;
+  position: fixed;
+}
+.main-sidebar .hide-on-small .el-menu {
+  height: 100%;
+}
+.main-sidebar .el-menu .el-menu-item {
+  cursor: pointer;
+  border-right: none;
+}
+.main-sidebar .el-menu .el-menu-item .ic {
+  /* margin-right: 5px; */
+}
+/* 방 생성 버튼에 대한 css */
+#main-sidebar-make-room {
+  padding: revert !important;
+  position: fixed;
+  bottom: 10px;
+  left: 30px;
+  /* margin-left: 10px; */
+}
 .main-sidebar {
   text-align: center;
+}
+.gaon-button {
+  background-color: #ffd04b;
+  border: none;
+}
+/* 모달창 글자 왼쪽정렬 */
+.el-form-item #room-make-form-label {
+  text-align: left !important;
+}
+/* 모달창 안 라벨 정렬 */
+.el-form-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: block !important;
+  margin-bottom: 22px;
+  padding: 5px;
 }
 </style>

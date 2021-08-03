@@ -26,7 +26,7 @@ export function getActiveConferenceIndex(state) {
 }
 // conference 갯수 가져오기
 export function getNumberOfConferneces(state) {
-  return Object.keys(state.conferences).length
+  return Object.keys(state.conferences).length;
 }
 
 export function getAuth(state) {
@@ -36,3 +36,15 @@ export function getAuth(state) {
 export function getLogin(state) {
   return state.isLogin;
 }
+// 현재 방 정보를 가져오기
+export function getRoomInfo(state, roomInfo) {
+  return (state.roomInfo = roomInfo);
+}
+// 사용자가 참여하고 있는 모든 방 목록 가져오기
+export function getRooms(state) {
+  return state.rooms;
+}
+// 방 수정
+// 방 삭제
+// 방 정보를 코드로 찾기
+//방 정보를 id로 찾기

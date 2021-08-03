@@ -207,35 +207,26 @@ export default {
         params: { conferenceId: roomInfo.data.id }
       });
     },
-    makeRoom() {
+    async makeRoom() {
       // this.dialogFormVisible = false;
       console.log(this.form);
       var roomInfo = {
         name: this.form.name,
         password: this.form.password,
         description: this.form.description,
-        host_id: 1, // 방 생성자 아이디
-        code: "123", // 코드 임의생성
-        id: 1 // 룸 아이디 임의생성
+        host_id: 1 // 방 생성자 아이디 임의로 줌 -> store 접속유저에서 가져오기
       };
-      console.log(roomInfo);
-      $axios
-        .post("/room", roomInfo)
-        .then(res => {
-          if (res.status === 200) {
-            console.log("방 생성 성공");
-            console.log(res);
-            // dialog 데이터 초기화
-            this.form.password = "";
-            this.form.description = "";
-            // 생성 후 새로운 dialog 띄우기 용
-            this.makeRoomFlag = false;
-            this.code = res.data.code;
-          } else {
-            alert("서버와 연결이 불안정합니다");
-          }
-        })
-        .catch(err => console.log(err));
+      await this.$store.dispatch("root/createRoom", roomInfo);
+      // dialog 데이터 초기화
+      this.form.password = "";
+      this.form.description = "";
+      // 생성 후 새로운 dialog 띄우기 용
+      this.makeRoomFlag = false;
+      /* 확인용
+      this.code = this.$store.state.root.roomInfo.code;
+      console.log("this.$store.state.root.roomInfo.code");
+      console.log(this.$store.state.root.roomInfo.code);
+      */
     }
   }
 };
