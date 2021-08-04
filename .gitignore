@@ -17,7 +17,7 @@ dist/
 *.log
 
 # Package files
-*.jar
+# *.jar
 
 # Maven
 target/
@@ -51,7 +51,7 @@ Thumbs.db
 .gradle
 .settings
 bin
-# build
+build
 .project
 .classpath
 
@@ -64,6 +64,4 @@ backend/src/main/resources/application.properties
 backend/ssafy-web.log.2021-07-29.0.gz
 frontend/package-lock.json
 backend/src/main/resources/application.properties
-.gitignore
 backend/ssafy-web.log.2021-08-02.0.gz
-frontend/package-lock.json
