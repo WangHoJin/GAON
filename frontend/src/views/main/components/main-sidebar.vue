@@ -1,43 +1,42 @@
 <template>
-  <div class="main-sidebar">
-    <el-row class="sidebar-tool">
-      <div class="sidebar-menu">
-        <el-menu
-          :default-active="String(state.activeIndex)"
-          active-text-color="#ffd04b"
-          align="center"
-        >
-          <el-menu-item @click="$router.push('/')">
-            <span>홈</span>
+  <el-row class="main-sidebar">
+    <div class="hide-on-small">
+      <el-menu
+        :default-active="String(state.activeIndex)"
+        active-text-color="#ffd04b"
+        align="center"
+      >
+        <el-menu-item @click="$router.push('/main')">
+          <span>홈</span>
+        </el-menu-item>
+        <div @mousedown.right="mouseRightClick()" @mousedown.stop>
+          <el-menu-item
+            v-for="i in 10"
+            :key="i"
+            :index="i"
+            @click="conferenceSelect(i)"
+          >
+            <span>{{ i }}</span>
           </el-menu-item>
-          <div @mousedown.right="mouseRightClick()" @mousedown.stop>
-            <el-menu-item
-              v-for="i in 10"
-              :key="i"
-              :index="i"
-              @click="conferenceSelect(i)"
-            >
-              <span>{{ i }}</span>
-            </el-menu-item>
-          </div>
-          <el-button type="warning"
-            ><div
-              class="iconify"
-              id="main-sidebar-make-room"
-              data-inline="false"
-              data-icon="entypo:squared-plus"
-              style="font-size: 20px;"
-            ></div
-          ></el-button>
-          <el-button class="button" @click="signOut">로그아웃</el-button>
-          <div>
-            <el>{{ username }}</el>
-          </div>
-          <img :src="`${img}`" style="width : 30px; border-radius: 70%" />
-        </el-menu>
-      </div>
-    </el-row>
-  </div>
+        </div>
+        <el-button type="warning"
+          ><div
+            class="iconify"
+            id="main-sidebar-make-room"
+            data-inline="false"
+            data-icon="entypo:squared-plus"
+            style="font-size: 20px;"
+          ></div
+        ></el-button>
+        <el-button class="button" @click="signOut">로그아웃</el-button>
+        <div>
+          <el>{{ username }}</el>
+        </div>
+        <img :src="`${img}`" style="width : 30px; border-radius: 70%" />
+      </el-menu>
+    </div>
+  </el-row>
+
   <el-dialog
     title="방 정보를 수정하시겠습니까?"
     v-model="showModifyDialog"
@@ -106,35 +105,7 @@
   </el-dialog>
   <!-- 방 정보 수정 dialog 끝 -->
 </template>
-<style>
-.main-sidebar .el-menu {
-  margin-top: 0;
-  padding-left: 0;
-  background-color: #ffd344 !important;
-}
-.main-sidebar .hide-on-small {
-  height: 100%;
-  position: fixed;
-}
-.main-sidebar .hide-on-small .el-menu {
-  height: 100%;
-}
-.main-sidebar .el-menu .el-menu-item {
-  cursor: pointer;
-  border-right: none;
-}
-.main-sidebar .el-menu .el-menu-item .ic {
-  /* margin-right: 5px; */
-}
-/* 방 생성 버튼에 대한 css */
-#main-sidebar-make-room {
-  padding: revert !important;
-  position: fixed;
-  bottom: 10px;
-  left: 30px;
-  /* margin-left: 10px; */
-}
-</style>
+
 <script>
 import { reactive, computed } from "vue";
 import { useStore } from "vuex";
@@ -281,6 +252,26 @@ export default {
 };
 </script>
 <style>
+/* 이거두개 다해줘야 height 100% 적용된다. */
+.main-sidebar .hide-on-small {
+  height: 100%;
+}
+.main-sidebar .hide-on-small .el-menu {
+  height: 100%;
+  background-color: #ffd344 !important;
+}
+.main-sidebar .el-menu .el-menu-item {
+  cursor: pointer;
+  border-right: none;
+}
+/* 방 생성 버튼에 대한 css */
+#main-sidebar-make-room {
+  padding: revert !important;
+  position: fixed;
+  bottom: 10px;
+  left: 30px;
+  /* margin-left: 10px; */
+}
 .main-sidebar .el-menu {
   margin-top: 0;
   padding-left: 0;
@@ -307,9 +298,6 @@ export default {
   bottom: 10px;
   left: 30px;
   /* margin-left: 10px; */
-}
-.main-sidebar {
-  text-align: center;
 }
 .gaon-button {
   background-color: #ffd04b;

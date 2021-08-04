@@ -55,9 +55,9 @@
   cursor: pointer;
   border-right: none;
 }
-.sidebar-tool .el-menu .el-menu-item .ic {
+/* .sidebar-tool .el-menu .el-menu-item .ic {
   margin-right: 5px;
-}
+} */
 </style>
 <script>
 import { reactive, computed } from "vue";
