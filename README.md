@@ -21,25 +21,25 @@ gantt
 	  section 회원 관리
     [F] 로그인/로그아웃		: done, 07-26, 4d
     [B] 로그인/로그아웃		: done, 07-26, 4d
-    [F] 가입, 수정, 탈퇴		 : done, 07-26, 5d
-    [B] 가입, 수정, 탈퇴		 : done, 07-26, 5d
+    [F] 가입, 수정, 탈퇴		 : 07-26, 5d
+    [B] 가입, 수정, 탈퇴		 : 07-26, 5d
      
    section 백앤드 설정
     AWS 설정		:done, 07-26, 2d
     AWS 도커 연동 : done, 07-27, 2d
-    도커, WEB RTC, Socket 환경 설정		 : active, 07-28, 3d
+    Docker, WEB RTC, Socket를 AWS랑 연동		 : active, 08-03, 3d
 
     section 채널 관리
     [F] 방 만들기 	: active, ch1, 07-30, 4d
     [B] 방 만들기 	: active, ch1, 07-29, 4d
-    [F] 방 초대, 방 참여   :  ch2, after ch1, 3d
-    [B] 방 초대, 방 참여   :  ch2, after ch1, 3d
+    [F] 방 초대, 방 참여   :  active, ch2, after ch1, 3d
+    [B] 방 초대, 방 참여   :  done, ch2, after ch1, 3d
    
     게시판 : active, 08-02, 3d
     
     section Web RTC
-    화상회의 : rtc1, 08-03, 3d
-    채팅     :rtc2, after rtc1, 2d
+    화상회의 : done, rtc1, 08-02, 2d
+    채팅      :active, rtc2, after rtc1, 3d
     출석체크   : rtc3, after rtc2, 2d
     접속현황  : rtc4, after rtc3, 2d
     상단 플로팅 알람 : rtc5, after rtc4, 1d
