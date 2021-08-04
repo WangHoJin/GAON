@@ -24,6 +24,9 @@ services:
     # 컨테이너 내부에서 사용되는 네트워크
     networks:
       - backend
+    # 이거 안해주면 aws에서 mbind: Operation not permitted 에러 뜸
+    security_opt:
+      - seccomp:unconfined
   # kurento 부분, 나중에 AWS설정 후에 다시 해보기
   # kurento:
   #   image: kurento/kurento-media-server:latest
