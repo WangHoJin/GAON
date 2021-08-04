@@ -33,31 +33,39 @@
     </div>
 
     <div id="session" v-if="session">
-      <div id="session-header">
-        <h1 id="session-title">{{ mySessionId }}</h1>
-        <input
-          class="btn btn-large btn-danger"
-          type="button"
-          id="buttonLeaveSession"
-          @click="leaveSession"
-          value="Leave session"
-        />
-      </div>
-      <div id="main-video" class="col-md-6">
-        <user-video :stream-manager="mainStreamManager" />
-      </div>
-      <div id="video-container" class="col-md-6">
-        <user-video
-          :stream-manager="publisher"
-          @click.native="updateMainVideoStreamManager(publisher)"
-        />
-        <user-video
-          v-for="sub in subscribers"
-          :key="sub.stream.connection.connectionId"
-          :stream-manager="sub"
-          @click.native="updateMainVideoStreamManager(sub)"
-        />
-      </div>
+      <el-row>
+        <el-col :span="12">
+          <div id="session-header">
+            <h1 id="session-title">{{ mySessionId }}</h1>
+            <input
+              class="btn btn-large btn-danger"
+              type="button"
+              id="buttonLeaveSession"
+              @click="leaveSession"
+              value="Leave session"
+            />
+          </div>
+          <div id="main-video" class="col-md-6">
+            <user-video :stream-manager="mainStreamManager" />
+          </div>
+          <div id="video-container" class="col-md-6">
+            <user-video
+              :stream-manager="publisher"
+              @click.native="updateMainVideoStreamManager(publisher)"
+            />
+            <user-video
+              v-for="sub in subscribers"
+              :key="sub.stream.connection.connectionId"
+              :stream-manager="sub"
+              @click.native="updateMainVideoStreamManager(sub)"
+            />
+          </div>
+        </el-col>
+        <el-col :span="10">
+          <MessageList :msgs="msgs" />
+          <MessageForm @sendMsg="sendMsg" />
+        </el-col>
+      </el-row>
     </div>
   </div>
 </template>
@@ -65,6 +73,8 @@
 import axios from "axios";
 import { OpenVidu } from "openvidu-browser";
 import UserVideo from "./meeting-components/UserVideo.vue";
+import MessageForm from "./meeting-components/messageForm";
+import MessageList from "./meeting-components/messageList";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -75,7 +85,9 @@ export default {
   name: "App",
 
   components: {
-    UserVideo
+    UserVideo,
+    MessageForm,
+    MessageList
   },
 
   data() {
@@ -85,6 +97,7 @@ export default {
       mainStreamManager: undefined,
       publisher: undefined,
       subscribers: [],
+      msgs: [],
 
       mySessionId: "SessionA",
       myUserName: "Participant" + Math.floor(Math.random() * 100)
@@ -92,6 +105,21 @@ export default {
   },
 
   methods: {
+    sendMsg(msg) {
+      // Sender of the message (after 'session.connect')
+      this.session
+        .signal({
+          data: msg, // Any string (optional)
+          to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+          type: "my-chat" // The type of message (optional)
+        })
+        .then(() => {
+          console.log("Message successfully sent");
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
     joinSession() {
       // --- Get an OpenVidu object ---
       this.OV = new OpenVidu();
@@ -118,6 +146,25 @@ export default {
       // On every asynchronous exception...
       this.session.on("exception", ({ exception }) => {
         console.warn(exception);
+      });
+
+      // Receiver of the message (usually before calling 'session.connect')
+
+      this.session.on("signal:my-chat", event => {
+        console.log(event.data); // Message
+        console.log(event.from); // Connection object of the sender
+        console.log(event.type); // The type of message ("my-chat")
+        const tmp = this.msgs.slice();
+        tmp.push(event.data);
+        this.msgs = tmp;
+      });
+
+      // Receiver of all messages (usually before calling 'session.connect')
+
+      this.session.on("signal", event => {
+        console.log(event.data); // Message
+        console.log(event.from); // Connection object of the sender
+        console.log(event.type); // The type of message
       });
 
       // --- Connect to the session with a valid user token ---
@@ -256,3 +303,9 @@ export default {
   }
 };
 </script>
+<style scoped>
+#video {
+  height: 100px;
+  width: 100px;
+}
+</style>
