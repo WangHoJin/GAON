@@ -30,6 +30,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ExampleProperty;
 
 /**
  * 방 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -70,7 +71,8 @@ public class RoomController {
         @ApiResponse(code = 200, message = "성공"),
         @ApiResponse(code = 404, message = "host_id에 해당하는 guser가 존재하지 않음"),
         @ApiResponse(code = 500, message = "서버 오류")
-    })
+    }
+    )
 	public ResponseEntity<RoomRes> create(
 			@RequestBody @ApiParam(value="방 생성 정보", required = true) RoomRegisterPostReq roomInfo) {
 		try {

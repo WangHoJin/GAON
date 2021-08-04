@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -28,8 +27,6 @@ public class QGuser extends EntityPathBase<Guser> {
     public final NumberPath<Long> id = _super.id;
 
     public final StringPath nickname = createString("nickname");
-
-    public final ListPath<Room, QRoom> rooms = this.<Room, QRoom>createList("rooms", Room.class, QRoom.class, PathInits.DIRECT2);
 
     public QGuser(String variable) {
         super(Guser.class, forVariable(variable));
