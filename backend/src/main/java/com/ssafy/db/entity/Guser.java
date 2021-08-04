@@ -29,13 +29,12 @@ public class Guser extends BaseEntity{
     String email;
     String nickname;
     
-    @OneToMany(fetch = FetchType.LAZY, orphanRemoval= true, cascade=CascadeType.ALL,mappedBy = "host")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Room> rooms = new ArrayList<Room>();
-    
-    
-//    @OneToMany(fetch = FetchType.LAZY, orphanRemoval= true, cascade=CascadeType.ALL,mappedBy = "user")
+//    @OneToMany(fetch = FetchType.LAZY, orphanRemoval= true, cascade=CascadeType.ALL,mappedBy = "host")
 //    @OnDelete(action = OnDeleteAction.CASCADE)
+//    private List<Room> rooms = new ArrayList<Room>();    
+    
+    
+//    @OneToMany(mappedBy = "user")
 //    private List<RoomMember> roomMembers = new ArrayList<RoomMember>();
 
 }
