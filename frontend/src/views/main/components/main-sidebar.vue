@@ -65,7 +65,7 @@
         id="room-make-form-label"
       >
         <el-input
-          v-model="roomInfo.name"
+          v-model="modifyform.name"
           autocomplete="off"
           placeholder=""
         ></el-input>
@@ -76,7 +76,7 @@
         id="room-make-form-label"
       >
         <el-input
-          v-model="roomInfo.description"
+          v-model="modifyform.description"
           autocomplete="off"
           placeholder=""
         ></el-input>
@@ -86,7 +86,7 @@
         :label-width="formLabelWidth"
         id="room-make-form-label"
       >
-        {{ roomInfo.code }}
+        {{ modifyform.code }}
       </el-form-item>
       <JoinMember />
     </el-form>
@@ -115,7 +115,16 @@ export default {
     return {
       showModifyDialog: false,
       dialogFormVisible_modifyUser: false,
-      roomInfo: {} //여기저기서 활용될 현재 Room의 정보
+      roomInfo: {}, //여기저기서 활용될 현재 Room의 정보
+
+      modifyform: {
+        //수정폼에사용될 Room의 정보
+        id: "",
+        name: "",
+        code: "",
+        host_id: "",
+        description: ""
+      }
     };
   },
   components: {
@@ -137,33 +146,31 @@ export default {
         }
       });
     },
+    // uid와 host_id를 비교해 같다면 방 정보 수정 dialog를 띄워준다.
     async mouseRightClick() {
       let response = await this.$store.dispatch(
         "root/getRoomById",
         this.$route.params.conferenceId
       );
-      if (this.uid == response.host_id) {
+      if (
+        JSON.parse(sessionStorage.getItem("userInfo")).id == response.host_id
+      ) {
+        this.modifyform = response;
         this.showModifyDialog = true;
       }
     },
     // 방 정보 수정 창 띄우기
     async openModifyDialog() {
       this.showModifyDialog = false;
-      this.roomInfo = await this.$store.dispatch(
-        "root/getRoomById",
-        this.$route.params.conferenceId
-      );
       this.dialogFormVisible_modifyUser = true;
-      console.log("방 정보 수정 창 띄우기 ===== 받아온 roomInfo");
-      console.log(this.roomInfo);
     },
     // 방 정보 수정하기
     async modifyRoomInfo() {
       this.dialogFormVisible_modifyUser = false;
       let payload = {
-        id: this.roomInfo.id,
-        name: this.roomInfo.name,
-        description: this.roomInfo.description
+        id: this.modifyform.id,
+        name: this.modifyform.name,
+        description: this.modifyform.description
       };
       this.$store.dispatch("root/modifyRoom", payload);
     }
