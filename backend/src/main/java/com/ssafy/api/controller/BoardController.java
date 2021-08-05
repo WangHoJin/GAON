@@ -1,7 +1,10 @@
 package com.ssafy.api.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -83,7 +86,7 @@ public class BoardController {
     })
 	public ResponseEntity<BoardRes> update(
 			@PathVariable @ApiParam(value="수정하고싶은 게시판 id", required = true) Long id,
-			@RequestBody @ApiParam(value="수정하고싶은 게시판 정보", required = true) BoardRegisterPostReq boardInfo) {
+			@RequestBody @ApiParam(value="수정하고싶은 게시판 정보", required = true, example="{\n \"name\":\"String\", \n \"description\":\"String\"\n}") Map<String, String> boardInfo) {
 		try {
 			Board board = boardService.modifyBoard(id, boardInfo);
 			return ResponseEntity.ok(BoardRes.of(200, "Success", board));
@@ -102,10 +105,14 @@ public class BoardController {
 	public ResponseEntity<BaseResponseBody> delete(
 			@PathVariable @ApiParam(value="게시판 id", required = true) Long id) {
 		try {
-			boardService.removeBoard(id);
-			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+			if(boardService.removeBoard(id)) {
+				return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+			}
+			else {
+				return ResponseEntity.status(404).body(BaseResponseBody.of(404, "Board does not exist"));
+			}
 		} catch (Exception e) {
-			return ResponseEntity.status(404).body(BaseResponseBody.of(404, "Board does not exist"));
+			return ResponseEntity.status(500).body(BaseResponseBody.of(404, "server error"));
 		}
 	}
 }

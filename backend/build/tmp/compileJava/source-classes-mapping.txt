@@ -68,7 +68,6 @@ com/ssafy/config/JpaConfig.java
  com.ssafy.config.JpaConfig
 com/ssafy/api/response/BoardListRes.java
  com.ssafy.api.response.BoardListRes
- com.ssafy.api.response.BoardListRes$BoardSimpleRes
 com/ssafy/db/entity/QUser.java
  com.ssafy.db.entity.QUser
 com/ssafy/db/repository/RoomMemberRepository.java
@@ -109,6 +108,8 @@ com/ssafy/common/model/response/BaseResponseBody.java
  com.ssafy.common.model.response.BaseResponseBody
 com/ssafy/db/repository/RoomMemberRepositorySupport.java
  com.ssafy.db.repository.RoomMemberRepositorySupport
+com/ssafy/api/vo/BoardVO.java
+ com.ssafy.api.vo.BoardVO
 com/ssafy/api/response/GoogleUserLoginPostRes.java
  com.ssafy.api.response.GoogleUserLoginPostRes
 com/ssafy/common/auth/JwtAuthenticationFilter.java
