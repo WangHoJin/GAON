@@ -9,7 +9,7 @@
 .main-wrapper {
   /* height: 100%; */
   display: block !important;
-  overflow: hidden !important;
+  /* overflow: hidden !important; */
 }
 
 .el-row.main-header {
