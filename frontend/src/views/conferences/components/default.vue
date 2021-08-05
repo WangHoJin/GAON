@@ -237,7 +237,7 @@ export default {
   created() {
     //if 참여한 방이 있다면 메인페이지로 이동
     this.$router.push({
-      name: "main"
+      name: "conference-main"
     });
   }
 };

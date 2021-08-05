@@ -1,8 +1,8 @@
 <template>
   <!-- <google-login v-if="!$store.state.root.isLogin"></google-login> -->
   <el-row>
-    <el-col :span="2" @contextmenu.prevent> <main-sidebar /></el-col>
-    <el-col :span="22" align="center"> <router-view></router-view> </el-col>
+    <el-col :span="1" @contextmenu.prevent> <main-sidebar /></el-col>
+    <el-col :span="23" align="center"> <router-view></router-view> </el-col>
   </el-row>
 </template>
 
@@ -32,5 +32,8 @@ export default {
 <style>
 .el-row {
   height: 100%;
+}
+.el-row > .el-col {
+  width: 100%;
 }
 </style>

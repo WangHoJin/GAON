@@ -24,6 +24,7 @@
               style="font-size: 100px;"
             ></span
           ></el-button>
+          <UserInfoBox />
         </el-menu>
       </div>
     </el-row>
@@ -63,7 +64,7 @@
 import { reactive, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-
+import UserInfoBox from "./user/user-info-box.vue";
 export default {
   name: "sidebar-tool",
 
@@ -72,6 +73,9 @@ export default {
       type: String,
       default: "240px"
     }
+  },
+  components: {
+    UserInfoBox
   },
   methods: {
     noticeSelect() {

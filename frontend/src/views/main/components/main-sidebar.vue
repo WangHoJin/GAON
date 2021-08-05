@@ -1,41 +1,39 @@
 <template>
-  <el-row class="main-sidebar">
-    <div class="hide-on-small">
-      <el-menu
-        :default-active="String(state.activeIndex)"
-        active-text-color="#ffd04b"
-        align="center"
+  <el-menu
+    :default-active="String(state.activeIndex)"
+    active-text-color="#ffd04b"
+    align="center"
+    class="main-sidebar hide-on-small"
+  >
+    <el-menu-item @click="$router.push('/main')">
+      <span>홈</span>
+    </el-menu-item>
+    <div @mousedown.right="mouseRightClick()" @mousedown.stop>
+      <el-menu-item
+        v-for="i in 10"
+        :key="i"
+        :index="i"
+        @click="conferenceSelect(i)"
       >
-        <el-menu-item @click="$router.push('/main')">
-          <span>홈</span>
-        </el-menu-item>
-        <div @mousedown.right="mouseRightClick()" @mousedown.stop>
-          <el-menu-item
-            v-for="i in 10"
-            :key="i"
-            :index="i"
-            @click="conferenceSelect(i)"
-          >
-            <span>{{ i }}</span>
-          </el-menu-item>
-        </div>
-        <el-button type="warning"
-          ><div
-            class="iconify"
-            id="main-sidebar-make-room"
-            data-inline="false"
-            data-icon="entypo:squared-plus"
-            style="font-size: 20px;"
-          ></div
-        ></el-button>
-        <el-button class="button" @click="signOut">로그아웃</el-button>
+        <span>{{ i }}</span>
+      </el-menu-item>
+    </div>
+    <el-button type="warning"
+      ><div
+        class="iconify"
+        id="main-sidebar-make-room"
+        data-inline="false"
+        data-icon="entypo:squared-plus"
+        style="font-size: 20px;"
+      ></div
+    ></el-button>
+
+    <!-- <el-button class="button" @click="signOut">로그아웃</el-button>
         <div>
           <el>{{ username }}</el>
         </div>
-        <img :src="`${img}`" style="width : 30px; border-radius: 70%" />
-      </el-menu>
-    </div>
-  </el-row>
+        <img :src="`${img}`" style="width : 30px; border-radius: 70%" /> -->
+  </el-menu>
 
   <el-dialog
     title="방 정보를 수정하시겠습니까?"
@@ -114,23 +112,11 @@ import $axios from "axios";
 import JoinMember from "../../conferences/components/form/join-member.vue";
 export default {
   data() {
-    if (sessionStorage.getItem("userInfo") != null) {
-      return {
-        username: JSON.parse(sessionStorage.getItem("userInfo")).nickname,
-        img: JSON.parse(sessionStorage.getItem("userInfo")).imgUrl,
-        uid: JSON.parse(sessionStorage.getItem("userInfo")).id,
-        email: JSON.parse(sessionStorage.getItem("userInfo")).email,
-        showModifyDialog: false,
-        dialogFormVisible_modifyUser: false,
-        roomInfo: {} //여기저기서 활용될 현재 Room의 정보
-      };
-    } else {
-      return {
-        showModifyDialog: false,
-        dialogFormVisible_modifyUser: false,
-        roomInfo: {} //여기저기서 활용될 현재 Room의 정보
-      };
-    }
+    return {
+      showModifyDialog: false,
+      dialogFormVisible_modifyUser: false,
+      roomInfo: {} //여기저기서 활용될 현재 Room의 정보
+    };
   },
   components: {
     JoinMember
@@ -150,27 +136,6 @@ export default {
           conferenceId: conferenceId
         }
       });
-    },
-    async signOut() {
-      // console.log("로그아웃버튼누름");
-      // await window.gapi.auth2.getAuthInstance().disconnect();
-      // console.log("user Signed Out");
-      // sessionStorage.removeItem("userInfo");
-      // this.$store.commit("root/setLogin", false);
-      // this.$router.push("/");
-      try {
-        console.log("try disconnect");
-        await window.gapi.auth2.getAuthInstance().signOut();
-        sessionStorage.removeItem("userInfo");
-        this.$store.commit("root/setLogin", false);
-        this.$router.push("/");
-      } catch (error) {
-        console.log("****disconnect 실패 : " + error);
-        console.log("fn --- user Signed Out");
-        sessionStorage.removeItem("userInfo");
-        this.$store.commit("root/setLogin", false);
-        this.$router.push("/");
-      }
     },
     async mouseRightClick() {
       let response = await this.$store.dispatch(
@@ -253,10 +218,10 @@ export default {
 </script>
 <style>
 /* 이거두개 다해줘야 height 100% 적용된다. */
-.main-sidebar .hide-on-small {
+.main-sidebar {
   height: 100%;
 }
-.main-sidebar .hide-on-small .el-menu {
+.main-sidebar {
   height: 100%;
   background-color: #ffd344 !important;
 }
@@ -314,5 +279,8 @@ export default {
   display: block !important;
   margin-bottom: 22px;
   padding: 5px;
+}
+.el-menu {
+  width: 100%;
 }
 </style>

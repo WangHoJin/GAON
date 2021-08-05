@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
+  // 1번째 라우터
   {
     // 처음 들어왔을떄 들어간 방이 있는지 없는지 판단하는 페이지
     path: "/",
@@ -12,13 +13,15 @@ const routes = [
     component: () => import("../../views/google-login/google-login.vue")
   },
   {
+    // 2번째 라우터
     // 메인페이지
     path: "/main",
     name: "main",
     component: () => import("../../views/main/main.vue"),
     children: [
       {
-        // 홈 페이지 ex 환영인사 등
+        // 3번째 라우터
+        // 홈 페이지
         path: "",
         name: "conference-main",
         component: () => import("@/views/conferences/conference-main.vue")
