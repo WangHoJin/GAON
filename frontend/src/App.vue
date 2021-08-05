@@ -22,9 +22,6 @@ export default {
 .el-main {
   height: 100%;
   width: 100% !important;
-  display: inline-block;
-  color: #333;
   text-align: center;
-  overflow-x: hidden;
 }
 </style>

@@ -9,6 +9,7 @@
 .main-wrapper {
   /* height: 100%; */
   display: block !important;
+  overflow: hidden !important;
 }
 
 .el-row.main-header {
@@ -36,4 +37,7 @@
   margin-left: 0 !important;
   margin-right: 0 !important;
   border-top: 1px solid #dcdfe6;
+}
+::-webkit-scrollbar {
+  display: none;
 }

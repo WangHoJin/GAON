@@ -217,10 +217,6 @@ export default {
 };
 </script>
 <style>
-/* 이거두개 다해줘야 height 100% 적용된다. */
-.main-sidebar {
-  height: 100%;
-}
 .main-sidebar {
   height: 100%;
   background-color: #ffd344 !important;

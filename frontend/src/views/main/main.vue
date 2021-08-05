@@ -1,5 +1,4 @@
 <template>
-  <!-- <google-login v-if="!$store.state.root.isLogin"></google-login> -->
   <el-row>
     <el-col :span="1" @contextmenu.prevent> <main-sidebar /></el-col>
     <el-col :span="23" align="center"> <router-view></router-view> </el-col>

@@ -74,9 +74,9 @@ export default {
           sessionStorage.setItem(
             "userInfo",
             JSON.stringify({
-              id: 1,
-              nickname: profile.getName(),
-              email: profile.getEmail(),
+              id: res.data.id,
+              nickname: res.data.nickname,
+              email: res.data.email,
               imgUrl: profile.getImageUrl()
             })
           );
