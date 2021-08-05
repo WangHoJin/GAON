@@ -1,4 +1,4 @@
-/* 공통으로 적용되어야할 css */
+/* 공통으로 적용되어야할 css  */
 html,
 body {
   height: 100vh;
@@ -8,18 +8,13 @@ body {
   src: url("../../assets/fonts/BMJUA_ttf.ttf");
   font-family: "jua";
 }
-
 * {
   font-family: "jua" !important;
 }
-/*
-body {
-  font-family: BMHANNAPro !important;
-} */
-
 body {
   margin: 0;
   font-weight: 400;
+  font-size: large;
 }
 /* 모든 버튼 색깔 설정 */
 .el-button--primary {
@@ -54,20 +49,4 @@ body {
   .hide-on-big {
     display: none !important;
   }
-}
-
-@font-face {
-  font-family: "SpoqaHanSansNeo";
-  font-weight: 600;
-  src: url("../../assets/fonts/SpoqaHanSansNeo-Bold.ttf");
-}
-@font-face {
-  font-family: "SpoqaHanSansNeo";
-  font-weight: 500;
-  src: url("../../assets/fonts/SpoqaHanSansNeo-Medium.ttf");
-}
-@font-face {
-  font-family: "SpoqaHanSansNeo";
-  font-weight: 400;
-  src: url("../../assets/fonts/SpoqaHanSansNeo-Regular.ttf");
 }

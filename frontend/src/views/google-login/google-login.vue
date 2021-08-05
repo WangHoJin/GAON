@@ -14,9 +14,7 @@
   </div>
 </template>
 <script>
-// import { ref } from "vue";
 import pic from "@/assets/images/sample-img.png";
-import axios from "../../common/lib/axios";
 import $axios from "axios";
 
 export default {
@@ -50,57 +48,58 @@ export default {
       let token = id_token;
 
       // http post 요청으로 서버에 id토큰 유효성 검사
-      const CLIENT_ID =
-        "890408784203-ko60b9fublcta8prgu5lll4ccpilqsoo.apps.googleusercontent.com";
-      const { OAuth2Client } = require("google-auth-library");
-      const client = new OAuth2Client(CLIENT_ID);
-      async function verify() {
-        const ticket = await client.verifyIdToken({
-          idToken: token,
-          audience: CLIENT_ID
-        });
-        const payload = ticket.getPayload();
-        const userid = payload["sub"];
-        // 회원가입 + 로그인
-        const userInfo = {
-          nickname: profile.getName(),
-          email: profile.getEmail()
-        };
-        //로그인 기능
+      // const CLIENT_ID =
+      //   "890408784203-ko60b9fublcta8prgu5lll4ccpilqsoo.apps.googleusercontent.com";
+      // const { OAuth2Client } = require("google-auth-library");
+      // const client = new OAuth2Client(CLIENT_ID);
+      // async function verify() {
+      //   const ticket = await client.verifyIdToken({
+      //     idToken: token,
+      //     audience: CLIENT_ID
+      //   });
+      //   const payload = ticket.getPayload();
+      //   const userid = payload["sub"];
+      // 회원가입 + 로그인
+      const userInfo = {
+        nickname: profile.getName(),
+        email: profile.getEmail()
+      };
+      //로그인 기능
 
-        $axios.post("/users/glogin", userInfo).then(res => {
-          if (res.status === 200) {
-            console.log("구글 계정 정보, 요청 전달 성공 ");
-            console.log("백엔드로부터 전달 받은 response :");
-            console.log(res);
-            sessionStorage.setItem(
-              "userInfo",
-              JSON.stringify({
-                id: res.data.id,
-                nickname: res.data.nickname,
-                email: res.data.email,
-                imgUrl: profile.getImageUrl()
-              })
-            );
-            var uinfo = JSON.parse(sessionStorage.getItem("userInfo"));
-            console.log(uinfo);
-            console.log(
-              "uid:" +
-                uinfo.id +
-                " " +
-                uinfo.nickname +
-                "님 환영합니다 \n 당신의 이메일주소는" +
-                uinfo.email
-            );
-            // 화살표 함수 안에서는 this참조가 되지않기때문에 self 등록해준다.
-            self.$store.commit("root/setLogin", true);
-          } else {
-            alert("서버와 연결이 불안정합니다");
-          }
-        });
-      }
-      verify().catch(console.error);
+      $axios.post("/users/glogin", userInfo).then(res => {
+        if (res.status === 200) {
+          console.log("구글 계정 정보, 요청 전달 성공 ");
+          console.log("백엔드로부터 전달 받은 response :");
+          console.log(res);
+          sessionStorage.setItem(
+            "userInfo",
+            JSON.stringify({
+              id: res.data.id,
+              nickname: res.data.nickname,
+              email: res.data.email,
+              imgUrl: profile.getImageUrl()
+            })
+          );
+          var uinfo = JSON.parse(sessionStorage.getItem("userInfo"));
+          console.log(uinfo);
+          console.log(
+            "uid:" +
+              uinfo.id +
+              " " +
+              uinfo.nickname +
+              "님 환영합니다 \n 당신의 이메일주소는" +
+              uinfo.email
+          );
+          // 화살표 함수 안에서는 this참조가 되지않기때문에 self 등록해준다.
+          self.$store.commit("root/setLogin", true);
+          self.$router.push("/");
+        } else {
+          alert("서버와 연결이 불안정합니다");
+        }
+      });
     }
+    // verify().catch(console.error);
+    // }
   }
 };
 </script>
