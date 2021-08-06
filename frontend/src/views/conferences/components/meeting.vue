@@ -44,6 +44,21 @@
               @click="leaveSession"
               value="Leave session"
             />
+            <input v-if="vOnOff"
+              class="btn btn-large btn-danger"
+              type="button"
+              id="buttonVideoOff"
+              @click="videoOnOff()"
+              value="video off"
+            />
+            <input v-else
+              class="btn btn-large btn-danger"
+              type="button"
+              id="buttonVideoOn"
+              @click="videoOnOff()"
+              value="video on"
+            />
+
           </div>
           <div id="main-video" class="col-md-6">
             <user-video :stream-manager="mainStreamManager" />
@@ -98,13 +113,21 @@ export default {
       publisher: undefined,
       subscribers: [],
       msgs: [],
-
+      vOnOff: true,
+      aOnOff: true,
+      size:true,
       mySessionId: "SessionA",
       myUserName: "Participant" + Math.floor(Math.random() * 100)
     };
   },
-
   methods: {
+    videoOnOff(){
+      // console.log("비디오");
+      // console.log("변경 전"+this.publisher.publishVideo);
+      this.publisher.publishVideo(!this.vOnOff);
+      this.vOnOff = !this.vOnOff
+      // console.log("변경 후"+this.publisher.publishVideo);
+    },
     sendMsg(msg) {
       // Sender of the message (after 'session.connect')
       this.session
