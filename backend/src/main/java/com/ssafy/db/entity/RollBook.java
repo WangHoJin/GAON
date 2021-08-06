@@ -37,15 +37,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class RollBook extends BaseEntity{    
 	
 	@ManyToOne(cascade=CascadeType.REMOVE,fetch=FetchType.LAZY)
-    @JoinColumn(name="room_id", nullable=false)
+    @JoinColumn(name="roomMember", nullable=false)
 	@OnDelete(action=OnDeleteAction.CASCADE)
-    Room room;
-	
-    
-	@ManyToOne(cascade=CascadeType.REMOVE,fetch=FetchType.LAZY)
-    @JoinColumn(name="user_id", nullable=false)
-    @OnDelete(action=OnDeleteAction.CASCADE)
-    Guser user;
+    RoomMember roomMember;
 	
 	Date date;
 	
