@@ -167,6 +167,7 @@
 </template>
 <script>
 import $axios from "axios";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -211,7 +212,14 @@ export default {
           this.form2.code
         );
         console.log("codeResponse from getRoombycode");
-        console.log(codeResponse);
+        console.log(codeResponse.id);
+        // 룸멤버추가
+        let roomMemberInfo = {
+          room_id: codeResponse.id,
+          user_id: JSON.parse(sessionStorage.getItem("userInfo")).id
+        };
+        await this.$store.dispatch("addRoomMember", roomMemberInfo);
+        // 회의실보내기
         this.$router.push({
           name: "conference-detail",
           params: { conferenceId: codeResponse.id }
@@ -237,14 +245,20 @@ export default {
     }
   },
   mounted() {
-    console.log("rooms in state");
-    console.log(this.$store.state.roomModule.rooms);
+    // console.log("rooms in state");
+    // console.log(this.$store.state.roomModule.rooms);
   },
-  created() {
+  async created() {
     //if 참여한 방이 있다면 메인페이지로 이동
-    // this.$router.push({
-    //   name: "conference-main"
-    // });
+    //await this.$store.dispatch("getRoomByUserId",JSON.parse(sessionStorage.getItem("userInfo")).id );
+    console.log("rooms in roomModule");
+    console.log(this.$store.getters.rooms);
+    if (this.$store.getters.rooms.length != 0) {
+      this.$router.push({
+        name: "conference-main"
+      });
+    } else {
+    }
   }
 };
 </script>

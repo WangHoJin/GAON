@@ -41,9 +41,3 @@ export function verifyAuth({ state, commit }) {
       commit("setAuth", null);
     });
 }
-
-//==========================RoomMember======================
-export async function roomMemberDelete({ state, commit }, payload) {
-  console.log("action에 roomMemberDelete실행됨");
-  const url = "roommem/"; //룸멤버id
-}

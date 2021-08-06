@@ -8,7 +8,8 @@
           data-icon="noto:cat-with-wry-smile"
           style="font-size: 30px; vertical-align:middle"
         ></span>
-        | <span>{{ user.name }}</span> | <span>{{ user.email }}</span></el-col
+        | <span>{{ member.nickname }}</span> |
+        <span>{{ member.email }}</span></el-col
       >
       <el-col :span="2">
         <el-button type="danger" size="mini" @click="deleteMember()"
@@ -22,15 +23,15 @@
 export default {
   name: "members",
   props: {
-    user: {
+    member: {
       type: Object
     }
   },
   methods: {
     //룸멤버 id로 룸멤버를 삭제
-    deleteMember() {
-      this.$store.dispatch("root/roomMemberDelete");
-    }
+    // deleteMember() {
+    //   this.$store.dispatch("root/roomMemberDelete");
+    // }
   }
 };
 </script>

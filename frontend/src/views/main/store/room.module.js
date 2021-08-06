@@ -4,7 +4,35 @@ import $axios from "axios";
 export default {
   namespace: true,
   state: {
-    rooms: [], //사용자가 참여하고있는 방들의 정보
+    rooms: [
+      {
+        code: "aaa",
+        created_time: "2021-08-06 00:32:21.091000",
+        description: "board_description",
+        host_id: 1,
+        id: 1,
+        modified_time: "2021-08-06 00:32:21.186000",
+        name: "aaa"
+      },
+      {
+        code: "bbb",
+        created_time: "2021-08-06 00:32:21.091000",
+        description: "board_description",
+        host_id: 1,
+        id: 2,
+        modified_time: "2021-08-06 00:32:21.186000",
+        name: "bbb"
+      },
+      {
+        code: "ccc",
+        created_time: "2021-08-06 00:32:21.091000",
+        description: "board_description",
+        host_id: 1,
+        id: 3,
+        modified_time: "2021-08-06 00:32:21.186000",
+        name: "ccc"
+      }
+    ], //사용자가 참여하고있는 방들의 정보
     room: {} //사용자가 현재 참여한 방의 정보
   },
   getters: {
@@ -25,6 +53,12 @@ export default {
         name: payload.name
       };
       state.rooms.push(roomInfo);
+    },
+    SET_ROOM_BY_USERID(state, payload) {
+      state.rooms = payload;
+      /// 배열 상태 변화 감지위해
+      state.rooms.push({});
+      state.rooms.pop();
     }
   },
   actions: {
@@ -134,6 +168,36 @@ export default {
           console.log(err);
         });
       return response;
+    },
+    // 해당 방의 게시판들 찾기
+    // 해당 방의 멤버들 찾기
+    async getMembersByUsingRoomId({ state, commit }, id) {
+      console.log("members from getmembers by using");
+      let response = "";
+      await $axios
+        .get("/rooms/id/" + id + "/members")
+        .then(res => {
+          console.log(res.data.members);
+          //commit("SET_ROOM_MEMBER", res.data.members);
+          response = res.data.members;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      return response;
+    },
+    // 해당 유저가 참가한 모든 방들 찾기 test안해봄
+    async getRoomByUserId({ state, commit }, payload) {
+      console.log("get Rooms by userId in actions");
+      const url = "/rooms/uid/";
+      await $axios
+        .get(url + payload)
+        .then(res => {
+          commit("SET_ROOM_BY_USERID", res.data.rooms);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };

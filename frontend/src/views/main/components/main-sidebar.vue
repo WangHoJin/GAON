@@ -8,14 +8,16 @@
     <el-menu-item @click="$router.push('/main')">
       <span>홈</span>
     </el-menu-item>
-    <div @mousedown.right="mouseRightClick()" @mousedown.stop>
+    <div>
       <el-menu-item
-        v-for="i in 10"
-        :key="i"
-        :index="i"
-        @click="conferenceSelect(i)"
+        v-for="i in $store.getters.rooms"
+        :key="i.id"
+        :index="i.id"
+        @click="conferenceSelect(i.id)"
+        @mousedown.right="mouseRightClick(i.id)"
+        @mousedown.stop
       >
-        <span>{{ i }}</span>
+        <span>{{ i.id }}</span>
       </el-menu-item>
     </div>
     <el-button type="warning"
@@ -27,12 +29,6 @@
         style="font-size: 20px;"
       ></div
     ></el-button>
-
-    <!-- <el-button class="button" @click="signOut">로그아웃</el-button>
-        <div>
-          <el>{{ username }}</el>
-        </div>
-        <img :src="`${img}`" style="width : 30px; border-radius: 70%" /> -->
   </el-menu>
 
   <el-dialog
@@ -88,7 +84,7 @@
       >
         {{ modifyform.code }}
       </el-form-item>
-      <JoinMember />
+      <JoinMember :members="members" />
     </el-form>
     <template #footer>
       <span class="dialog-footer">
@@ -124,7 +120,8 @@ export default {
         code: "",
         host_id: "",
         description: ""
-      }
+      },
+      members: [] // 해당 방에 참가한 유저들 목록
     };
   },
   components: {
@@ -147,15 +144,18 @@ export default {
       });
     },
     // uid와 host_id를 비교해 같다면 방 정보 수정 dialog를 띄워준다.
-    async mouseRightClick() {
-      let response = await this.$store.dispatch(
-        "getRoomById",
-        this.$route.params.conferenceId
-      );
+    async mouseRightClick(conferenceId) {
+      let response = await this.$store.dispatch("getRoomById", conferenceId);
       if (
         JSON.parse(sessionStorage.getItem("userInfo")).id == response.host_id
       ) {
         this.modifyform = response;
+        this.members = await this.$store.dispatch(
+          "getMembersByUsingRoomId",
+          this.modifyform.id
+        );
+        console.log("response from actions that getMembersByUsingRoomId");
+        console.log(this.members);
         this.showModifyDialog = true;
       }
     },
