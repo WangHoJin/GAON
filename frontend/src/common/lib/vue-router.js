@@ -51,6 +51,12 @@ const routes = [
         name: "conference-meeting",
         component: () =>
           import("../../views/conferences/components/meeting.vue")
+      },
+      {
+        // 하위 테이블 페이지
+        path: ":subject/table/:tableId",
+        name: "table-detail",
+        component: () => import("@/views/conferences/components/table-detail.vue")
       }
     ]
   }
