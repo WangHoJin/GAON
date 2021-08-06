@@ -11,20 +11,6 @@ export default {
   name: "Main",
   components: {
     MainSidebar
-  },
-  methods: {
-    onOpenLoginDialog() {
-      this.loginDialogOpen = true;
-    },
-    onCloseLoginDialog() {
-      this.loginDialogOpen = false;
-    },
-    onOpenSignUpDialog() {
-      this.signUpDialogOpen = true;
-    },
-    onCloseSignUpDialog() {
-      this.signUpDialogOpen = false;
-    }
   }
 };
 </script>

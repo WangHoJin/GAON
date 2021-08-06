@@ -1,5 +1,7 @@
 package com.ssafy.api.service;
 
+import java.util.Map;
+
 import com.ssafy.api.request.BoardRegisterPostReq;
 import com.ssafy.db.entity.Board;
 
@@ -9,6 +11,7 @@ import com.ssafy.db.entity.Board;
 public interface BoardService {
 	Board createBoard(BoardRegisterPostReq boardInfo);
 	Board getBoardById(Long id);
-	Board modifyBoard(Long id, BoardRegisterPostReq boardInfo);
-	void removeBoard(Long id);
+	//name, description 속성이 담겨있으면 수정함
+	Board modifyBoard(Long id, Map<String,String> boardInfo);
+	boolean removeBoard(Long id);
 }

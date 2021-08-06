@@ -19,11 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.api.request.RoomRegisterPostReq;
 import com.ssafy.api.response.BoardListRes;
 import com.ssafy.api.response.BoardRes;
+import com.ssafy.api.response.RoomMemberListRes;
 import com.ssafy.api.response.RoomRes;
+import com.ssafy.api.service.RoomMemberService;
 import com.ssafy.api.service.RoomService;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.Board;
 import com.ssafy.db.entity.Room;
+import com.ssafy.db.entity.RoomMember;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,6 +44,9 @@ import io.swagger.annotations.ExampleProperty;
 public class RoomController {
 	@Autowired
 	RoomService roomService;
+	
+	@Autowired
+	RoomMemberService roomMemberService;
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
@@ -172,6 +178,28 @@ public class RoomController {
 			return ResponseEntity.ok(BoardListRes.of(200, "Success", list));
 		} catch (Exception e) {
 			return ResponseEntity.status(404).body(BoardListRes.of(404, "Room does not exist using this id",null));
+		}
+	}
+	
+	@GetMapping("id/{id}/members")
+	@ApiOperation(value = "방의 멤버들을 찾기", notes = "<strong>해당 방 id의 멤버들을 반환한다</strong>") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 404, message = "id에 해당하는 방이 존재하지 않음"),
+        @ApiResponse(code = 500, message = "서버 오류")
+    })
+	public ResponseEntity<RoomMemberListRes> findMembers(
+			@PathVariable @ApiParam(value="방 id(pk)", required = true) Long id) {
+		try {
+			System.out.println("방의 멤버들을 찾는다");
+//			List<RoomMember> list = room.getRoomMembers();
+			List<RoomMember> list = new ArrayList<RoomMember>();
+			list = roomMemberService.getRoomMembersbyRoomId(id);
+			
+			return ResponseEntity.ok(RoomMemberListRes.of(200, "Success", list));
+		} catch (Exception e) {
+			System.out.println(e);
+			return ResponseEntity.status(404).body(RoomMemberListRes.of(404, "Room does not exist using this id",null));
 		}
 	}
 }

@@ -38,7 +38,6 @@ public class RoomMemberRes extends BaseResponseBody {
 			res.setUser_id(roomMember.getUser().getId());
 		}
 		return res;
-	}
-	
+	}	
 	
 }

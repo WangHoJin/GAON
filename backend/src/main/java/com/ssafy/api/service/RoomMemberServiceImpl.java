@@ -3,6 +3,7 @@ package com.ssafy.api.service;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Base64.Encoder;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,15 +63,7 @@ public class RoomMemberServiceImpl implements RoomMemberService {
 	public RoomMember getRoomMemberByUserId(Long userId) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public RoomMember getRoomMemberByRoomId(Long roomId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
+	}	
 
 	@Override
 	@Transactional
@@ -78,6 +71,13 @@ public class RoomMemberServiceImpl implements RoomMemberService {
 		System.out.println("removeRoomById:"+id);
 		roomMemberRepository.deleteById(id);
 	}
-	
+
+	@Override
+	public List<RoomMember> getRoomMembersbyRoomId(long roomId) {
+		System.out.println("룸멤버 찾기 서비스 호출");
+		List<RoomMember> list = roomMemberRepositorySupport.findRoomMembersbyRoomId(roomId);
+		return list;
+	}
+
 	
 }
