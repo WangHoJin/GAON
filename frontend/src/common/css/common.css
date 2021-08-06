@@ -1,4 +1,4 @@
-/* 공통으로 적용되어야할 css */
+/* 공통으로 적용되어야할 css  */
 html,
 body {
   height: 100vh;
@@ -8,23 +8,35 @@ body {
   src: url("../../assets/fonts/BMJUA_ttf.ttf");
   font-family: "jua";
 }
-
 * {
   font-family: "jua" !important;
 }
-/*
-body {
-  font-family: BMHANNAPro !important;
-} */
-
 body {
   margin: 0;
-  /* font-family: SpoqaHanSansNeo; */
   font-weight: 400;
+  font-size: large;
+}
+/* 모든 버튼 색깔 설정 */
+.el-button--primary {
+  color: #fff;
+  background-color: #ffd344;
+  border-color: #ffd344;
+}
+
+.el-button--primary:focus,
+.el-button--primary:hover {
+  background: #ebb563;
+  border-color: #ebb563;
+  color: #fff;
+}
+.el-button--info:focus,
+.el-button--info:hover {
+  background: #a6a9ad;
+  border-color: #a6a9ad;
+  color: #fff;
+  outline: 0;
 }
 /* 작은 화면일때 보이는거 */
-@medias
-/* pc화면일때 (클때)보이는거 */
 @media (min-width: 1270px) {
   html,
   body {
@@ -37,20 +49,4 @@ body {
   .hide-on-big {
     display: none !important;
   }
-}
-
-@font-face {
-  font-family: "SpoqaHanSansNeo";
-  font-weight: 600;
-  src: url("../../assets/fonts/SpoqaHanSansNeo-Bold.ttf");
-}
-@font-face {
-  font-family: "SpoqaHanSansNeo";
-  font-weight: 500;
-  src: url("../../assets/fonts/SpoqaHanSansNeo-Medium.ttf");
-}
-@font-face {
-  font-family: "SpoqaHanSansNeo";
-  font-weight: 400;
-  src: url("../../assets/fonts/SpoqaHanSansNeo-Regular.ttf");
 }

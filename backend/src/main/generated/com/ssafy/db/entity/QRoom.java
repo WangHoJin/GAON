@@ -43,8 +43,6 @@ public class QRoom extends EntityPathBase<Room> {
 
     public final StringPath password = createString("password");
 
-    public final ListPath<RoomMember, QRoomMember> roomMembers = this.<RoomMember, QRoomMember>createList("roomMembers", RoomMember.class, QRoomMember.class, PathInits.DIRECT2);
-
     public QRoom(String variable) {
         this(Room.class, forVariable(variable), INITS);
     }

@@ -2,11 +2,13 @@ package com.ssafy.db.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.db.entity.QRoom;
+import com.ssafy.db.entity.QRoomMember;
 import com.ssafy.db.entity.QUser;
 import com.ssafy.db.entity.Room;
 import com.ssafy.db.entity.RoomMember;
 import com.ssafy.db.entity.User;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +22,16 @@ public class RoomMemberRepositorySupport {
     @Autowired
     private JPAQueryFactory jpaQueryFactory;
 //    QRoom qRoom = QRoom.room;
+    QRoomMember qRoomMember = QRoomMember.roomMember;
 //    public Optional<Room> findRoomByCode(String code){
 //    	Room room = jpaQueryFactory.select(qRoom).from(qRoom).where(qRoom.code.eq(code)).fetchOne();
 //    	if(room == null) return Optional.empty();
 //    	return Optional.ofNullable(room);
 //    }
 
-	public Optional<RoomMember> findRoomMemberbyUserId(Long userId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<RoomMember> findRoomMembersbyRoomId(Long roomId) {
+		List<RoomMember> list = jpaQueryFactory.select(qRoomMember).from(qRoomMember).where(qRoomMember.room.id.eq(roomId)).fetch();
+		System.out.println(list);
+		return list;
 	}
 }

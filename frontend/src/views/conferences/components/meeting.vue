@@ -33,31 +33,68 @@
     </div>
 
     <div id="session" v-if="session">
-      <div id="session-header">
-        <h1 id="session-title">{{ mySessionId }}</h1>
-        <input
-          class="btn btn-large btn-danger"
-          type="button"
-          id="buttonLeaveSession"
-          @click="leaveSession"
-          value="Leave session"
-        />
-      </div>
-      <div id="main-video" class="col-md-6">
-        <user-video :stream-manager="mainStreamManager" />
-      </div>
-      <div id="video-container" class="col-md-6">
-        <user-video
-          :stream-manager="publisher"
-          @click.native="updateMainVideoStreamManager(publisher)"
-        />
-        <user-video
-          v-for="sub in subscribers"
-          :key="sub.stream.connection.connectionId"
-          :stream-manager="sub"
-          @click.native="updateMainVideoStreamManager(sub)"
-        />
-      </div>
+      <el-row>
+        <el-col :span="12">
+          <div id="session-header">
+            <h1 id="session-title">{{ mySessionId }}</h1>
+            <input
+              class="btn btn-large btn-danger"
+              type="button"
+              id="buttonLeaveSession"
+              @click="leaveSession"
+              value="Leave session"
+            />
+            <input v-if="vOnOff"
+              class="btn btn-large btn-danger"
+              type="button"
+              id="buttonVideoOff"
+              @click="videoOnOff()"
+              value="video off"
+            />
+            <input v-else
+              class="btn btn-large btn-danger"
+              type="button"
+              id="buttonVideoOn"
+              @click="videoOnOff()"
+              value="video on"
+            />
+            <input v-if="aOnOff"
+              class="btn btn-large btn-danger"
+              type="button"
+              id="buttonAudioOff"
+              @click="audioOnOff()"
+              value="audio off"
+            />
+            <input v-else
+              class="btn btn-large btn-danger"
+              type="button"
+              id="buttonAudioOn"
+              @click="audioOnOff()"
+              value="audio on"
+            />
+
+          </div>
+          <div id="main-video" class="col-md-6">
+            <user-video :stream-manager="mainStreamManager" />
+          </div>
+          <div id="video-container" class="col-md-6">
+            <user-video
+              :stream-manager="publisher"
+              @click.native="updateMainVideoStreamManager(publisher)"
+            />
+            <user-video
+              v-for="sub in subscribers"
+              :key="sub.stream.connection.connectionId"
+              :stream-manager="sub"
+              @click.native="updateMainVideoStreamManager(sub)"
+            />
+          </div>
+        </el-col>
+        <el-col :span="10">
+          <MessageList :msgs="msgs" />
+          <MessageForm @sendMsg="sendMsg" />
+        </el-col>
+      </el-row>
     </div>
   </div>
 </template>
@@ -65,6 +102,8 @@
 import axios from "axios";
 import { OpenVidu } from "openvidu-browser";
 import UserVideo from "./meeting-components/UserVideo.vue";
+import MessageForm from "./meeting-components/messageForm";
+import MessageList from "./meeting-components/messageList";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -75,7 +114,9 @@ export default {
   name: "App",
 
   components: {
-    UserVideo
+    UserVideo,
+    MessageForm,
+    MessageList
   },
 
   data() {
@@ -85,13 +126,44 @@ export default {
       mainStreamManager: undefined,
       publisher: undefined,
       subscribers: [],
-
+      msgs: [],
+      vOnOff: true,
+      aOnOff: true,
+      size:true,
       mySessionId: "SessionA",
       myUserName: "Participant" + Math.floor(Math.random() * 100)
     };
   },
-
   methods: {
+    audioOnOff(){
+      console.log("오디오");
+      console.log("변경 전"+this.publisher.publishAudio);
+      this.publisher.publishAudio(!this.aOnOff);
+      this.aOnOff = !this.aOnOff
+      console.log("변경 후"+this.publisher.publishAudio);
+    },
+    videoOnOff(){
+      // console.log("비디오");
+      // console.log("변경 전"+this.publisher.publishVideo);
+      this.publisher.publishVideo(!this.vOnOff);
+      this.vOnOff = !this.vOnOff
+      // console.log("변경 후"+this.publisher.publishVideo);
+    },
+    sendMsg(msg) {
+      // Sender of the message (after 'session.connect')
+      this.session
+        .signal({
+          data: msg, // Any string (optional)
+          to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+          type: "my-chat" // The type of message (optional)
+        })
+        .then(() => {
+          console.log("Message successfully sent");
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
     joinSession() {
       // --- Get an OpenVidu object ---
       this.OV = new OpenVidu();
@@ -120,6 +192,25 @@ export default {
         console.warn(exception);
       });
 
+      // Receiver of the message (usually before calling 'session.connect')
+
+      this.session.on("signal:my-chat", event => {
+        console.log(event.data); // Message
+        console.log(event.from); // Connection object of the sender
+        console.log(event.type); // The type of message ("my-chat")
+        const tmp = this.msgs.slice();
+        tmp.push(event.data);
+        this.msgs = tmp;
+      });
+
+      // Receiver of all messages (usually before calling 'session.connect')
+
+      this.session.on("signal", event => {
+        console.log(event.data); // Message
+        console.log(event.from); // Connection object of the sender
+        console.log(event.type); // The type of message
+      });
+
       // --- Connect to the session with a valid user token ---
 
       // 'getToken' method is simulating what your server-side should do.
@@ -135,7 +226,7 @@ export default {
               videoSource: undefined, // The source of video. If undefined default webcam
               publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
               publishVideo: true, // Whether you want to start publishing with your video enabled or not
-              resolution: "640x480", // The resolution of your video
+              resolution: "320x200", // The resolution of your video
               frameRate: 30, // The frame rate of your video
               insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
               mirror: false // Whether to mirror your local video or not
@@ -256,3 +347,9 @@ export default {
   }
 };
 </script>
+<style scoped>
+#video {
+  height: 100px;
+  width: 100px;
+}
+</style>

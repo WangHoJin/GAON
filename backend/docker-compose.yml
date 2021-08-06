@@ -15,13 +15,18 @@ services:
       # <설정한 Database root 계정 비밀 번호>
       MYSQL_ROOT_PASSWORD: root
       TZ: 'Asia/Seoul'
-    privileged: true
+    # privileged: true
     # 실제 드라이브와 컨테이너의 드라이브를 연결(Mount)
     volumes:
       - ./db:/docker-entrypoint-initdb.d
+      #볼륨에 db 연결 (컨테이너 종료시에도 날아가지 않게)
+      - 'gaon_volume:/var/lib/mysql'
     # 컨테이너 내부에서 사용되는 네트워크
     networks:
       - backend
+    # 이거 안해주면 aws에서 mbind: Operation not permitted 에러 뜸
+    security_opt:
+      - seccomp:unconfined
   # kurento 부분, 나중에 AWS설정 후에 다시 해보기
   # kurento:
   #   image: kurento/kurento-media-server:latest
@@ -60,5 +65,8 @@ services:
     #   - kurento
     networks:
       - backend
+
+volumes:
+  gaon_volume:
 networks:
   backend:

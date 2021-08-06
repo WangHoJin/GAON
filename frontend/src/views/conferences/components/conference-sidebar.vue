@@ -1,33 +1,28 @@
 <template>
-  <div>
-    <el-row class="sidebar-tool">
-      <div class="sidebar-menu">
-        <el-menu active-text-color="#ffd04b">
-          <el-menu-item @click="noticeSelect()">
-            공지사항
-          </el-menu-item>
-          <el-menu-item @click="hwSelect()">
-            과제 제출
-          </el-menu-item>
-          <el-menu-item @click="studyMaterialSelect()">
-            학습 자료
-          </el-menu-item>
-          <el-menu-item @click="rollBookSelect()">
-            출석부
-          </el-menu-item>
+  <el-menu active-text-color="#ffd04b" class="sidebar-tool sidebar-menu">
+    <el-menu-item @click="noticeSelect()">
+      공지사항
+    </el-menu-item>
+    <el-menu-item @click="hwSelect()">
+      과제 제출
+    </el-menu-item>
+    <el-menu-item @click="studyMaterialSelect()">
+      학습 자료
+    </el-menu-item>
+    <el-menu-item @click="rollBookSelect()">
+      출석부
+    </el-menu-item>
 
-          <el-button @click="meetingSelect()" id="meeting-btn">
-            <span
-              class="iconify"
-              data-inline="false"
-              data-icon="noto:school"
-              style="font-size: 100px;"
-            ></span
-          ></el-button>
-        </el-menu>
-      </div>
-    </el-row>
-  </div>
+    <el-button @click="meetingSelect()" id="meeting-btn">
+      <span
+        class="iconify"
+        data-inline="false"
+        data-icon="noto:school"
+        style="font-size: 100px;"
+      ></span
+    ></el-button>
+    <UserInfoBox />
+  </el-menu>
 </template>
 <style>
 #meeting-btn {
@@ -36,8 +31,10 @@
   border: none;
   outline: none;
 }
-.sidebar-menu .el-menu-item {
+.el-menu {
   width: 100%;
+  height: 100%;
+  /* background-color: #ffe195b3; */
 }
 .sidebar-tool .el-menu {
   margin-top: 0;
@@ -55,15 +52,12 @@
   cursor: pointer;
   border-right: none;
 }
-.sidebar-tool .el-menu .el-menu-item .ic {
-  margin-right: 5px;
-}
 </style>
 <script>
 import { reactive, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-
+import UserInfoBox from "./user/user-info-box.vue";
 export default {
   name: "sidebar-tool",
 
@@ -72,6 +66,9 @@ export default {
       type: String,
       default: "240px"
     }
+  },
+  components: {
+    UserInfoBox
   },
   methods: {
     noticeSelect() {

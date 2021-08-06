@@ -55,45 +55,55 @@ export async function createRoom({ state, commit }, payload) {
       // commit("CREATE_ROOM", res.data);
       // console.log("state의 rooms : 현재 사용자가 참여하고 있는 방들의 정보");
       // console.log(state.rooms);
-      this.response = res.data.code;
+      response = res.data.code;
+      // console.log(this.response);
     })
     .catch(err => {
       console.log(err);
     });
-  return this.response;
+  return response;
 }
-// 방 수정
-export function modifyRoom({ state, commit }, payload) {
+// 방 수정 success
+export async function modifyRoom({ state, commit }, payload) {
   console.log("방 수정 action 작동");
-  const url = "/rooms";
-  $axios
-    .put(url + payload)
+  console.log(payload);
+  const url = "/rooms/" + payload.id;
+  let response = "";
+  let roomInfo = {
+    name: payload.name,
+    description: payload.description
+  };
+  await $axios
+    .put(url, roomInfo)
     .then(res => {
-      commit("MODIFY_ROOM", res.data);
+      // commit("MODIFY_ROOM", res.data);
       console.log(res.data);
-      console.log("state의 rooms : 현재 사용자가 참여하고 있는 방들의 정보");
-      console.log(state.rooms);
+      response = res.data;
     })
     .catch(err => {
       console.log(err);
     });
+  return response;
 }
-// 방 삭제
-// export function deleteRoom({ state, commit }, payload) {
-//   console.log("방 삭제 action 작동");
-//   const url = "/room";
-//   $axios
-//     .delete(url + payload)
-//     .then(res => {
-//       commit("DELETE_ROOM", res.data);
-//       console.log(res.data);
-//       console.log("state의 rooms : 현재 사용자가 참여하고 있는 방들의 정보");
-//       console.log(state.rooms);
-//     })
-//     .catch(err => {
-//       console.log(err);
-//     });
-// }
+// 방 삭제 success
+export async function deleteRoom({ state, commit }, payload) {
+  console.log("방 삭제 action 작동");
+  const url = "/rooms/";
+  let response = "";
+  await $axios
+    .delete(url + payload)
+    .then(res => {
+      response = res.data;
+      // commit("DELETE_ROOM", res.data);
+      // console.log(res.data);
+      // console.log("state의 rooms : 현재 사용자가 참여하고 있는 방들의 정보");
+      // console.log(state.rooms);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  return response;
+}
 
 // 방 정보를 코드로 찾기 success
 export async function getRoomByCode({ state, commit }, payload) {
@@ -113,21 +123,22 @@ export async function getRoomByCode({ state, commit }, payload) {
   return response;
 }
 //방 정보를 id로 찾기
-export function getRoomById({ state, commit }, payload) {
+export async function getRoomById({ state, commit }, payload) {
   console.log("방 정보 id로 찾기 action 작동");
+  let response = "";
   const url = "/rooms/id/";
-  $axios
+  await $axios
     .get(url + payload)
     .then(res => {
       console.log("state의 rooms : id로 찾은 방의 정보");
-      console.log(res.data);
-      return res.data;
+      response = res.data;
     })
     .catch(err => {
       console.log(err);
     });
+  return response;
 }
-// 방에 참여하기
+// 방에 참여하기 success
 export function joinRoom({ state, commit }, payload) {
   console.log("code와 password로 방의 패스워드가 일치하는지 확인");
   const url = "/rooms/join";
@@ -142,4 +153,10 @@ export function joinRoom({ state, commit }, payload) {
     .catch(err => {
       console.log(err);
     });
+}
+
+//==========================RoomMember======================
+export async function roomMemberDelete({ state, commit }, payload) {
+  console.log("action에 roomMemberDelete실행됨");
+  const url = "roommem/"; //룸멤버id
 }

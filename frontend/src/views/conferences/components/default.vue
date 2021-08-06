@@ -1,37 +1,41 @@
 <template lang="">
   <el-contianer class="main-container" align="center" id="gaon-start">
-    <el-row>
-      <el-col :span="11" @click="dialogFormVisible = true">
-        <span
-          id="make-room"
-          class="iconify"
-          data-inline="false"
-          data-icon="bi:cloud-plus-fill"
-          style="color: #ffd344; font-size: 200px;"
-        ></span>
-        <div>
-          <el-button
-            round
-            type="text"
-            @click="dialogFormVisible = true"
-            @mousedown.right="mouseright()"
-            @contextmenu.prevent
-            >새로운 방 만들기</el-button
-          >
+    <el-row align="middle">
+      <el-col :span="11">
+        <div class="icon-wrapper">
+          <span
+            id="make-room"
+            class="iconify"
+            data-inline="false"
+            data-icon="bi:cloud-plus-fill"
+            style="color: #ffd344; font-size: 200px;"
+          ></span>
+          <div>
+            <el-button
+              round
+              type="text"
+              @click="dialogFormVisible = true"
+              @mousedown.right="mouseright()"
+              @contextmenu.prevent
+              >새로운 방 만들기</el-button
+            >
+          </div>
         </div>
       </el-col>
       <el-col :span="2"> <el-divider direction="vertical"></el-divider></el-col>
       <el-col :span="11">
-        <span
-          class="iconify"
-          data-inline="false"
-          data-icon="bx:bxs-user-plus"
-          style="color: #ffd344; font-size: 200px;"
-        ></span>
-        <div>
-          <el-button round type="text" @click="dialogFormVisible_2 = true"
-            >방에 참가하기</el-button
-          >
+        <div class="icon-wrapper">
+          <span
+            class="iconify"
+            data-inline="false"
+            data-icon="bx:bxs-user-plus"
+            style="color: #ffd344; font-size: 200px;"
+          ></span>
+          <div>
+            <el-button round type="text" @click="dialogFormVisible_2 = true"
+              >방에 참가하기</el-button
+            >
+          </div>
         </div></el-col
       >
     </el-row>
@@ -229,6 +233,12 @@ export default {
       console.log(this.$store.state.root.roomInfo.code);
       */
     }
+  },
+  created() {
+    //if 참여한 방이 있다면 메인페이지로 이동
+    this.$router.push({
+      name: "conference-main"
+    });
   }
 };
 </script>
@@ -239,6 +249,7 @@ export default {
 }
 .el-row {
   margin-bottom: 20px;
+  height: 100%;
 }
 .el-col {
   border-radius: 4px;
@@ -266,14 +277,14 @@ export default {
   color: black;
 }
 /* 수직 가운데 배치 */
-.iconify {
+/* .iconify {
   margin-top: 200px;
-}
+} */
 /* divider 설정 */
 .el-divider--vertical {
-  display: inline-block;
+  display: block;
   width: 1px;
-  height: 710px;
+  height: 100%;
   margin: 0 8px;
 }
 /* 방만들기 아이콘 크기 조절 */
@@ -291,5 +302,9 @@ export default {
   display: block;
   margin-bottom: 22px;
   padding: 5px;
+}
+.icon-wrapper {
+  /* vertical-align: middle; */
+  /* display: block; */
 }
 </style>

@@ -1,49 +1,51 @@
 <template>
-  <div class="main-sidebar">
-    <el-row class="sidebar-tool">
-      <div class="sidebar-menu">
-        <el-menu
-          :default-active="String(state.activeIndex)"
-          active-text-color="#ffd04b"
-          align="center"
-        >
-          <el-menu-item @click="$router.push('/')">
-            <span>홈</span>
-          </el-menu-item>
-          <div @mousedown.right="mr()" @mousedown.stop>
-            <el-menu-item
-              v-for="i in 10"
-              :key="i"
-              :index="i"
-              @click="conferenceSelect(i)"
-            >
-              <span>{{ i }}</span>
-            </el-menu-item>
-          </div>
-          <el-button type="warning"
-            ><div
-              class="iconify"
-              id="main-sidebar-make-room"
-              data-inline="false"
-              data-icon="entypo:squared-plus"
-              style="font-size: 20px;"
-            ></div
-          ></el-button>
-          <el-button class="button" @click="signOut">로그아웃</el-button>
-          <div>
-            <el>{{ username }}</el>
-          </div>
-          <img :src="`${img}`" style="width : 30px; border-radius: 70%" />
-        </el-menu>
-      </div>
-    </el-row>
-  </div>
-  <!-- 방 정보 수정 확인 <조건>dialog host_id와 uid가 같을때만 -->
-  <el-dialog title="방 정보를 수정하시겠습니까?" v-model="a" width="30%">
+  <el-menu
+    :default-active="String(state.activeIndex)"
+    active-text-color="#ffd04b"
+    align="center"
+    class="main-sidebar hide-on-small"
+  >
+    <el-menu-item @click="$router.push('/main')">
+      <span>홈</span>
+    </el-menu-item>
+    <div @mousedown.right="mouseRightClick()" @mousedown.stop>
+      <el-menu-item
+        v-for="i in 10"
+        :key="i"
+        :index="i"
+        @click="conferenceSelect(i)"
+      >
+        <span>{{ i }}</span>
+      </el-menu-item>
+    </div>
+    <el-button type="warning"
+      ><div
+        class="iconify"
+        id="main-sidebar-make-room"
+        data-inline="false"
+        data-icon="entypo:squared-plus"
+        style="font-size: 20px;"
+      ></div
+    ></el-button>
+
+    <!-- <el-button class="button" @click="signOut">로그아웃</el-button>
+        <div>
+          <el>{{ username }}</el>
+        </div>
+        <img :src="`${img}`" style="width : 30px; border-radius: 70%" /> -->
+  </el-menu>
+
+  <el-dialog
+    title="방 정보를 수정하시겠습니까?"
+    v-model="showModifyDialog"
+    width="30%"
+  >
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="a = false">아니오</el-button>
-        <el-button type="primary" @click="mvModify()">네</el-button>
+        <el-button type="primary" @click="openModifyDialog()">네</el-button>
+        <el-button @click="showModifyDialog = false" type="info"
+          >아니오</el-button
+        >
       </span>
     </template>
   </el-dialog>
@@ -51,9 +53,9 @@
   <!-- 방 정보 수정 dialog 시작 -->
   <el-dialog
     title="방 정보 수정"
-    v-model="dialogFormVisible_modify"
+    v-model="dialogFormVisible_modifyUser"
     center
-    top="10vh"
+    top="5vh"
   >
     <el-divider></el-divider>
     <el-form :model="modifyform">
@@ -63,7 +65,18 @@
         id="room-make-form-label"
       >
         <el-input
-          v-model="roomInfo.name"
+          v-model="modifyform.name"
+          autocomplete="off"
+          placeholder=""
+        ></el-input>
+      </el-form-item>
+      <el-form-item
+        label="방 설명🏠"
+        :label-width="formLabelWidth"
+        id="room-make-form-label"
+      >
+        <el-input
+          v-model="modifyform.description"
           autocomplete="off"
           placeholder=""
         ></el-input>
@@ -73,15 +86,16 @@
         :label-width="formLabelWidth"
         id="room-make-form-label"
       >
-        {{ roomInfo.code }}
+        {{ modifyform.code }}
       </el-form-item>
+      <JoinMember />
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button class="gaon-button" type="warning" @click="modifyRoom()"
+        <el-button class="gaon-button" type="warning" @click="modifyRoomInfo()"
           >적용하기</el-button
         >
-        <el-button @click="dialogFormVisible_modify = false" type="info"
+        <el-button @click="dialogFormVisible_modifyUser = false" type="info"
           >취소</el-button
         >
       </span>
@@ -89,64 +103,42 @@
   </el-dialog>
   <!-- 방 정보 수정 dialog 끝 -->
 </template>
-<style>
-.main-sidebar .el-menu {
-  margin-top: 0;
-  padding-left: 0;
-  background-color: #ffd344 !important;
-}
-.main-sidebar .hide-on-small {
-  height: 100%;
-  position: fixed;
-}
-.main-sidebar .hide-on-small .el-menu {
-  height: 100%;
-}
-.main-sidebar .el-menu .el-menu-item {
-  cursor: pointer;
-  border-right: none;
-}
-.main-sidebar .el-menu .el-menu-item .ic {
-  /* margin-right: 5px; */
-}
-/* 방 생성 버튼에 대한 css */
-#main-sidebar-make-room {
-  padding: revert !important;
-  position: fixed;
-  bottom: 10px;
-  left: 30px;
-  /* margin-left: 10px; */
-}
-</style>
+
 <script>
 import { reactive, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import $axios from "axios";
+import JoinMember from "../../conferences/components/form/join-member.vue";
 export default {
   data() {
-    if (sessionStorage.getItem("userInfo") != null) {
-      return {
-        username: JSON.parse(sessionStorage.getItem("userInfo")).nickname,
-        img: JSON.parse(sessionStorage.getItem("userInfo")).imgUrl,
-        a: false,
-        dialogFormVisible_modify: false,
-        roomInfo: {} //여기저기서 활용될 현재 Room의 정보
-      };
-    } else {
-      return {
-        a: false,
-        dialogFormVisible_modify: false,
-        roomInfo: {} //여기저기서 활용될 현재 Room의 정보
-      };
-    }
+    return {
+      showModifyDialog: false,
+      dialogFormVisible_modifyUser: false,
+      roomInfo: {}, //여기저기서 활용될 현재 Room의 정보
+
+      modifyform: {
+        //수정폼에사용될 Room의 정보
+        id: "",
+        name: "",
+        code: "",
+        host_id: "",
+        description: ""
+      }
+    };
+  },
+  components: {
+    JoinMember
   },
   name: "main-header",
   methods: {
+    async getRoomInfo(conferenceId) {
+      this.roomInfo = await this.$store.dispatch(
+        "root/getRoomById",
+        conferenceId
+      );
+    },
     conferenceSelect(conferenceId) {
-      console.log("메인 네비에서 방 번호 고름");
-      console.log(this.$router);
-      console.log(this.$route.params.conferenceId);
       this.$router.push({
         name: "conference-detail",
         params: {
@@ -154,44 +146,33 @@ export default {
         }
       });
     },
-    async signOut() {
-      // console.log("로그아웃버튼누름");
-      // await window.gapi.auth2.getAuthInstance().disconnect();
-      // console.log("user Signed Out");
-      // sessionStorage.removeItem("userInfo");
-      // this.$store.commit("root/setLogin", false);
-      // this.$router.push("/");
-      try {
-        console.log("try disconnect");
-        await window.gapi.auth2.getAuthInstance().signOut();
-        sessionStorage.removeItem("userInfo");
-        this.$store.commit("root/setLogin", false);
-        this.$router.push("/");
-      } catch (error) {
-        console.log("****disconnect 실패 : " + error);
-        console.log("fn --- user Signed Out");
-        sessionStorage.removeItem("userInfo");
-        this.$store.commit("root/setLogin", false);
-        this.$router.push("/");
+    // uid와 host_id를 비교해 같다면 방 정보 수정 dialog를 띄워준다.
+    async mouseRightClick() {
+      let response = await this.$store.dispatch(
+        "root/getRoomById",
+        this.$route.params.conferenceId
+      );
+      if (
+        JSON.parse(sessionStorage.getItem("userInfo")).id == response.host_id
+      ) {
+        this.modifyform = response;
+        this.showModifyDialog = true;
       }
     },
-    mr() {
-      console.log("마우스 우클릭");
-      this.a = true;
-    },
     // 방 정보 수정 창 띄우기
-    async mvModify() {
-      this.a = false;
-      this.roomInfo = await $axios.get(
-        "/room/rid/" + this.$route.params.conferenceId
-      );
-      this.roomInfo = this.roomInfo.data;
-      this.dialogFormVisible_modify = true;
+    async openModifyDialog() {
+      this.showModifyDialog = false;
+      this.dialogFormVisible_modifyUser = true;
     },
     // 방 정보 수정하기
-    async modifyRoom() {
-      this.dialogFormVisible_modify = false;
-      await $axios.put("/room", this.roomInfo);
+    async modifyRoomInfo() {
+      this.dialogFormVisible_modifyUser = false;
+      let payload = {
+        id: this.modifyform.id,
+        name: this.modifyform.name,
+        description: this.modifyform.description
+      };
+      this.$store.dispatch("root/modifyRoom", payload);
     }
   },
   setup() {
@@ -243,6 +224,22 @@ export default {
 };
 </script>
 <style>
+.main-sidebar {
+  height: 100%;
+  background-color: #ffd344 !important;
+}
+.main-sidebar .el-menu .el-menu-item {
+  cursor: pointer;
+  border-right: none;
+}
+/* 방 생성 버튼에 대한 css */
+#main-sidebar-make-room {
+  padding: revert !important;
+  position: fixed;
+  bottom: 10px;
+  left: 30px;
+  /* margin-left: 10px; */
+}
 .main-sidebar .el-menu {
   margin-top: 0;
   padding-left: 0;
@@ -270,9 +267,6 @@ export default {
   left: 30px;
   /* margin-left: 10px; */
 }
-.main-sidebar {
-  text-align: center;
-}
 .gaon-button {
   background-color: #ffd04b;
   border: none;
@@ -288,5 +282,8 @@ export default {
   display: block !important;
   margin-bottom: 22px;
   padding: 5px;
+}
+.el-menu {
+  width: 100%;
 }
 </style>
