@@ -15,8 +15,18 @@ import lombok.ToString;
 @ApiModel("RoomMemberRegisterPostRequest")
 public class RoomMemberRegisterPostReq {
 
+
 	@ApiModelProperty(name="유저의 pk", example="1")
     Long user_id;
 	@ApiModelProperty(name="방의 pk", example="1")
     Long room_id;
+	
+	public RoomMemberRegisterPostReq() {}
+
+	public RoomMemberRegisterPostReq(Long user_id, Long room_id) {
+		this.user_id = user_id;
+		this.room_id = room_id;
+	}
+	
+	
 }

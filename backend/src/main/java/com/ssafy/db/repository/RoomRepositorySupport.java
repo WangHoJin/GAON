@@ -6,6 +6,7 @@ import com.ssafy.db.entity.QUser;
 import com.ssafy.db.entity.Room;
 import com.ssafy.db.entity.User;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,4 +27,5 @@ public class RoomRepositorySupport {
     	if(room == null) return Optional.empty();
     	return Optional.ofNullable(room);
     }
+
 }

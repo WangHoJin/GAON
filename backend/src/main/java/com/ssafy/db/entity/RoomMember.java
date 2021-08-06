@@ -35,7 +35,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 //Entity 영속성 및 업데이트에 대한 Auditing 정보를 캡처하는 JPA Entity Listener
 @EntityListeners(AuditingEntityListener.class)
 @Table(
-		name="roommember",
+		name="room_member",
 		uniqueConstraints={
 			@UniqueConstraint(
 				columnNames={"room_id","user_id"}
