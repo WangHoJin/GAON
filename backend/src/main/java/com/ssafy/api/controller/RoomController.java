@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.api.request.RoomRegisterPostReq;
 import com.ssafy.api.response.BoardListRes;
 import com.ssafy.api.response.BoardRes;
+import com.ssafy.api.response.RoomListRes;
 import com.ssafy.api.response.RoomMemberListRes;
 import com.ssafy.api.response.RoomRes;
 import com.ssafy.api.service.RoomMemberService;
 import com.ssafy.api.service.RoomService;
+import com.ssafy.api.vo.RoomVO;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.Board;
 import com.ssafy.db.entity.Room;
@@ -200,6 +202,25 @@ public class RoomController {
 		} catch (Exception e) {
 			System.out.println(e);
 			return ResponseEntity.status(404).body(RoomMemberListRes.of(404, "Room does not exist using this id",null));
+		}
+	}
+	@GetMapping("/uid/{uid}")
+	@ApiOperation(value = "해당 유저가 참가한 모든 방들 찾기", notes = "<strong>uid의 유저가 참가하는 모든 방을 반환한다</strong>") 
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "성공"),
+//		@ApiResponse(code = 404, message = "uid에 해당하는 유저가 존재하지 않음"),
+		@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<RoomListRes> findRoomsByUser(
+			@PathVariable @ApiParam(value="유저 id(pk)", required = true) Long uid) {
+		try {
+			
+			List<Room> list = roomService.getRoomsByUid(uid);
+			return ResponseEntity.ok(RoomListRes.of(200, "Success", list));
+		} catch (Exception e) {
+			System.out.println(e);
+//			return ResponseEntity.status(404).body(RoomListRes.of(404, "GUser does not exist using this uid",null));
+			return ResponseEntity.status(500).body(RoomListRes.of(404, "Server Error",null));
 		}
 	}
 }

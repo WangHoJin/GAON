@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.ssafy.api.request.RoomRegisterPostReq;
@@ -15,5 +16,5 @@ public interface RoomService {
 	void removeRoom(Long id);
 	Room modifyRoom(Long id, RoomRegisterPostReq roomInfo);
 	boolean joinRoom(Map<String, String> roomInfo);
-	String makeCode(Room room);
+	List<Room> getRoomsByUid(Long uid);
 }

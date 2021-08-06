@@ -3,6 +3,7 @@ package com.ssafy.api.service;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Base64.Encoder;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,7 +99,6 @@ public class RoomServiceImpl implements RoomService {
 		}
 	}
 
-	@Override
 	public String makeCode(Room room) {
 		String id = room.getId().toString();
 		String createdAt = room.getCreated_time().format(DateTimeFormatter.ofPattern("yyMMddhhmmss"));
@@ -111,5 +111,10 @@ public class RoomServiceImpl implements RoomService {
 		Encoder encoder = Base64.getEncoder(); 
 		byte[] encodedBytes  = encoder.encode(text.getBytes());
 		return new String(encodedBytes);
+	}
+
+	@Override
+	public List<Room> getRoomsByUid(Long uid) {
+		return roomRepositorySupport.findRoomsByUid(uid);
 	}
 }

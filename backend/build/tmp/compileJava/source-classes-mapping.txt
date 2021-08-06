@@ -12,6 +12,8 @@ com/ssafy/db/repository/GoogleUserRepositorySupport.java
  com.ssafy.db.repository.GoogleUserRepositorySupport
 com/ssafy/config/SecurityConfig.java
  com.ssafy.config.SecurityConfig
+com/ssafy/db/entity/QRollBook.java
+ com.ssafy.db.entity.QRollBook
 com/ssafy/db/entity/Guser.java
  com.ssafy.db.entity.Guser
 com/ssafy/db/entity/Post.java
@@ -80,8 +82,12 @@ com/ssafy/db/repository/RoomRepository.java
  com.ssafy.db.repository.RoomRepository
 com/ssafy/api/service/UserService.java
  com.ssafy.api.service.UserService
+com/ssafy/api/response/RoomMemberListRes.java
+ com.ssafy.api.response.RoomMemberListRes
 com/ssafy/api/service/UserServiceImpl.java
  com.ssafy.api.service.UserServiceImpl
+com/ssafy/api/response/RoomListRes.java
+ com.ssafy.api.response.RoomListRes
 com/ssafy/common/auth/SsafyUserDetails.java
  com.ssafy.common.auth.SsafyUserDetails
 com/ssafy/api/controller/RoomMemberController.java
@@ -96,10 +102,14 @@ com/ssafy/db/repository/RoomRepositorySupport.java
  com.ssafy.db.repository.RoomRepositorySupport
 com/ssafy/db/repository/UserRepository.java
  com.ssafy.db.repository.UserRepository
+com/ssafy/api/vo/RoomVO.java
+ com.ssafy.api.vo.RoomVO
 com/ssafy/db/entity/QPost.java
  com.ssafy.db.entity.QPost
 com/ssafy/db/entity/QGuser.java
  com.ssafy.db.entity.QGuser
+com/ssafy/db/entity/RollBook.java
+ com.ssafy.db.entity.RollBook
 com/ssafy/api/service/RoomService.java
  com.ssafy.api.service.RoomService
 com/ssafy/api/service/RoomMemberService.java
@@ -110,16 +120,18 @@ com/ssafy/db/repository/RoomMemberRepositorySupport.java
  com.ssafy.db.repository.RoomMemberRepositorySupport
 com/ssafy/api/vo/BoardVO.java
  com.ssafy.api.vo.BoardVO
+com/ssafy/api/vo/RoomMemberVO.java
+ com.ssafy.api.vo.RoomMemberVO
 com/ssafy/api/response/GoogleUserLoginPostRes.java
  com.ssafy.api.response.GoogleUserLoginPostRes
 com/ssafy/common/auth/JwtAuthenticationFilter.java
  com.ssafy.common.auth.JwtAuthenticationFilter
 com/ssafy/api/controller/RoomController.java
  com.ssafy.api.controller.RoomController
-com/ssafy/config/WebMvcConfig.java
- com.ssafy.config.WebMvcConfig
 com/ssafy/db/entity/QRoomMember.java
  com.ssafy.db.entity.QRoomMember
+com/ssafy/config/WebMvcConfig.java
+ com.ssafy.config.WebMvcConfig
 com/ssafy/db/entity/RoomMember.java
  com.ssafy.db.entity.RoomMember
 com/ssafy/db/entity/QRoom.java
