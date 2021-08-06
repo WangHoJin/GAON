@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.api.request.RoomMemberRegisterPostReq;
 import com.ssafy.api.request.RoomRegisterPostReq;
 import com.ssafy.api.response.BoardListRes;
 import com.ssafy.api.response.BoardRes;
@@ -85,6 +86,7 @@ public class RoomController {
 			@RequestBody @ApiParam(value="방 생성 정보", required = true) RoomRegisterPostReq roomInfo) {
 		try {
 			Room room = roomService.createRoom(roomInfo);
+			roomMemberService.createRoomMember(new RoomMemberRegisterPostReq(roomInfo.getHost_id(), room.getId()));
 			return ResponseEntity.ok(RoomRes.of(200, "Success", room));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -215,7 +217,7 @@ public class RoomController {
 			@PathVariable @ApiParam(value="유저 id(pk)", required = true) Long uid) {
 		try {
 			
-			List<Room> list = roomService.getRoomsByUid(uid);
+			List<Room> list = roomMemberService.getRoomsByUid(uid);
 			return ResponseEntity.ok(RoomListRes.of(200, "Success", list));
 		} catch (Exception e) {
 			System.out.println(e);

@@ -16,5 +16,5 @@ public interface RoomService {
 	void removeRoom(Long id);
 	Room modifyRoom(Long id, RoomRegisterPostReq roomInfo);
 	boolean joinRoom(Map<String, String> roomInfo);
-	List<Room> getRoomsByUid(Long uid);
+
 }

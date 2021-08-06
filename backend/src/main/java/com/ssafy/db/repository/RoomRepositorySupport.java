@@ -27,8 +27,5 @@ public class RoomRepositorySupport {
     	if(room == null) return Optional.empty();
     	return Optional.ofNullable(room);
     }
-	public List<Room> findRoomsByUid(Long uid) {
-		List<Room> rooms = jpaQueryFactory.select(qRoom).from(qRoom).where(qRoom.host.id.eq(uid)).fetch();
-		return rooms;
-	}
+
 }

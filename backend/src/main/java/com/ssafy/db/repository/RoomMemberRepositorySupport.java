@@ -8,6 +8,7 @@ import com.ssafy.db.entity.Room;
 import com.ssafy.db.entity.RoomMember;
 import com.ssafy.db.entity.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,5 +34,14 @@ public class RoomMemberRepositorySupport {
 		List<RoomMember> list = jpaQueryFactory.select(qRoomMember).from(qRoomMember).where(qRoomMember.room.id.eq(roomId)).fetch();
 		System.out.println(list);
 		return list;
+	}
+	
+	public List<Room> findRoomsByUid(Long uid) {
+		List<Room> rooms = new ArrayList<>();
+		List<RoomMember> roomMember = jpaQueryFactory.select(qRoomMember).from(qRoomMember).where(qRoomMember.user.id.eq(uid)).fetch();
+		for(RoomMember rm : roomMember) {
+			rooms.add(rm.getRoom());
+		}
+		return rooms;
 	}
 }

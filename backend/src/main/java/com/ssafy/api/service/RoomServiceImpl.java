@@ -113,8 +113,4 @@ public class RoomServiceImpl implements RoomService {
 		return new String(encodedBytes);
 	}
 
-	@Override
-	public List<Room> getRoomsByUid(Long uid) {
-		return roomRepositorySupport.findRoomsByUid(uid);
-	}
 }

@@ -79,5 +79,9 @@ public class RoomMemberServiceImpl implements RoomMemberService {
 		return list;
 	}
 
+	@Override
+	public List<Room> getRoomsByUid(Long uid) {
+		return roomMemberRepositorySupport.findRoomsByUid(uid);
+	}
 	
 }
