@@ -7,11 +7,20 @@
 
 <script>
 import MainSidebar from "./components/main-sidebar";
+// import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 export default {
   name: "Main",
   components: {
     MainSidebar
   }
+  // computed: {
+  //   ...mapGetters(["rrrs"]),
+  //   ...mapState(["roomModule/rrrr"])
+  // },
+  // methods: {
+  //   ...mapMutations(["setrrrs"]),
+  //   ...mapActions(["raction"])
+  // }
 };
 </script>
 <style>

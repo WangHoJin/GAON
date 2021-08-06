@@ -149,7 +149,7 @@ export default {
     // uid와 host_id를 비교해 같다면 방 정보 수정 dialog를 띄워준다.
     async mouseRightClick() {
       let response = await this.$store.dispatch(
-        "root/getRoomById",
+        "getRoomById",
         this.$route.params.conferenceId
       );
       if (
@@ -172,7 +172,12 @@ export default {
         name: this.modifyform.name,
         description: this.modifyform.description
       };
-      this.$store.dispatch("root/modifyRoom", payload);
+      const response = await this.$store.dispatch("modifyRoom", payload);
+      // uid로 방목록 업데이트 mutations 실행시키기 -> 추후
+      // this.$store.commit(
+      //   "setRoomByUserId",
+      //   sessionStorage.getItem("userInfo").id
+      // );
     }
   },
   setup() {
