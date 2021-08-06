@@ -196,7 +196,6 @@ public class RoomController {
 			@PathVariable @ApiParam(value="방 id(pk)", required = true) Long id) {
 		try {
 			System.out.println("방의 멤버들을 찾는다");
-//			List<RoomMember> list = room.getRoomMembers();
 			List<RoomMember> list = new ArrayList<RoomMember>();
 			list = roomMemberService.getRoomMembersbyRoomId(id);
 			
