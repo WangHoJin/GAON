@@ -78,7 +78,10 @@ export default {
     },
     hwSelect() {
       this.$router.push({
-        name: "conference-homework"
+        name: "conference-homework",
+        params: {
+          subject: "homework"
+        }
       });
     },
     studyMaterialSelect() {
