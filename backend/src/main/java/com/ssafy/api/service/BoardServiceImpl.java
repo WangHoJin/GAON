@@ -1,5 +1,7 @@
 package com.ssafy.api.service;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,18 +40,16 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public Board modifyBoard(Long id, BoardRegisterPostReq boardInfo) {
+	public Board modifyBoard(Long id, Map<String ,String> boardInfo) {
 		Board board = boardRepository.findById(id).get();
+		String name = boardInfo.get("name");
+		String description = boardInfo.get("description");
 		System.out.println(board);
-		if(boardInfo.getRid() != null) {
-			Room room = roomService.getRoomById(boardInfo.getRid());
-			board.setRoom(room);
+		if(name!=null) {
+			board.setName(name);
 		}
-		if(boardInfo.getName()!=null) {
-			board.setName(boardInfo.getName());
-		}
-		if(boardInfo.getDescription()!=null) {
-			board.setDescription(boardInfo.getDescription());
+		if(description!=null) {
+			board.setDescription(description);
 		}
 		return boardRepository.save(board);
 	}
@@ -59,10 +59,12 @@ public class BoardServiceImpl implements BoardService {
 		return boardRepository.findById(id).get();
 	}
 	
+//	@Transactional
 	@Override
-	public void removeBoard(Long id) {
-		boardRepository.deleteById(id);
-		boardRepository.flush();
+	public boolean removeBoard(Long id) {
+		long res = boardRepositorySupport.deleteRoomById(id);
+		if(res>0) return true;
+		else return false;
 	}
 
 }
