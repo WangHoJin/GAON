@@ -58,6 +58,20 @@
               @click="videoOnOff()"
               value="video on"
             />
+            <input v-if="aOnOff"
+              class="btn btn-large btn-danger"
+              type="button"
+              id="buttonAudioOff"
+              @click="audioOnOff()"
+              value="audio off"
+            />
+            <input v-else
+              class="btn btn-large btn-danger"
+              type="button"
+              id="buttonAudioOn"
+              @click="audioOnOff()"
+              value="audio on"
+            />
 
           </div>
           <div id="main-video" class="col-md-6">
@@ -121,6 +135,13 @@ export default {
     };
   },
   methods: {
+    audioOnOff(){
+      console.log("오디오");
+      console.log("변경 전"+this.publisher.publishAudio);
+      this.publisher.publishAudio(!this.aOnOff);
+      this.aOnOff = !this.aOnOff
+      console.log("변경 후"+this.publisher.publishAudio);
+    },
     videoOnOff(){
       // console.log("비디오");
       // console.log("변경 전"+this.publisher.publishVideo);
