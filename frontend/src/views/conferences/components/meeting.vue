@@ -1,10 +1,10 @@
 <template lang="">
   <div id="main-container" class="container">
     <div id="join" v-if="!session">
-      <div id="img-div"></div>
-      <div id="join-dialog" class="jumbotron vertical-center">
-        <h1>Join a video session</h1>
-        <div class="form-group">
+      <!-- <div id="img-div"></div> -->
+      <!-- <div id="join-dialog" class="jumbotron vertical-center"> -->
+      <!-- <h1>Join a video session</h1> -->
+      <!-- <div class="form-group">
           <p>
             <label>Participant</label>
             <input
@@ -28,8 +28,8 @@
               Join!
             </button>
           </p>
-        </div>
-      </div>
+        </div> -->
+      <!-- </div> -->
     </div>
 
     <div id="session" v-if="session">
@@ -313,6 +313,9 @@ export default {
       this.OV = undefined;
 
       window.removeEventListener("beforeunload", this.leaveSession);
+      this.$router.push({
+        name: "conference-detail"
+      });
     },
 
     updateMainVideoStreamManager(stream) {
