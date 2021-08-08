@@ -44,35 +44,38 @@
               @click="leaveSession"
               value="Leave session"
             />
-            <input v-if="vOnOff"
+            <input
+              v-if="vOnOff"
               class="btn btn-large btn-danger"
               type="button"
               id="buttonVideoOff"
               @click="videoOnOff()"
               value="video off"
             />
-            <input v-else
+            <input
+              v-else
               class="btn btn-large btn-danger"
               type="button"
               id="buttonVideoOn"
               @click="videoOnOff()"
               value="video on"
             />
-            <input v-if="aOnOff"
+            <input
+              v-if="aOnOff"
               class="btn btn-large btn-danger"
               type="button"
               id="buttonAudioOff"
               @click="audioOnOff()"
               value="audio off"
             />
-            <input v-else
+            <input
+              v-else
               class="btn btn-large btn-danger"
               type="button"
               id="buttonAudioOn"
               @click="audioOnOff()"
               value="audio on"
             />
-
           </div>
           <div id="main-video" class="col-md-6">
             <user-video :stream-manager="mainStreamManager" />
@@ -91,8 +94,26 @@
           </div>
         </el-col>
         <el-col :span="10">
-          <MessageList :msgs="msgs" />
-          <MessageForm @sendMsg="sendMsg" />
+          <input
+            v-if="!chat"
+            class="btn btn-large btn-danger"
+            type="button"
+            id="buttonChat"
+            @click="chatOnOff()"
+            value="chat on"
+          />
+          <input
+            v-else
+            class="btn btn-large btn-danger"
+            type="button"
+            id="buttonChat"
+            @click="chatOnOff()"
+            value="chat off"
+          />
+          <div v-if="chat">
+            <MessageList :msgs="msgs" />
+            <MessageForm @sendMsg="sendMsg" />
+          </div>
         </el-col>
       </el-row>
     </div>
@@ -129,24 +150,48 @@ export default {
       msgs: [],
       vOnOff: true,
       aOnOff: true,
-      size:true,
+      size: true,
+      chat: true,
       mySessionId: "SessionA",
       myUserName: "Participant" + Math.floor(Math.random() * 100)
     };
   },
+  created() {
+    this.mySessionId = this.$route.params.conferenceId;
+    this.myUserName = JSON.parse(sessionStorage.getItem("userInfo")).nickname;
+    // console.log("유저정보");
+    // console.log(JSON.parse(sessionStorage.getItem("userInfo")).nickname);
+    this.joinSession();
+  },
   methods: {
-    audioOnOff(){
+    // chatOnOff() {
+    //   this.chat = !this.chat;
+    //   console.log("현재 나");
+    //   console.log(this.publisher.stream.connection.data);
+    //   const { clientData } = JSON.parse(this.publisher.stream.connection.data);
+    //   const nickname = clientData;
+    //   console.log("접속자");
+    //   this.subscribers.forEach(sub => {
+    //     console.log(sub.stream.connection.data);
+    //     // console.log(JSON.parse(sub.stream.connection.data));
+    //     const { clientData } = JSON.parse(sub.stream.connection.data);
+    //     console.log(nickname);
+    //     console.log(clientData);
+    //     if (nickname == clientData) alert("같은 사용자가 존재합니다");
+    //   });
+    // },
+    audioOnOff() {
       console.log("오디오");
-      console.log("변경 전"+this.publisher.publishAudio);
+      console.log("변경 전" + this.publisher.publishAudio);
       this.publisher.publishAudio(!this.aOnOff);
-      this.aOnOff = !this.aOnOff
-      console.log("변경 후"+this.publisher.publishAudio);
+      this.aOnOff = !this.aOnOff;
+      console.log("변경 후" + this.publisher.publishAudio);
     },
-    videoOnOff(){
+    videoOnOff() {
       // console.log("비디오");
       // console.log("변경 전"+this.publisher.publishVideo);
       this.publisher.publishVideo(!this.vOnOff);
-      this.vOnOff = !this.vOnOff
+      this.vOnOff = !this.vOnOff;
       // console.log("변경 후"+this.publisher.publishVideo);
     },
     sendMsg(msg) {
@@ -172,6 +217,8 @@ export default {
       this.session = this.OV.initSession();
 
       // --- Specify the actions when events take place in the session ---
+      console.log("접속자");
+      console.log(this.subscribers);
 
       // On every new Stream received...
       this.session.on("streamCreated", ({ stream }) => {
