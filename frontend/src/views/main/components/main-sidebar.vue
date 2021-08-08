@@ -5,7 +5,7 @@
     align="center"
     class="main-sidebar hide-on-small"
   >
-    <el-menu-item @click="$router.push('/main')">
+    <el-menu-item @click="$router.push('/')">
       <span>홈</span>
     </el-menu-item>
     <div>
@@ -20,7 +20,8 @@
         <span>{{ i.id }}</span>
       </el-menu-item>
     </div>
-    <el-button type="warning"
+    <!-- 방 생성 버튼 -->
+    <el-button type="warning" @click="plusBtn()"
       ><div
         class="iconify"
         id="main-sidebar-make-room"
@@ -129,6 +130,11 @@ export default {
   },
   name: "main-header",
   methods: {
+    plusBtn() {
+      console.log("clicked plus btn");
+      this.$store.state.roomModule.isClickPlusBtn = true;
+      this.$router.push("/");
+    },
     async getRoomInfo(conferenceId) {
       this.roomInfo = await this.$store.dispatch(
         "root/getRoomById",
@@ -154,7 +160,7 @@ export default {
           "getMembersByUsingRoomId",
           this.modifyform.id
         );
-        console.log("response from actions that getMembersByUsingRoomId");
+        console.log("response from actions getMembersByUsingRoomId");
         console.log(this.members);
         this.showModifyDialog = true;
       }
@@ -172,12 +178,7 @@ export default {
         name: this.modifyform.name,
         description: this.modifyform.description
       };
-      const response = await this.$store.dispatch("modifyRoom", payload);
-      // uid로 방목록 업데이트 mutations 실행시키기 -> 추후
-      // this.$store.commit(
-      //   "setRoomByUserId",
-      //   sessionStorage.getItem("userInfo").id
-      // );
+      await this.$store.dispatch("modifyRoom", payload);
     }
   },
   setup() {
@@ -239,11 +240,6 @@ export default {
 }
 /* 방 생성 버튼에 대한 css */
 #main-sidebar-make-room {
-  padding: revert !important;
-  position: fixed;
-  bottom: 10px;
-  left: 30px;
-  /* margin-left: 10px; */
 }
 .main-sidebar .el-menu {
   margin-top: 0;
@@ -263,14 +259,6 @@ export default {
 }
 .main-sidebar .el-menu .el-menu-item .ic {
   /* margin-right: 5px; */
-}
-/* 방 생성 버튼에 대한 css */
-#main-sidebar-make-room {
-  padding: revert !important;
-  position: fixed;
-  bottom: 10px;
-  left: 30px;
-  /* margin-left: 10px; */
 }
 .gaon-button {
   background-color: #ffd04b;

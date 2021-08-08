@@ -91,7 +91,7 @@ export default {
               uinfo.email
           );
           // 화살표 함수 안에서는 this참조가 되지않기때문에 self 등록해준다.
-          self.$store.commit("root/setLogin", true);
+          //self.$store.commit("root/setLogin", true);
           self.$router.push("/");
         } else {
           alert("서버와 연결이 불안정합니다");

@@ -4,36 +4,8 @@ import $axios from "axios";
 export default {
   namespace: true,
   state: {
-    rooms: [
-      {
-        code: "aaa",
-        created_time: "2021-08-06 00:32:21.091000",
-        description: "board_description",
-        host_id: 1,
-        id: 1,
-        modified_time: "2021-08-06 00:32:21.186000",
-        name: "aaa"
-      },
-      {
-        code: "bbb",
-        created_time: "2021-08-06 00:32:21.091000",
-        description: "board_description",
-        host_id: 1,
-        id: 2,
-        modified_time: "2021-08-06 00:32:21.186000",
-        name: "bbb"
-      },
-      {
-        code: "ccc",
-        created_time: "2021-08-06 00:32:21.091000",
-        description: "board_description",
-        host_id: 1,
-        id: 3,
-        modified_time: "2021-08-06 00:32:21.186000",
-        name: "ccc"
-      }
-    ], //사용자가 참여하고있는 방들의 정보
-    room: {} //사용자가 현재 참여한 방의 정보
+    rooms: [], //사용자가 참여하고있는 방들의 정보
+    isClickPlusBtn: false //플러스 버튼을 눌렀는지 안눌렀는지 체크
   },
   getters: {
     rooms(state) {
@@ -55,6 +27,7 @@ export default {
       state.rooms.push(roomInfo);
     },
     SET_ROOM_BY_USERID(state, payload) {
+      console.log("set room by userID at mutation");
       state.rooms = payload;
       /// 배열 상태 변화 감지위해
       state.rooms.push({});
