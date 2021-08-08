@@ -224,4 +224,6 @@ public class RoomController {
 			return ResponseEntity.status(500).body(RoomListRes.of(404, "Server Error",null));
 		}
 	}
+	
+
 }
