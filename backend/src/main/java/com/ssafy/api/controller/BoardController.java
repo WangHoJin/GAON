@@ -1,11 +1,9 @@
 package com.ssafy.api.controller;
-
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.api.request.BoardRegisterPostReq;
 import com.ssafy.api.request.PostRegisterPostReq;
 import com.ssafy.api.response.BoardRes;
+import com.ssafy.api.response.PostListRes;
 import com.ssafy.api.response.PostRes;
 import com.ssafy.api.service.BoardService;
 import com.ssafy.common.model.response.BaseResponseBody;
@@ -188,13 +187,30 @@ public class BoardController {
         @ApiResponse(code = 401, message = "인증 실패"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
-	public ResponseEntity<PostRes> findPostById(
+	public ResponseEntity<PostRes> findPostByPid(
 			@PathVariable @ApiParam(value="게시글 id", required = true) Long pid) {
 		try {
-			Post post = boardService.getPostById(pid);
+			Post post = boardService.getPostByPid(pid);
 			return ResponseEntity.ok(PostRes.of(200, "Success", post));
 		} catch (Exception e) {
 			return ResponseEntity.status(404).body(PostRes.of(404, "Post does not exist using this pid", null));
+		}
+	}
+	
+	@GetMapping("/{id}/posts")
+	@ApiOperation(value = "해당 게시판에 있는 모든 게시글들 반환", notes = "<strong>게시판 id로 해당 게시판의 모든 게시글을 찾는다</strong>") 
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "성공"),
+		@ApiResponse(code = 401, message = "인증 실패"),
+		@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<PostListRes> findPostsById(
+			@PathVariable @ApiParam(value="게시판 id", required = true) Long id) {
+		try {
+			List<Post> posts = boardService.getPostsById(id);
+			return ResponseEntity.ok(PostListRes.of(200, "Success", posts));
+		} catch (Exception e) {
+			return ResponseEntity.status(404).body(PostListRes.of(404, "Board does not exist using this pid", null));
 		}
 	}
 }

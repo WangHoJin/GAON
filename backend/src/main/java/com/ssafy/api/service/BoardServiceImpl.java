@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,7 +128,12 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public Post getPostById(Long pid) {
+	public Post getPostByPid(Long pid) {
 		return postRepository.findById(pid).get();
+	}
+
+	@Override
+	public List<Post> getPostsById(Long id) {
+		return getBoardById(id).getPosts();
 	}
 }
