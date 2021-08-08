@@ -5,6 +5,7 @@
     align="center"
     class="main-sidebar hide-on-small"
   >
+    <el-button @click="play()">음악 재생</el-button>
     <el-menu-item @click="$router.push('/')">
       <span>홈</span>
     </el-menu-item>
@@ -107,6 +108,8 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import $axios from "axios";
 import JoinMember from "../../conferences/components/form/join-member.vue";
+import alarm from "../../../common/mp3/alarm.mp3";
+import { h } from "vue";
 export default {
   data() {
     return {
@@ -130,6 +133,18 @@ export default {
   },
   name: "main-header",
   methods: {
+    play() {
+      this.$notify({
+        title: "졸지마세요",
+        message: h(
+          "i",
+          { style: "color: teal" },
+          "일어나~!~!~!~!~!~!~!~!~!~!~!~!~!!"
+        )
+      });
+      var audio = new Audio(alarm);
+      audio.play();
+    },
     plusBtn() {
       console.log("clicked plus btn");
       this.$store.state.roomModule.isClickPlusBtn = true;
