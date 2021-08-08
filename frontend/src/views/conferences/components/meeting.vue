@@ -95,22 +95,22 @@
         </el-col>
         <el-col :span="10">
           <input
-            v-if="!chat"
+            v-if="!chatting"
             class="btn btn-large btn-danger"
             type="button"
-            id="buttonChat"
-            @click="chatOnOff()"
-            value="chat on"
+            id="buttonChatting"
+            @click="chattingOnOff()"
+            value="chatting on"
           />
           <input
             v-else
             class="btn btn-large btn-danger"
             type="button"
-            id="buttonChat"
-            @click="chatOnOff()"
-            value="chat off"
+            id="buttonChatting"
+            @click="chattingOnOff()"
+            value="chatting off"
           />
-          <div v-if="chat">
+          <div v-if="chatting">
             <MessageList :msgs="msgs" />
             <MessageForm @sendMsg="sendMsg" />
           </div>
@@ -151,7 +151,7 @@ export default {
       vOnOff: true,
       aOnOff: true,
       size: true,
-      chat: true,
+      chatting: false,
       mySessionId: "SessionA",
       myUserName: "Participant" + Math.floor(Math.random() * 100)
     };
@@ -164,22 +164,22 @@ export default {
     this.joinSession();
   },
   methods: {
-    // chatOnOff() {
-    //   this.chat = !this.chat;
-    //   console.log("현재 나");
-    //   console.log(this.publisher.stream.connection.data);
-    //   const { clientData } = JSON.parse(this.publisher.stream.connection.data);
-    //   const nickname = clientData;
-    //   console.log("접속자");
-    //   this.subscribers.forEach(sub => {
-    //     console.log(sub.stream.connection.data);
-    //     // console.log(JSON.parse(sub.stream.connection.data));
-    //     const { clientData } = JSON.parse(sub.stream.connection.data);
-    //     console.log(nickname);
-    //     console.log(clientData);
-    //     if (nickname == clientData) alert("같은 사용자가 존재합니다");
-    //   });
-    // },
+    chattingOnOff() {
+      this.chatting = !this.chatting;
+      // console.log("현재 나");
+      // console.log(this.publisher.stream.connection.data);
+      // const { clientData } = JSON.parse(this.publisher.stream.connection.data);
+      // const nickname = clientData;
+      // console.log("접속자");
+      // this.subscribers.forEach(sub => {
+      //   console.log(sub.stream.connection.data);
+      //   // console.log(JSON.parse(sub.stream.connection.data));
+      //   const { clientData } = JSON.parse(sub.stream.connection.data);
+      //   console.log(nickname);
+      //   console.log(clientData);
+      //   if (nickname == clientData) alert("같은 사용자가 존재합니다");
+      // });
+    },
     audioOnOff() {
       console.log("오디오");
       console.log("변경 전" + this.publisher.publishAudio);
