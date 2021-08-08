@@ -156,29 +156,33 @@ export default {
       myUserName: "Participant" + Math.floor(Math.random() * 100)
     };
   },
-  created() {
-    this.mySessionId = this.$route.params.conferenceId;
+  async created() {
+    let roomInfo = await this.$store.dispatch(
+      "getRoomById",
+      this.$route.params.conferenceId
+    );
+    this.mySessionId = roomInfo.code;
     this.myUserName = JSON.parse(sessionStorage.getItem("userInfo")).nickname;
-    // console.log("유저정보");
-    // console.log(JSON.parse(sessionStorage.getItem("userInfo")).nickname);
+    console.log("방정보");
+    console.log(roomInfo.code);
     this.joinSession();
   },
   methods: {
     chattingOnOff() {
       this.chatting = !this.chatting;
-      // console.log("현재 나");
-      // console.log(this.publisher.stream.connection.data);
-      // const { clientData } = JSON.parse(this.publisher.stream.connection.data);
-      // const nickname = clientData;
-      // console.log("접속자");
-      // this.subscribers.forEach(sub => {
-      //   console.log(sub.stream.connection.data);
-      //   // console.log(JSON.parse(sub.stream.connection.data));
-      //   const { clientData } = JSON.parse(sub.stream.connection.data);
-      //   console.log(nickname);
-      //   console.log(clientData);
-      //   if (nickname == clientData) alert("같은 사용자가 존재합니다");
-      // });
+      console.log("현재 나");
+      console.log(this.publisher.stream.connection.data);
+      const { clientData } = JSON.parse(this.publisher.stream.connection.data);
+      const nickname = clientData;
+      console.log("접속자");
+      this.subscribers.forEach(sub => {
+        console.log(sub.stream.connection.data);
+        // console.log(JSON.parse(sub.stream.connection.data));
+        const { clientData } = JSON.parse(sub.stream.connection.data);
+        console.log(nickname);
+        console.log(clientData);
+        if (nickname == clientData) alert("같은 사용자가 존재합니다");
+      });
     },
     audioOnOff() {
       console.log("오디오");
