@@ -190,6 +190,9 @@ export default {
       code: ""
     };
   },
+  destroyed() {
+    this.$store.state.roomModule.isClickPlusBtn = false;
+  },
   methods: {
     mouseright() {
       console.log("오른쪽 클릭");
