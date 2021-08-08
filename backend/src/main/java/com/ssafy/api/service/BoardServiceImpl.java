@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import com.ssafy.db.entity.Room;
 import com.ssafy.db.repository.BoardRepository;
 import com.ssafy.db.repository.BoardRepositorySupport;
 import com.ssafy.db.repository.PostRepository;
+import com.ssafy.db.repository.PostRepositorySupport;
 
 
 /**
@@ -27,13 +29,16 @@ public class BoardServiceImpl implements BoardService {
 	BoardRepository boardRepository;
 	
 	@Autowired
-	BoardRepositorySupport boardRepositorySupport;
 	
+	BoardRepositorySupport boardRepositorySupport;
 	@Autowired
 	RoomService roomService;
 	
 	@Autowired
 	PostRepository postRepository;
+	
+	@Autowired
+	PostRepositorySupport postRepositorySupport;
 
 	@Override
 	@Transactional
@@ -108,5 +113,27 @@ public class BoardServiceImpl implements BoardService {
 			post.setContent(content);
 		}
 		return postRepository.save(post);
+	}
+
+	@Override
+	public boolean removePost(Long pid) {
+		try {
+			if(postRepositorySupport.deletePostById(pid)>0) {
+				return true;
+			} else return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public Post getPostByPid(Long pid) {
+		return postRepository.findById(pid).get();
+	}
+
+	@Override
+	public List<Post> getPostsById(Long id) {
+		return getBoardById(id).getPosts();
 	}
 }

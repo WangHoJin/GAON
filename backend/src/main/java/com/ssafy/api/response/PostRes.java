@@ -14,7 +14,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * 게시판 등록 API ([POST] /api/v1/rooms) 요청에 필요한 리퀘스트 바디 정의.
+ * 게시글 등록 API ([POST] /api/v1/boards) 요청에 필요한 리퀘스트 바디 정의.
  */
 @Getter
 @Setter

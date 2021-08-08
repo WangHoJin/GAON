@@ -30,6 +30,8 @@ public class QPost extends EntityPathBase<Post> {
 
     public final DateTimePath<java.time.LocalDateTime> created_time = createDateTime("created_time", java.time.LocalDateTime.class);
 
+    public final ListPath<PostFile, QPostFile> files = this.<PostFile, QPostFile>createList("files", PostFile.class, QPostFile.class, PathInits.DIRECT2);
+
     //inherited
     public final NumberPath<Long> id = _super.id;
 
