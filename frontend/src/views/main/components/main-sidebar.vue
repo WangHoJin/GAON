@@ -1,7 +1,7 @@
 <template>
   <el-menu
     :default-active="String(state.activeIndex)"
-    active-text-color="#ffd04b"
+    active-text-color="#d17d00"
     align="center"
     class="main-sidebar hide-on-small"
   >
@@ -17,7 +17,7 @@
         @mousedown.right="mouseRightClick(i.id)"
         @mousedown.stop
       >
-        <span>{{ i.id }}</span>
+        <span>{{ i.name }}</span>
       </el-menu-item>
     </div>
     <!-- 방 생성 버튼 -->
@@ -156,6 +156,8 @@ export default {
         JSON.parse(sessionStorage.getItem("userInfo")).id == response.host_id
       ) {
         this.modifyform = response;
+        console.log("modifyform info");
+        console.log(this.modifyform);
         this.members = await this.$store.dispatch(
           "getMembersByUsingRoomId",
           this.modifyform.id
@@ -179,6 +181,10 @@ export default {
         description: this.modifyform.description
       };
       await this.$store.dispatch("modifyRoom", payload);
+      await this.$store.dispatch(
+        "getRoomByUserId",
+        JSON.parse(sessionStorage.getItem("userInfo")).id
+      );
     }
   },
   setup() {
