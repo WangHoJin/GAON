@@ -160,4 +160,41 @@ public class BoardController {
 		}
 	}
 	
+	@DeleteMapping("/posts/{pid}")
+	@ApiOperation(value = "게시글 삭제", notes = "<strong>게시글 id로 게시글을 삭제한다.</strong>") 
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "성공"),
+//		@ApiResponse(code = 404, message = "해당 게시글 없음"),
+		@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<BaseResponseBody> deletePost(
+			@PathVariable @ApiParam(value="게시글 id", required = true) Long pid) {
+		try {
+			if(boardService.removePost(pid)) {
+				return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+			}
+			else {
+				return ResponseEntity.status(404).body(BaseResponseBody.of(404, "Post does not exist"));
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(500).body(BaseResponseBody.of(404, "server error"));
+		}
+	}
+	
+	@GetMapping("/posts/{pid}")
+	@ApiOperation(value = "게시글 정보 pid로 찾기", notes = "<strong>게시글 id로 게시글을 찾는다</strong>") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 401, message = "인증 실패"),
+        @ApiResponse(code = 500, message = "서버 오류")
+    })
+	public ResponseEntity<PostRes> findPostById(
+			@PathVariable @ApiParam(value="게시글 id", required = true) Long pid) {
+		try {
+			Post post = boardService.getPostById(pid);
+			return ResponseEntity.ok(PostRes.of(200, "Success", post));
+		} catch (Exception e) {
+			return ResponseEntity.status(404).body(PostRes.of(404, "Post does not exist using this pid", null));
+		}
+	}
 }
