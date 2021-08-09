@@ -54,7 +54,6 @@ public class RoomController {
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
-	
 	@PostMapping("/verify")
 	@ApiOperation(value = "방 인증 확인", notes = "<strong>방 code와 password로 방의 패스워드가 일치하는지 확인한다</strong>") 
     @ApiResponses({
@@ -65,6 +64,9 @@ public class RoomController {
 	public  ResponseEntity<BaseResponseBody> verifyRoom(
 			@RequestBody @ApiParam(value="방 코드와 패스워드", required = true, example="{\n \"code\":\"String\", \n \"password\":\"String\"\n}") Map<String, String> roomInfo) {
 		try {
+
+
+				
 			if(roomService.joinRoom(roomInfo)) {
 				return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 			} else {
@@ -207,29 +209,25 @@ public class RoomController {
 		}
 	}
 	
-
+	@GetMapping("/uid/{uid}")
+	@ApiOperation(value = "해당 유저가 참가한 모든 방들 찾기", notes = "<strong>uid의 유저가 참가하는 모든 방을 반환한다</strong>") 
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "성공"),
+//		@ApiResponse(code = 404, message = "uid에 해당하는 유저가 존재하지 않음"),
+		@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<RoomListRes> findRoomsByUser(
+			@PathVariable @ApiParam(value="유저 id(pk)", required = true) Long uid) {
+		try {
+			
+			List<Room> list = roomMemberService.getRoomsByUid(uid);
+			return ResponseEntity.ok(RoomListRes.of(200, "Success", list));
+		} catch (Exception e) {
+			System.out.println(e);
+//			return ResponseEntity.status(404).body(RoomListRes.of(404, "GUser does not exist using this uid",null));
+			return ResponseEntity.status(500).body(RoomListRes.of(404, "Server Error",null));
+		}
+	}
 	
-	
-	
-//	@GetMapping("/uid/{uid}")
-//	@ApiOperation(value = "해당 유저가 참가한 모든 방들 찾기", notes = "<strong>uid의 유저가 참가하는 모든 방을 반환한다</strong>") 
-//	@ApiResponses({
-//		@ApiResponse(code = 200, message = "성공"),
-////		@ApiResponse(code = 404, message = "uid에 해당하는 유저가 존재하지 않음"),
-//		@ApiResponse(code = 500, message = "서버 오류")
-//	})
-//	public ResponseEntity<RoomListRes> findRoomsByUser(
-//			@PathVariable @ApiParam(value="유저 id(pk)", required = true) Long uid) {
-//		try {
-//			
-//			List<Room> list = roomMemberService.getRoomsByUid(uid);
-//			return ResponseEntity.ok(RoomListRes.of(200, "Success", list));
-//		} catch (Exception e) {
-//			System.out.println(e);
-////			return ResponseEntity.status(404).body(RoomListRes.of(404, "GUser does not exist using this uid",null));
-//			return ResponseEntity.status(500).body(RoomListRes.of(404, "Server Error",null));
-//		}
-//	}
-//	
 
 }

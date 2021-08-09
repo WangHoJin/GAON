@@ -46,8 +46,8 @@ public class RoomMemberRepositorySupport {
 		}
 		return rooms;
 	}
-	public Long deleteByRidAndUid(Long rid, Long uid) {
-		Long res = jpaQueryFactory.delete(qRoomMember).where(qRoomMember.room.id.eq(rid)).where(qRoomMember.user.id.eq(uid)).execute();
+	public Long deleteById(Long id) {
+		Long res = jpaQueryFactory.delete(qRoomMember).where(qRoomMember.id.eq(id)).execute();
 		return res;
 	}
 }

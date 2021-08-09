@@ -20,6 +20,5 @@ public interface RoomMemberService {
 	RoomMember getRoomMemberByUidAndRid(Long uid, Long rid);
 	List<RoomMember> getRoomMembersbyRoomId(long roomId);
 	List<Room> getRoomsByUid(Long uid);
-	void removeById(Long id);
-	boolean removeByRidAndUid(Long rid, Long uid);
+	boolean removeById(Long id);
 }

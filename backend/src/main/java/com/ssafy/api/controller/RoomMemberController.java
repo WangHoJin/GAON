@@ -53,8 +53,9 @@ public class RoomMemberController {
 			System.out.println(roomMember);
 			return ResponseEntity.ok(RoomMemberRes.of(200, "Success",roomMember));
 		} catch (Exception e) {
+			System.out.println("error");
 			e.printStackTrace();
-			return ResponseEntity.status(404).body(RoomMemberRes.of(404, "No matching guser for user_id or romm for room_id", null));
+			return ResponseEntity.status(404).body(RoomMemberRes.of(404, "이미 방에 참여중인 유저거나, rid, uid가 잘못되었습니다.", null));
 		}
 	}
 	
@@ -77,7 +78,7 @@ public class RoomMemberController {
 				return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 			}
 			//방장이 아닐 경우 룸맴버에서 삭제한다
-			else if(roomMemberService.removeByRidAndUid(roomMemberInfo.getRoom_id(), roomMemberInfo.getUser_id())) {
+			else if(roomMemberService.removeById(rm.getId())) {
 				return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 			} else {
 				return ResponseEntity.status(404).body(BaseResponseBody.of(404, "RoomMember does not exist"));

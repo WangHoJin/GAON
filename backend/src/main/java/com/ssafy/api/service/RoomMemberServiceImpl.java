@@ -25,6 +25,7 @@ import com.ssafy.db.repository.RoomRepositorySupport;
 /**
  *	방 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
  */
+@Transactional
 @Service("roomMemberService")
 public class RoomMemberServiceImpl implements RoomMemberService {
 
@@ -44,7 +45,6 @@ public class RoomMemberServiceImpl implements RoomMemberService {
 	PasswordEncoder passwordEncoder;
 
 	@Override
-	@Transactional
 	public RoomMember createRoomMember(RoomMemberRegisterPostReq roomMemberInfo) {
 		RoomMember roomMember = new RoomMember();
 		Guser user = guserService.getGuserById(roomMemberInfo.getUser_id());
@@ -66,12 +66,6 @@ public class RoomMemberServiceImpl implements RoomMemberService {
 	}	
 
 	@Override
-	@Transactional
-	public void removeById(Long id) {
-		roomMemberRepository.deleteById(id);
-	}
-
-	@Override
 	public List<RoomMember> getRoomMembersbyRoomId(long roomId) {
 		System.out.println("룸멤버 찾기 서비스 호출");
 		List<RoomMember> list = roomMemberRepositorySupport.findRoomMembersbyRoomId(roomId);
@@ -89,8 +83,8 @@ public class RoomMemberServiceImpl implements RoomMemberService {
 	}
 
 	@Override
-	public boolean removeByRidAndUid(Long rid, Long uid) {
-		long res = roomMemberRepositorySupport.deleteByRidAndUid(rid, uid);
+	public boolean removeById(Long id) {
+		long res = roomMemberRepositorySupport.deleteById(id);
 		if(res>0) return true;
 		else return false;
 	}
