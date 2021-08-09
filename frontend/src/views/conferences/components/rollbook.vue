@@ -57,8 +57,7 @@
           name: 'Jessy',
           attendance: '1'
         }],
-        search: '',
-        value: new Date()
+        search: ''
       }
     },
 

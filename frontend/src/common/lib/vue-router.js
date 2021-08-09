@@ -67,7 +67,21 @@ const routes = [
             path: "homework",
             name: "conference-homework",
             component: () =>
-              import("../../views/conferences/components/homework.vue")
+              import("../../views/conferences/components/homework.vue"),
+              children: [
+                {
+                  path: "/",
+                  name: "subject-main",
+                  component: () =>
+                    import("@/views/conferences/components/homework.vue")
+                },
+                {
+                  path:"table/:tableId",
+                  name: "table-detail",
+                  component: () =>
+                    import("@/views/conferences/components/table-detail.vue")
+                }
+              ]
           },
           {
             // 하위 학습자료 페이지

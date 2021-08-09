@@ -73,7 +73,10 @@ export default {
   methods: {
     noticeSelect() {
       this.$router.push({
-        name: "conference-notice"
+        name: "conference-notice",
+        params: {
+          subject: "notice"
+        }
       });
     },
     hwSelect() {
@@ -86,7 +89,10 @@ export default {
     },
     studyMaterialSelect() {
       this.$router.push({
-        name: "conference-studymaterial"
+        name: "conference-studymaterial",
+        params: {
+          subject: "studymaterial"
+        }
       });
     },
     rollBookSelect() {
