@@ -113,7 +113,7 @@ export default {
     // 방에 참여하기 success
     async joinRoom({ state, commit }, payload) {
       console.log("code와 password로 방의 패스워드가 일치하는지 확인");
-      const url = "/rooms/join";
+      const url = "/rooms/verity";
       let response = "";
       await $axios
         .post(url, payload)

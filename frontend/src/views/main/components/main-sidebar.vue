@@ -86,7 +86,7 @@
       >
         {{ modifyform.code }}
       </el-form-item>
-      <JoinMember :members="members" />
+      <JoinMember :rid="rid" />
     </el-form>
     <template #footer>
       <span class="dialog-footer">
@@ -116,7 +116,7 @@ export default {
       showModifyDialog: false,
       dialogFormVisible_modifyUser: false,
       roomInfo: {}, //여기저기서 활용될 현재 Room의 정보
-
+      rid: "", // join-member에게 넘겨줄 방의 id
       modifyform: {
         //수정폼에사용될 Room의 정보
         id: "",
@@ -124,8 +124,7 @@ export default {
         code: "",
         host_id: "",
         description: ""
-      },
-      members: [] // 해당 방에 참가한 유저들 목록
+      }
     };
   },
   components: {
@@ -174,12 +173,8 @@ export default {
         this.modifyform = response;
         console.log("modifyform info");
         console.log(this.modifyform);
-        this.members = await this.$store.dispatch(
-          "getMembersByUsingRoomId",
-          this.modifyform.id
-        );
-        console.log("response from actions getMembersByUsingRoomId");
-        console.log(this.members);
+        this.rid = this.modifyform.id;
+        console.log(this.rid);
         this.showModifyDialog = true;
       }
     },
