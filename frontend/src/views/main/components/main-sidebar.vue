@@ -1,24 +1,28 @@
 <template>
   <el-menu
     :default-active="String(state.activeIndex)"
-    active-text-color="#ffd04b"
+    active-text-color="#d17d00"
     align="center"
     class="main-sidebar hide-on-small"
   >
-    <el-menu-item @click="$router.push('/main')">
+    <el-button @click="play()">음악 재생</el-button>
+    <el-menu-item @click="$router.push('/')">
       <span>홈</span>
     </el-menu-item>
-    <div @mousedown.right="mouseRightClick()" @mousedown.stop>
+    <div>
       <el-menu-item
-        v-for="i in 10"
-        :key="i"
-        :index="i"
-        @click="conferenceSelect(i)"
+        v-for="i in $store.getters.rooms"
+        :key="i.id"
+        :index="i.id"
+        @click="conferenceSelect(i.id)"
+        @mousedown.right="mouseRightClick(i.id)"
+        @mousedown.stop
       >
-        <span>{{ i }}</span>
+        <span>{{ i.name }}</span>
       </el-menu-item>
     </div>
-    <el-button type="warning"
+    <!-- 방 생성 버튼 -->
+    <el-button type="warning" @click="plusBtn()"
       ><div
         class="iconify"
         id="main-sidebar-make-room"
@@ -27,12 +31,6 @@
         style="font-size: 20px;"
       ></div
     ></el-button>
-
-    <!-- <el-button class="button" @click="signOut">로그아웃</el-button>
-        <div>
-          <el>{{ username }}</el>
-        </div>
-        <img :src="`${img}`" style="width : 30px; border-radius: 70%" /> -->
   </el-menu>
 
   <el-dialog
@@ -88,7 +86,7 @@
       >
         {{ modifyform.code }}
       </el-form-item>
-      <JoinMember />
+      <JoinMember :members="members" />
     </el-form>
     <template #footer>
       <span class="dialog-footer">
@@ -110,6 +108,8 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import $axios from "axios";
 import JoinMember from "../../conferences/components/form/join-member.vue";
+import alarm from "../../../common/mp3/alarm.mp3";
+import { h } from "vue";
 export default {
   data() {
     return {
@@ -124,7 +124,8 @@ export default {
         code: "",
         host_id: "",
         description: ""
-      }
+      },
+      members: [] // 해당 방에 참가한 유저들 목록
     };
   },
   components: {
@@ -132,6 +133,23 @@ export default {
   },
   name: "main-header",
   methods: {
+    play() {
+      this.$notify({
+        title: "졸지마세요",
+        message: h(
+          "i",
+          { style: "color: teal" },
+          "일어나~!~!~!~!~!~!~!~!~!~!~!~!~!!"
+        )
+      });
+      var audio = new Audio(alarm);
+      audio.play();
+    },
+    plusBtn() {
+      console.log("clicked plus btn");
+      this.$store.state.roomModule.isClickPlusBtn = true;
+      this.$router.push("/");
+    },
     async getRoomInfo(conferenceId) {
       this.roomInfo = await this.$store.dispatch(
         "root/getRoomById",
@@ -147,15 +165,20 @@ export default {
       });
     },
     // uid와 host_id를 비교해 같다면 방 정보 수정 dialog를 띄워준다.
-    async mouseRightClick() {
-      let response = await this.$store.dispatch(
-        "root/getRoomById",
-        this.$route.params.conferenceId
-      );
+    async mouseRightClick(conferenceId) {
+      let response = await this.$store.dispatch("getRoomById", conferenceId);
       if (
         JSON.parse(sessionStorage.getItem("userInfo")).id == response.host_id
       ) {
         this.modifyform = response;
+        console.log("modifyform info");
+        console.log(this.modifyform);
+        this.members = await this.$store.dispatch(
+          "getMembersByUsingRoomId",
+          this.modifyform.id
+        );
+        console.log("response from actions getMembersByUsingRoomId");
+        console.log(this.members);
         this.showModifyDialog = true;
       }
     },
@@ -172,7 +195,11 @@ export default {
         name: this.modifyform.name,
         description: this.modifyform.description
       };
-      this.$store.dispatch("root/modifyRoom", payload);
+      await this.$store.dispatch("modifyRoom", payload);
+      await this.$store.dispatch(
+        "getRoomByUserId",
+        JSON.parse(sessionStorage.getItem("userInfo")).id
+      );
     }
   },
   setup() {
@@ -234,11 +261,6 @@ export default {
 }
 /* 방 생성 버튼에 대한 css */
 #main-sidebar-make-room {
-  padding: revert !important;
-  position: fixed;
-  bottom: 10px;
-  left: 30px;
-  /* margin-left: 10px; */
 }
 .main-sidebar .el-menu {
   margin-top: 0;
@@ -258,14 +280,6 @@ export default {
 }
 .main-sidebar .el-menu .el-menu-item .ic {
   /* margin-right: 5px; */
-}
-/* 방 생성 버튼에 대한 css */
-#main-sidebar-make-room {
-  padding: revert !important;
-  position: fixed;
-  bottom: 10px;
-  left: 30px;
-  /* margin-left: 10px; */
 }
 .gaon-button {
   background-color: #ffd04b;

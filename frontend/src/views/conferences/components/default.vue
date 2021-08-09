@@ -11,12 +11,7 @@
             style="color: #ffd344; font-size: 200px;"
           ></span>
           <div>
-            <el-button
-              round
-              type="text"
-              @click="dialogFormVisible = true"
-              @mousedown.right="mouseright()"
-              @contextmenu.prevent
+            <el-button round type="text" @click="dialogFormVisible = true"
               >새로운 방 만들기</el-button
             >
           </div>
@@ -172,6 +167,7 @@
 </template>
 <script>
 import $axios from "axios";
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -194,6 +190,9 @@ export default {
       code: ""
     };
   },
+  destroyed() {
+    this.$store.state.roomModule.isClickPlusBtn = false;
+  },
   methods: {
     mouseright() {
       console.log("오른쪽 클릭");
@@ -203,15 +202,34 @@ export default {
       this.dialogFormVisible_2 = false;
       //code를 보내면 rid를 받아옴
       console.log(this.form2.code);
-      let roomInfo = await this.$store.dispatch(
-        "root/getRoomByCode",
-        this.form2.code
-      );
-      console.log(roomInfo);
-      this.$router.push({
-        name: "conference-detail",
-        params: { conferenceId: roomInfo.id }
-      });
+      let roomInfo = {
+        code: this.form2.code,
+        password: this.form2.password
+      };
+      const response = await this.$store.dispatch("joinRoom", roomInfo);
+      console.log("reponse from joinromm");
+      console.log(response);
+      if (response) {
+        let codeResponse = await this.$store.dispatch(
+          "getRoomByCode",
+          this.form2.code
+        );
+        console.log("codeResponse from getRoombycode");
+        console.log(codeResponse.id);
+        // 룸멤버추가
+        let roomMemberInfo = {
+          room_id: codeResponse.id,
+          user_id: JSON.parse(sessionStorage.getItem("userInfo")).id
+        };
+        await this.$store.dispatch("addRoomMember", roomMemberInfo);
+        // store에 있는 flag false
+        this.$store.state.roomModule.isClickPlusBtn = false;
+        // 회의실보내기
+        this.$router.push({
+          name: "conference-detail",
+          params: { conferenceId: codeResponse.id }
+        });
+      }
     },
     async makeRoom() {
       var roomInfo = {
@@ -220,25 +238,16 @@ export default {
         description: this.form.description,
         host_id: JSON.parse(sessionStorage.getItem("userInfo")).id // 방 생성자 아이디
       };
-      const response = await this.$store.dispatch("root/createRoom", roomInfo);
-      this.code = response;
+      const response = await this.$store.dispatch("createRoom", roomInfo);
+      console.log("response from createRoom in actions");
+      console.log(response);
+      this.code = response.code;
       // dialog 데이터 초기화
       this.form.password = "";
       this.form.description = "";
       // 생성 후 새로운 dialog 띄우기 용
       this.makeRoomFlag = false;
-      /* 확인용
-      this.code = this.$store.state.root.roomInfo.code;
-      console.log("this.$store.state.root.roomInfo.code");
-      console.log(this.$store.state.root.roomInfo.code);
-      */
     }
-  },
-  created() {
-    //if 참여한 방이 있다면 메인페이지로 이동
-    this.$router.push({
-      name: "conference-main"
-    });
   }
 };
 </script>

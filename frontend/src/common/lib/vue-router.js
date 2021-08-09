@@ -1,11 +1,34 @@
 import { createRouter, createWebHistory } from "vue-router";
+import store from "../lib/store";
 
 const routes = [
   // 1번째 라우터
   {
     // 처음 들어왔을떄 들어간 방이 있는지 없는지 판단하는 페이지
     path: "/",
-    component: () => import("../../views/conferences/components/default.vue")
+    component: () => import("../../views/conferences/components/default.vue"),
+    beforeEnter: async function(to, from, next) {
+      console.log("라우터가드");
+      console.log(store.state.roomModule.isClickPlusBtn);
+      await store.dispatch(
+        "getRoomByUserId",
+        JSON.parse(sessionStorage.getItem("userInfo")).id
+      );
+      if (!store.state.roomModule.isClickPlusBtn) {
+        console.log("최초 로그인 상태일때");
+        console.log(store.getters.rooms.length);
+        if (store.getters.rooms.length > 0) {
+          console.log("참여하고있는 방들이 있다면 ");
+          return next("/main");
+        } else {
+          console.log("참여하고 있는 방들이 없다면");
+          return next();
+        }
+      } else {
+        console.log("plus버튼을 눌렀습니다");
+        next();
+      }
+    }
   },
   {
     // 구글로그인 페이지
@@ -71,7 +94,8 @@ const routes = [
             // 하위 테이블 페이지
             path: ":subject/table/:tableId",
             name: "table-detail",
-            component: () => import("@/views/conferences/components/table-detail.vue")
+            component: () =>
+              import("@/views/conferences/components/table-detail.vue")
           }
         ]
       }
@@ -89,6 +113,8 @@ router.afterEach(to => {
 });
 
 router.beforeEach((to, from, next) => {
+  console.log("구글라우터가드==============================================");
+  console.log(sessionStorage.getItem("userInfo"));
   if (sessionStorage.getItem("userInfo") === null) {
     if (to.fullPath != "/googlelogin") {
       console.log("로그인해주세요");

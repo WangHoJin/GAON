@@ -44,7 +44,5 @@ export default {
   conferences: conferenceData,
   sidebarTools: sidebarToolData,
   auth: null,
-  isLogin: false,
-  roomInfo: {}, //현재 접속하고 있는 방 정보
-  rooms: [] //사용자가 참여하고 있는 방들
+  isLogin: false
 };
