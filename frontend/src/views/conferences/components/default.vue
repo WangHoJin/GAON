@@ -190,6 +190,9 @@ export default {
       code: ""
     };
   },
+  destroyed() {
+    this.$store.state.roomModule.isClickPlusBtn = false;
+  },
   methods: {
     mouseright() {
       console.log("오른쪽 클릭");
@@ -219,6 +222,8 @@ export default {
           user_id: JSON.parse(sessionStorage.getItem("userInfo")).id
         };
         await this.$store.dispatch("addRoomMember", roomMemberInfo);
+        // store에 있는 flag false
+        this.$store.state.roomModule.isClickPlusBtn = false;
         // 회의실보내기
         this.$router.push({
           name: "conference-detail",
@@ -242,22 +247,6 @@ export default {
       this.form.description = "";
       // 생성 후 새로운 dialog 띄우기 용
       this.makeRoomFlag = false;
-    }
-  },
-  mounted() {
-    // console.log("rooms in state");
-    // console.log(this.$store.state.roomModule.rooms);
-  },
-  async created() {
-    //if 참여한 방이 있다면 메인페이지로 이동
-    //await this.$store.dispatch("getRoomByUserId",JSON.parse(sessionStorage.getItem("userInfo")).id );
-    console.log("rooms in roomModule");
-    console.log(this.$store.getters.rooms);
-    if (this.$store.getters.rooms.length != 0) {
-      this.$router.push({
-        name: "conference-main"
-      });
-    } else {
     }
   }
 };

@@ -13,6 +13,7 @@ export default {
   components: {
     MainSidebar
   }
+
   // computed: {
   //   ...mapGetters(["rrrs"]),
   //   ...mapState(["roomModule/rrrr"])

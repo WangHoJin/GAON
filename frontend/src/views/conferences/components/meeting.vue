@@ -1,10 +1,10 @@
 <template lang="">
   <div id="main-container" class="container">
     <div id="join" v-if="!session">
-      <div id="img-div"></div>
-      <div id="join-dialog" class="jumbotron vertical-center">
-        <h1>Join a video session</h1>
-        <div class="form-group">
+      <!-- <div id="img-div"></div> -->
+      <!-- <div id="join-dialog" class="jumbotron vertical-center"> -->
+      <!-- <h1>Join a video session</h1> -->
+      <!-- <div class="form-group">
           <p>
             <label>Participant</label>
             <input
@@ -28,8 +28,8 @@
               Join!
             </button>
           </p>
-        </div>
-      </div>
+        </div> -->
+      <!-- </div> -->
     </div>
 
     <div id="session" v-if="session">
@@ -44,35 +44,38 @@
               @click="leaveSession"
               value="Leave session"
             />
-            <input v-if="vOnOff"
+            <input
+              v-if="vOnOff"
               class="btn btn-large btn-danger"
               type="button"
               id="buttonVideoOff"
               @click="videoOnOff()"
               value="video off"
             />
-            <input v-else
+            <input
+              v-else
               class="btn btn-large btn-danger"
               type="button"
               id="buttonVideoOn"
               @click="videoOnOff()"
               value="video on"
             />
-            <input v-if="aOnOff"
+            <input
+              v-if="aOnOff"
               class="btn btn-large btn-danger"
               type="button"
               id="buttonAudioOff"
               @click="audioOnOff()"
               value="audio off"
             />
-            <input v-else
+            <input
+              v-else
               class="btn btn-large btn-danger"
               type="button"
               id="buttonAudioOn"
               @click="audioOnOff()"
               value="audio on"
             />
-
           </div>
           <div id="main-video" class="col-md-6">
             <user-video :stream-manager="mainStreamManager" />
@@ -91,8 +94,26 @@
           </div>
         </el-col>
         <el-col :span="10">
-          <MessageList :msgs="msgs" />
-          <MessageForm @sendMsg="sendMsg" />
+          <input
+            v-if="!chatting"
+            class="btn btn-large btn-danger"
+            type="button"
+            id="buttonChatting"
+            @click="chattingOnOff()"
+            value="chatting on"
+          />
+          <input
+            v-else
+            class="btn btn-large btn-danger"
+            type="button"
+            id="buttonChatting"
+            @click="chattingOnOff()"
+            value="chatting off"
+          />
+          <div v-if="chatting">
+            <MessageList :msgs="msgs" />
+            <MessageForm @sendMsg="sendMsg" />
+          </div>
         </el-col>
       </el-row>
     </div>
@@ -129,24 +150,52 @@ export default {
       msgs: [],
       vOnOff: true,
       aOnOff: true,
-      size:true,
+      size: true,
+      chatting: false,
       mySessionId: "SessionA",
       myUserName: "Participant" + Math.floor(Math.random() * 100)
     };
   },
+  async created() {
+    let roomInfo = await this.$store.dispatch(
+      "getRoomById",
+      this.$route.params.conferenceId
+    );
+    this.mySessionId = roomInfo.code;
+    this.myUserName = JSON.parse(sessionStorage.getItem("userInfo")).nickname;
+    console.log("방정보");
+    console.log(roomInfo.code);
+    this.joinSession();
+  },
   methods: {
-    audioOnOff(){
-      console.log("오디오");
-      console.log("변경 전"+this.publisher.publishAudio);
-      this.publisher.publishAudio(!this.aOnOff);
-      this.aOnOff = !this.aOnOff
-      console.log("변경 후"+this.publisher.publishAudio);
+    chattingOnOff() {
+      this.chatting = !this.chatting;
+      console.log("현재 나");
+      console.log(this.publisher.stream.connection.data);
+      const { clientData } = JSON.parse(this.publisher.stream.connection.data);
+      const nickname = clientData;
+      console.log("접속자");
+      this.subscribers.forEach(sub => {
+        console.log(sub.stream.connection.data);
+        // console.log(JSON.parse(sub.stream.connection.data));
+        const { clientData } = JSON.parse(sub.stream.connection.data);
+        console.log(nickname);
+        console.log(clientData);
+        if (nickname == clientData) alert("같은 사용자가 존재합니다");
+      });
     },
-    videoOnOff(){
+    audioOnOff() {
+      console.log("오디오");
+      console.log("변경 전" + this.publisher.publishAudio);
+      this.publisher.publishAudio(!this.aOnOff);
+      this.aOnOff = !this.aOnOff;
+      console.log("변경 후" + this.publisher.publishAudio);
+    },
+    videoOnOff() {
       // console.log("비디오");
       // console.log("변경 전"+this.publisher.publishVideo);
       this.publisher.publishVideo(!this.vOnOff);
-      this.vOnOff = !this.vOnOff
+      this.vOnOff = !this.vOnOff;
       // console.log("변경 후"+this.publisher.publishVideo);
     },
     sendMsg(msg) {
@@ -172,6 +221,8 @@ export default {
       this.session = this.OV.initSession();
 
       // --- Specify the actions when events take place in the session ---
+      console.log("접속자");
+      console.log(this.subscribers);
 
       // On every new Stream received...
       this.session.on("streamCreated", ({ stream }) => {
@@ -262,6 +313,9 @@ export default {
       this.OV = undefined;
 
       window.removeEventListener("beforeunload", this.leaveSession);
+      this.$router.push({
+        name: "conference-detail"
+      });
     },
 
     updateMainVideoStreamManager(stream) {

@@ -8,7 +8,7 @@ export default {
   mutations: {},
   actions: {
     async addRoomMember({ state, commit }, roomMemberInfo) {
-      console.log("action에 roomMemberDelete실행됨");
+      console.log("actions addRoomMember roomMemberModule");
       const url = "/roommem";
       await $axios
         .post(url, roomMemberInfo)
