@@ -14,6 +14,8 @@ com/ssafy/config/SecurityConfig.java
  com.ssafy.config.SecurityConfig
 com/ssafy/db/entity/QRollBook.java
  com.ssafy.db.entity.QRollBook
+com/ssafy/api/request/PostRegisterPostReq.java
+ com.ssafy.api.request.PostRegisterPostReq
 com/ssafy/db/entity/Guser.java
  com.ssafy.db.entity.Guser
 com/ssafy/db/entity/Post.java
@@ -24,6 +26,8 @@ com/ssafy/api/service/BoardServiceImpl.java
  com.ssafy.api.service.BoardServiceImpl
 com/ssafy/api/controller/AuthController.java
  com.ssafy.api.controller.AuthController
+com/ssafy/db/entity/PostFile.java
+ com.ssafy.db.entity.PostFile
 com/ssafy/db/entity/BaseEntity.java
  com.ssafy.db.entity.BaseEntity
 com/ssafy/api/request/RoomRegisterPostReq.java
@@ -78,6 +82,8 @@ com/ssafy/db/repository/BoardRepository.java
  com.ssafy.db.repository.BoardRepository
 com/ssafy/config/SwaggerConfig.java
  com.ssafy.config.SwaggerConfig
+com/ssafy/api/vo/PostVO.java
+ com.ssafy.api.vo.PostVO
 com/ssafy/db/repository/RoomRepository.java
  com.ssafy.db.repository.RoomRepository
 com/ssafy/api/service/UserService.java
@@ -96,10 +102,14 @@ com/ssafy/api/service/GoogleUserService.java
  com.ssafy.api.service.GoogleUserService
 com/ssafy/api/request/UserRegisterPostReq.java
  com.ssafy.api.request.UserRegisterPostReq
+com/ssafy/api/response/PostRes.java
+ com.ssafy.api.response.PostRes
 com/ssafy/api/service/RoomMemberServiceImpl.java
  com.ssafy.api.service.RoomMemberServiceImpl
 com/ssafy/db/repository/RoomRepositorySupport.java
  com.ssafy.db.repository.RoomRepositorySupport
+com/ssafy/db/entity/QPostFile.java
+ com.ssafy.db.entity.QPostFile
 com/ssafy/db/repository/UserRepository.java
  com.ssafy.db.repository.UserRepository
 com/ssafy/api/vo/RoomVO.java
@@ -118,10 +128,10 @@ com/ssafy/common/model/response/BaseResponseBody.java
  com.ssafy.common.model.response.BaseResponseBody
 com/ssafy/db/repository/RoomMemberRepositorySupport.java
  com.ssafy.db.repository.RoomMemberRepositorySupport
+com/ssafy/api/vo/GuserVO.java
+ com.ssafy.api.vo.GuserVO
 com/ssafy/api/vo/BoardVO.java
  com.ssafy.api.vo.BoardVO
-com/ssafy/api/vo/RoomMemberVO.java
- com.ssafy.api.vo.RoomMemberVO
 com/ssafy/api/response/GoogleUserLoginPostRes.java
  com.ssafy.api.response.GoogleUserLoginPostRes
 com/ssafy/common/auth/JwtAuthenticationFilter.java
@@ -136,6 +146,8 @@ com/ssafy/db/entity/RoomMember.java
  com.ssafy.db.entity.RoomMember
 com/ssafy/db/entity/QRoom.java
  com.ssafy.db.entity.QRoom
+com/ssafy/db/repository/PostRepository.java
+ com.ssafy.db.repository.PostRepository
 com/ssafy/api/response/BoardRes.java
  com.ssafy.api.response.BoardRes
 com/ssafy/api/controller/UserController.java

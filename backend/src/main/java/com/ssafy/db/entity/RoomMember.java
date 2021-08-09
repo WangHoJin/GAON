@@ -48,7 +48,6 @@ public class RoomMember extends BaseEntity{
     @JoinColumn(name="room_id", nullable=false)
 	@OnDelete(action=OnDeleteAction.CASCADE)
     Room room;
-	
     
 	@ManyToOne(cascade=CascadeType.REMOVE,fetch=FetchType.LAZY)
     @JoinColumn(name="user_id", nullable=false)

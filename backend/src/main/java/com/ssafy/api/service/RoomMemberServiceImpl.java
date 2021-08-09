@@ -67,8 +67,7 @@ public class RoomMemberServiceImpl implements RoomMemberService {
 
 	@Override
 	@Transactional
-	public void removeRoomById(Long id) {
-		System.out.println("removeRoomById:"+id);
+	public void removeById(Long id) {
 		roomMemberRepository.deleteById(id);
 	}
 
@@ -82,6 +81,18 @@ public class RoomMemberServiceImpl implements RoomMemberService {
 	@Override
 	public List<Room> getRoomsByUid(Long uid) {
 		return roomMemberRepositorySupport.findRoomsByUid(uid);
+	}
+
+	@Override
+	public RoomMember getRoomMemberByUidAndRid(Long uid, Long rid) {
+		return roomMemberRepository.findByUserIdAndRoomId(uid, rid).get();
+	}
+
+	@Override
+	public boolean removeByRidAndUid(Long rid, Long uid) {
+		long res = roomMemberRepositorySupport.deleteByRidAndUid(rid, uid);
+		if(res>0) return true;
+		else return false;
 	}
 	
 }

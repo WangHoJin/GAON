@@ -21,6 +21,7 @@ import com.ssafy.db.repository.RoomRepositorySupport;
 /**
  *	방 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
  */
+@Transactional
 @Service("roomService")
 public class RoomServiceImpl implements RoomService {
 
