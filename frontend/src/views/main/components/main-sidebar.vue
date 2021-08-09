@@ -156,7 +156,8 @@ export default {
         conferenceId
       );
     },
-    conferenceSelect(conferenceId) {
+    async conferenceSelect(conferenceId) {
+      await this.$store.dispatch("getBoardsByRoomId", conferenceId);
       this.$router.push({
         name: "conference-detail",
         params: {

@@ -56,25 +56,33 @@ const routes = [
         component: () => import("@/views/conferences/conference-detail.vue"),
         children: [
           {
-            // 하위 공지사항 페이지
-            path: "notice",
-            name: "conference-notice",
+            // 하위 게시판 페이지
+            path: "board/:bid",
+            name: "board",
             component: () =>
-              import("../../views/conferences/components/notice.vue")
-          },
-          {
-            // 하위 과제제출 페이지
-            path: "homework",
-            name: "conference-homework",
-            component: () =>
-              import("../../views/conferences/components/homework.vue")
-          },
-          {
-            // 하위 학습자료 페이지
-            path: "studymaterial",
-            name: "conference-studymaterial",
-            component: () =>
-              import("../../views/conferences/components/studymaterial.vue")
+              import("../../views/conferences/components/board.vue"),
+            children: [
+              // {
+              //   path: "",
+              //   name: "board-post-list",
+              //   component: () => import("@/components/board/BoardList.vue")
+              // }
+              // {
+              //   path: "create",
+              //   name: "board-post-create",
+              //   component: () => import("@/components/board/BoardCreate.vue")
+              // },
+              // {
+              //   path: "view/:pid",
+              //   name: "board-post-view",
+              //   component: () => import("@/components/board/BoardView.vue")
+              // },
+              // {
+              //   path: "modify/:pid",
+              //   name: "board-post-modify",
+              //   component: () => import("@/components/board/BoardModify.vue")
+              // }
+            ]
           },
           {
             // 하위 출석부 페이지
@@ -85,7 +93,7 @@ const routes = [
           },
           {
             // 화상회의 start
-            path: "rollbook",
+            path: "meeting",
             name: "conference-meeting",
             component: () =>
               import("../../views/conferences/components/meeting.vue")
