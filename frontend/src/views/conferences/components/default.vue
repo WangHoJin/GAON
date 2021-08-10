@@ -33,6 +33,14 @@
           </div>
         </div></el-col
       >
+      <el-button
+        v-if="$store.state.roomModule.isClickPlusBtn"
+        @click="
+          $store.state.roomModule.isClickPlusBtn = false;
+          $router.go(-1);
+        "
+        >뒤로가기</el-button
+      >
     </el-row>
   </el-contianer>
   <!-- dialog시작 -->
@@ -101,17 +109,17 @@
     </template>
     <!-- 방 생성 dialog 끝 -->
     <!-- 방 코드 확인 dialog시작 -->
-    <el-form v-if="!makeRoomFlag">
+    <!-- <el-form v-if="!makeRoomFlag">
       <el-form-item label="방 이름🏠"> {{ form.name }}</el-form-item>
       <el-form-item label="방 참여 코드🔑"> {{ code }}</el-form-item>
-    </el-form>
-    <template #footer v-if="!makeRoomFlag">
+    </el-form> -->
+    <!-- <template #footer v-if="!makeRoomFlag">
       <span class="dialog-footer">
         <el-button @click="dialogFormVisible = false" type="info"
           >확인</el-button
         >
       </span>
-    </template>
+    </template> -->
     <!-- 방 코드 확인 dialog끝 -->
   </el-dialog>
   <!-- 방 참가 dialog시작 -->
@@ -190,23 +198,23 @@ export default {
       code: ""
     };
   },
-  destroyed() {
+  beforeUnmount() {
+    console.log("beforeUnmount");
     this.$store.state.roomModule.isClickPlusBtn = false;
   },
   methods: {
     mouseright() {
       console.log("오른쪽 클릭");
     },
-    // 회의실로 가기
+    // 방 참여하기
     async goConference() {
-      this.dialogFormVisible_2 = false;
       //code를 보내면 rid를 받아옴
-      console.log(this.form2.code);
       let roomInfo = {
         code: this.form2.code,
         password: this.form2.password
       };
-      const response = await this.$store.dispatch("joinRoom", roomInfo);
+      // alert으로 코드가 틀렸을 때, 비밀번호가 틀렸을 때 알려줌
+      const response = await this.$store.dispatch("verifyRoom", roomInfo);
       console.log("reponse from joinromm");
       console.log(response);
       if (response) {
@@ -216,18 +224,17 @@ export default {
         );
         console.log("codeResponse from getRoombycode");
         console.log(codeResponse.id);
-        // 룸멤버추가
+        // // 룸멤버추가
         let roomMemberInfo = {
           room_id: codeResponse.id,
           user_id: JSON.parse(sessionStorage.getItem("userInfo")).id
         };
         await this.$store.dispatch("addRoomMember", roomMemberInfo);
         // store에 있는 flag false
-        this.$store.state.roomModule.isClickPlusBtn = false;
-        // 회의실보내기
+        // 방에 참가하기
         this.$router.push({
-          name: "conference-detail",
-          params: { conferenceId: codeResponse.id }
+          name: "conference-main"
+          // params: { conferenceId: codeResponse.id }
         });
       }
     },
@@ -238,15 +245,14 @@ export default {
         description: this.form.description,
         host_id: JSON.parse(sessionStorage.getItem("userInfo")).id // 방 생성자 아이디
       };
+      // 방 생성
       const response = await this.$store.dispatch("createRoom", roomInfo);
-      console.log("response from createRoom in actions");
-      console.log(response);
       this.code = response.code;
-      // dialog 데이터 초기화
       this.form.password = "";
       this.form.description = "";
-      // 생성 후 새로운 dialog 띄우기 용
       this.makeRoomFlag = false;
+      // 방 생성 후 메인페이지로 보내기
+      this.$router.push({ name: "conference-main" });
     }
   }
 };
