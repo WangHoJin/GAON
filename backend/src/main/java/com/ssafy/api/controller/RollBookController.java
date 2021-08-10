@@ -1,5 +1,7 @@
 package com.ssafy.api.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,8 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.api.request.RollBookGetReq;
 import com.ssafy.api.request.RollBookPostReq;
 import com.ssafy.api.request.RoomMemberRegisterPostReq;
 import com.ssafy.api.request.RoomRegisterPostReq;
@@ -59,8 +63,8 @@ public class RollBookController {
 	RollBookService rollBookService;
 
 		
-	@PostMapping("/")
-	@ApiOperation(value = "출석부 생성", notes = "<strong>(날짜, 방id, 유저id)로 출석부기록을 생성한다</strong>") 
+	@PostMapping()
+	@ApiOperation(value = "출석부 생성", notes = "<strong>(날짜, 방id, 유저id)로 출석부기록을 생성한다</strong>만약 해당 날짜,방,유저의 출석 정보가 존재할 경우 새로 요청한 state로 업데이트한다") 
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
         @ApiResponse(code = 404, message = "방,유저 id에 해당하는 룸멤버가 존재하지 않음"),
@@ -92,6 +96,32 @@ public class RollBookController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(404).body(RollBookListRes.of(404, "No matching guser for host_id", null));
+		}
+	}
+	
+	
+	@GetMapping("/{rid}/{datestring}")
+	@ApiOperation(value = "출석부 조회", notes = "<strong>(날짜, 방id)로 출석부기록을 조회한다</strong>") 
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "성공"),
+        @ApiResponse(code = 404, message = "날짜,방 id에 해당하는 출석기록이 존재하지 않음"),
+        @ApiResponse(code = 500, message = "서버 오류")
+    }
+    )
+	public ResponseEntity<RollBookListRes> findRollBooks(
+			@PathVariable @ApiParam(value="조회 날짜(ex:\"2021-08-09\")", required = true) String datestring, 
+			@PathVariable @ApiParam(value="조회 방id", required = true) Long rid) {
+		System.out.println(":::::::::: 출석부 조회 요청");
+		LocalDate date = LocalDate.parse(datestring, DateTimeFormatter.ISO_DATE);
+		try {			
+			List<RollBook> rollBooks = new ArrayList<RollBook>();	
+			rollBooks = rollBookService.getRollBooksByDateAndRid(date, rid);
+			
+			return ResponseEntity.ok(RollBookListRes.of(200, "Success", rollBooks));
+		} catch (Exception e) {
+			System.out.println(e);
+			e.printStackTrace();
+			return ResponseEntity.status(404).body(RollBookListRes.of(404, "No matching rollbook.rid for date", null));
 		}
 	}
 	
