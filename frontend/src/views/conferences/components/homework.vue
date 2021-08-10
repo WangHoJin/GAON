@@ -27,16 +27,18 @@
             width="180">
           </el-table-column>
         </el-table>
-        <el-pagination
-          background
-          layout="prev, pager, next"
-          :page-size="pageSize"
-          :total="tableData.length"
-          @current-change="setPage">
-        </el-pagination>
+        <div>
+          <el-pagination
+            background
+            layout="prev, pager, next"
+            :page-size="pageSize"
+            :total="tableData.length"
+            @current-change="setPage">
+          </el-pagination>
 
-        <div class="right">
-          <el-button placement="right-end" @click="dialogFormVisible = true">과제 제출</el-button>
+          <div class="right">
+            <el-button placement="right-end" @click="dialogFormVisible = true">새 글 작성</el-button>
+          </div>
         </div>
 
         <el-dialog title="과제 제출" v-model="dialogFormVisible">
