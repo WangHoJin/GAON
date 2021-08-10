@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -29,5 +30,6 @@ public interface BoardService {
 	List<Post> getPostsById(Long id);
 	
 	//파일
-	PostFile registPostFile(Long pid, MultipartFile file);
+	PostFile registFile(Long pid, MultipartFile file);
+	List<File> getFiles(Long pid);
 }
