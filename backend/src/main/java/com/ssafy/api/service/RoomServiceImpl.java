@@ -3,6 +3,7 @@ package com.ssafy.api.service;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Base64.Encoder;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.api.request.RoomRegisterPostReq;
+import com.ssafy.db.entity.Board;
 import com.ssafy.db.entity.Guser;
 import com.ssafy.db.entity.Room;
 import com.ssafy.db.repository.RoomRepository;

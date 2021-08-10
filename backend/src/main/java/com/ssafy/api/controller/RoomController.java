@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.api.request.RoomMemberRegisterPostReq;
@@ -23,6 +24,7 @@ import com.ssafy.api.response.RoomListRes;
 import com.ssafy.api.response.RoomMemberListRes;
 import com.ssafy.api.response.RoomMemberRes;
 import com.ssafy.api.response.RoomRes;
+import com.ssafy.api.service.BoardService;
 import com.ssafy.api.service.RoomMemberService;
 import com.ssafy.api.service.RoomService;
 import com.ssafy.api.vo.RoomVO;
@@ -50,6 +52,9 @@ public class RoomController {
 	
 	@Autowired
 	RoomMemberService roomMemberService;
+
+	@Autowired
+	BoardService boardService;
 
 	@PostMapping("/verify")
 	@ApiOperation(value = "방 인증 확인", notes = "<strong>방 code와 password로 방의 패스워드가 일치하는지 확인한다</strong>") 
@@ -174,10 +179,15 @@ public class RoomController {
 	public ResponseEntity<BoardListRes> findBoards(
 			@PathVariable @ApiParam(value="방 id(pk)", required = true) Long id) {
 		try {
-			Room room = roomService.getRoomById(id);
-			List<Board> list = room.getBoards();
+			List<Board> list = boardService.getBoardsByRid(id);
+//			Room room = roomService.getRoomById(id);
+//			List<Board> list = room.getBoards();
+//			for(Board b : list) {
+//				System.out.println(b.getId()+","+b.getName());
+//			}
 			return ResponseEntity.ok(BoardListRes.of(200, "Success", list));
 		} catch (Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.status(404).body(BoardListRes.of(404, "Room does not exist using this id",null));
 		}
 	}
