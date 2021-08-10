@@ -116,6 +116,14 @@
           </div>
         </el-col>
       </el-row>
+      <div v-if="publisher">
+        <el-row>
+          <ConnetionUserList
+            :publisher="publisher"
+            :subscribers="subscribers"
+          />
+        </el-row>
+      </div>
     </div>
   </div>
 </template>
@@ -125,6 +133,7 @@ import { OpenVidu } from "openvidu-browser";
 import UserVideo from "./meeting-components/UserVideo.vue";
 import MessageForm from "./meeting-components/messageForm";
 import MessageList from "./meeting-components/messageList";
+import ConnetionUserList from "./meeting-components/ConnetionUserList";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -137,7 +146,8 @@ export default {
   components: {
     UserVideo,
     MessageForm,
-    MessageList
+    MessageList,
+    ConnetionUserList
   },
 
   data() {
@@ -148,12 +158,14 @@ export default {
       publisher: undefined,
       subscribers: [],
       msgs: [],
+      memberlist: [],
       vOnOff: true,
       aOnOff: true,
       size: true,
       chatting: false,
       mySessionId: "SessionA",
-      myUserName: "Participant" + Math.floor(Math.random() * 100)
+      myUserName: "Participant" + Math.floor(Math.random() * 100),
+      myUserId: ""
     };
   },
   async created() {
@@ -161,10 +173,13 @@ export default {
       "getRoomById",
       this.$route.params.conferenceId
     );
+    // this.memberlist = await this.$store.dispatch(
+    //   "getMembersByUsingRoomId",
+    //   this.$route.params.conferenceId
+    // );
     this.mySessionId = roomInfo.code;
     this.myUserName = JSON.parse(sessionStorage.getItem("userInfo")).nickname;
-    console.log("방정보");
-    console.log(roomInfo.code);
+    this.myUserId = JSON.parse(sessionStorage.getItem("userInfo")).id;
     this.joinSession();
   },
   methods: {
@@ -185,11 +200,11 @@ export default {
       });
     },
     audioOnOff() {
-      console.log("오디오");
-      console.log("변경 전" + this.publisher.publishAudio);
+      // console.log("오디오");
+      // console.log("변경 전" + this.publisher.publishAudio);
       this.publisher.publishAudio(!this.aOnOff);
       this.aOnOff = !this.aOnOff;
-      console.log("변경 후" + this.publisher.publishAudio);
+      // console.log("변경 후" + this.publisher.publishAudio);
     },
     videoOnOff() {
       // console.log("비디오");
@@ -221,8 +236,6 @@ export default {
       this.session = this.OV.initSession();
 
       // --- Specify the actions when events take place in the session ---
-      console.log("접속자");
-      console.log(this.subscribers);
 
       // On every new Stream received...
       this.session.on("streamCreated", ({ stream }) => {
@@ -268,7 +281,10 @@ export default {
       // 'token' parameter should be retrieved and returned by your own backend
       this.getToken(this.mySessionId).then(token => {
         this.session
-          .connect(token, { clientData: this.myUserName })
+          .connect(token, {
+            clientData: this.myUserName,
+            idData: this.myUserId
+          })
           .then(() => {
             // --- Get your own camera stream with the desired properties ---
 
@@ -287,6 +303,8 @@ export default {
             this.publisher = publisher;
 
             // --- Publish your stream ---
+            console.log("회원");
+            console.log(this.publisher);
 
             this.session.publish(this.publisher);
           })
@@ -298,7 +316,6 @@ export default {
             );
           });
       });
-
       window.addEventListener("beforeunload", this.leaveSession);
     },
 
@@ -330,7 +347,7 @@ export default {
      * These methods retrieve the mandatory user token from OpenVidu Server.
      * This behavior MUST BE IN YOUR SERVER-SIDE IN PRODUCTION (by using
      * the API REST, openvidu-java-client or openvidu-node-client):
-     *   1) Initialize a Session in OpenVidu Server	(POST /openvidu/api/sessions)
+     *   1) Initialize a Session in OpenVidu Server   (POST /openvidu/api/sessions)
      *   2) Create a Connection in OpenVidu Server (POST /openvidu/api/sessions/<SESSION_ID>/connection)
      *   3) The Connection.token must be consumed in Session.connect() method
      */
