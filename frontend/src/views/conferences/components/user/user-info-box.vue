@@ -188,10 +188,11 @@ export default {
     async quit() {
       var self = this;
       await $axios
-        .delete("/users/" + 2)
+        .delete("/users/" + JSON.parse(sessionStorage.getItem("userInfo")).id)
         .then(res => {
           console.log(res.data);
           console.log("삭제완료");
+          sessionStorage.removeItem("userInfo");
           self.visible = false;
           self.$router.push("/");
         })
