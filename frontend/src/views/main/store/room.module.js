@@ -6,7 +6,8 @@ export default {
   state: {
     rooms: [], //사용자가 참여하고있는 방들의 정보
     isClickPlusBtn: false, //플러스 버튼을 눌렀는지 안눌렀는지 체크
-    boards: [] // 해당 방의 게시판
+    boards: [], // 해당 방의 게시판
+    tableData: []
   },
   getters: {
     rooms(state) {
@@ -42,6 +43,12 @@ export default {
       state.boards = payload;
       state.boards.push({});
       state.boards.pop();
+    },
+    SET_POSTS(state, payload) {
+      state.tableData = payload;
+      // console.log(state.tableData)
+      state.tableData.push({});
+      state.tableData.pop();
     }
   },
   actions: {
@@ -192,6 +199,22 @@ export default {
         .get(url + payload)
         .then(res => {
           commit("SET_ROOM_BY_USERID", res.data.rooms);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    // posts 가져오기
+    async getPosts({ commit }, bid) {
+      console.log("get posts");
+      const url = `/boards/${bid}/posts`;
+      await $axios
+        .get(url)
+        .then(res => {
+          // console.log(res.data.posts);
+          commit("SET_POSTS", res.data.posts);
+          // console.log("makeboard ");
+          // console.log("res.data");
         })
         .catch(err => {
           console.log(err);
