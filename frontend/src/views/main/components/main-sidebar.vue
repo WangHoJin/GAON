@@ -96,6 +96,7 @@
         <el-button @click="dialogFormVisible_modifyUser = false" type="info"
           >취소</el-button
         >
+        <el-button type="danger" @click="deleteRoom()">방 삭제</el-button>
       </span>
     </template>
   </el-dialog>
@@ -139,6 +140,23 @@ export default {
   },
   name: "main-header",
   methods: {
+    // 방 삭제하기
+    async deleteRoom() {
+      await this.$store.dispatch("deleteRoom", this.rid);
+      await this.$store.dispatch(
+        "getRoomByUserId",
+        JSON.parse(sessionStorage.getItem("userInfo")).id
+      );
+      // if 참여한 방이 있다면 메인으로
+      if (this.$store.getters.rooms.length > 0) {
+        console.log("참여한 방이 있습니다");
+        this.$router.push({ name: "conference-main" });
+      } else {
+        // 없다면 방 생성 페이지로
+        console.log("참여한 방이 있습니다");
+        this.$router.push("/");
+      }
+    },
     play() {
       this.$notify({
         title: "졸지마세요",
@@ -173,6 +191,7 @@ export default {
     },
     // uid와 host_id를 비교해 같다면 방 정보 수정 dialog를 띄워준다.
     async mouseRightClick(conferenceId) {
+      this.rid = conferenceId;
       let response = await this.$store.dispatch("getRoomById", conferenceId);
       if (
         JSON.parse(sessionStorage.getItem("userInfo")).id == response.host_id
