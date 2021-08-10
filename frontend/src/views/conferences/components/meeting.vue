@@ -121,6 +121,7 @@
           <ConnetionUserList
             :publisher="publisher"
             :subscribers="subscribers"
+            @leaveSession="leaveSession"
           />
         </el-row>
       </div>
@@ -173,10 +174,6 @@ export default {
       "getRoomById",
       this.$route.params.conferenceId
     );
-    // this.memberlist = await this.$store.dispatch(
-    //   "getMembersByUsingRoomId",
-    //   this.$route.params.conferenceId
-    // );
     this.mySessionId = roomInfo.code;
     this.myUserName = JSON.parse(sessionStorage.getItem("userInfo")).nickname;
     this.myUserId = JSON.parse(sessionStorage.getItem("userInfo")).id;
@@ -185,33 +182,14 @@ export default {
   methods: {
     chattingOnOff() {
       this.chatting = !this.chatting;
-      console.log("현재 나");
-      console.log(this.publisher.stream.connection.data);
-      const { clientData } = JSON.parse(this.publisher.stream.connection.data);
-      const nickname = clientData;
-      console.log("접속자");
-      this.subscribers.forEach(sub => {
-        console.log(sub.stream.connection.data);
-        // console.log(JSON.parse(sub.stream.connection.data));
-        const { clientData } = JSON.parse(sub.stream.connection.data);
-        console.log(nickname);
-        console.log(clientData);
-        if (nickname == clientData) alert("같은 사용자가 존재합니다");
-      });
     },
     audioOnOff() {
-      // console.log("오디오");
-      // console.log("변경 전" + this.publisher.publishAudio);
       this.publisher.publishAudio(!this.aOnOff);
       this.aOnOff = !this.aOnOff;
-      // console.log("변경 후" + this.publisher.publishAudio);
     },
     videoOnOff() {
-      // console.log("비디오");
-      // console.log("변경 전"+this.publisher.publishVideo);
       this.publisher.publishVideo(!this.vOnOff);
       this.vOnOff = !this.vOnOff;
-      // console.log("변경 후"+this.publisher.publishVideo);
     },
     sendMsg(msg) {
       // Sender of the message (after 'session.connect')
@@ -303,9 +281,6 @@ export default {
             this.publisher = publisher;
 
             // --- Publish your stream ---
-            console.log("회원");
-            console.log(this.publisher);
-
             this.session.publish(this.publisher);
           })
           .catch(error => {
@@ -320,6 +295,7 @@ export default {
     },
 
     leaveSession() {
+      console.log("나가!");
       // --- Leave the session by calling 'disconnect' method over the Session object ---
       if (this.session) this.session.disconnect();
 
