@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +21,7 @@ import com.ssafy.api.response.BoardListRes;
 import com.ssafy.api.response.BoardRes;
 import com.ssafy.api.response.RoomListRes;
 import com.ssafy.api.response.RoomMemberListRes;
+import com.ssafy.api.response.RoomMemberRes;
 import com.ssafy.api.response.RoomRes;
 import com.ssafy.api.service.RoomMemberService;
 import com.ssafy.api.service.RoomService;
@@ -51,17 +51,14 @@ public class RoomController {
 	@Autowired
 	RoomMemberService roomMemberService;
 
-	@Autowired
-	PasswordEncoder passwordEncoder;
-	
-	@PostMapping("/join")
-	@ApiOperation(value = "방 참가", notes = "<strong>방 code와 password로 방의 패스워드가 일치하는지 확인한다</strong>") 
+	@PostMapping("/verify")
+	@ApiOperation(value = "방 인증 확인", notes = "<strong>방 code와 password로 방의 패스워드가 일치하는지 확인한다</strong>") 
     @ApiResponses({
         @ApiResponse(code = 200, message = "방 참가 성공, 패스워드 일치함"),
         @ApiResponse(code = 401, message = "패스워드 불일치"),
         @ApiResponse(code = 404, message = "해당 코드의 방이 존재하지 않음")
     })
-	public  ResponseEntity<BaseResponseBody> join(
+	public  ResponseEntity<BaseResponseBody> verifyRoom(
 			@RequestBody @ApiParam(value="방 코드와 패스워드", required = true, example="{\n \"code\":\"String\", \n \"password\":\"String\"\n}") Map<String, String> roomInfo) {
 		try {
 			if(roomService.joinRoom(roomInfo)) {
@@ -185,7 +182,7 @@ public class RoomController {
 		}
 	}
 	
-	@GetMapping("id/{id}/members")
+	@GetMapping("/id/{id}/members")
 	@ApiOperation(value = "방의 멤버들을 찾기", notes = "<strong>해당 방 id의 멤버들을 반환한다</strong>") 
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
@@ -205,6 +202,7 @@ public class RoomController {
 			return ResponseEntity.status(404).body(RoomMemberListRes.of(404, "Room does not exist using this id",null));
 		}
 	}
+	
 	@GetMapping("/uid/{uid}")
 	@ApiOperation(value = "해당 유저가 참가한 모든 방들 찾기", notes = "<strong>uid의 유저가 참가하는 모든 방을 반환한다</strong>") 
 	@ApiResponses({

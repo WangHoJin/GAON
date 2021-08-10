@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +24,7 @@ import com.ssafy.db.repository.RoomRepositorySupport;
 /**
  *	방 관련 비즈니스 로직 처리를 위한 서비스 구현 정의.
  */
+@Transactional
 @Service("roomMemberService")
 public class RoomMemberServiceImpl implements RoomMemberService {
 
@@ -39,12 +39,8 @@ public class RoomMemberServiceImpl implements RoomMemberService {
 	
 	@Autowired
 	RoomService roomService;
-	
-	@Autowired
-	PasswordEncoder passwordEncoder;
 
 	@Override
-	@Transactional
 	public RoomMember createRoomMember(RoomMemberRegisterPostReq roomMemberInfo) {
 		RoomMember roomMember = new RoomMember();
 		Guser user = guserService.getGuserById(roomMemberInfo.getUser_id());
@@ -66,13 +62,6 @@ public class RoomMemberServiceImpl implements RoomMemberService {
 	}	
 
 	@Override
-	@Transactional
-	public void removeRoomById(Long id) {
-		System.out.println("removeRoomById:"+id);
-		roomMemberRepository.deleteById(id);
-	}
-
-	@Override
 	public List<RoomMember> getRoomMembersbyRoomId(long roomId) {
 		System.out.println("룸멤버 찾기 서비스 호출");
 		List<RoomMember> list = roomMemberRepositorySupport.findRoomMembersbyRoomId(roomId);
@@ -82,6 +71,18 @@ public class RoomMemberServiceImpl implements RoomMemberService {
 	@Override
 	public List<Room> getRoomsByUid(Long uid) {
 		return roomMemberRepositorySupport.findRoomsByUid(uid);
+	}
+
+	@Override
+	public RoomMember getRoomMemberByUidAndRid(Long uid, Long rid) {
+		return roomMemberRepository.findByUserIdAndRoomId(uid, rid).get();
+	}
+
+	@Override
+	public boolean removeById(Long id) {
+		long res = roomMemberRepositorySupport.deleteById(id);
+		if(res>0) return true;
+		else return false;
 	}
 	
 }

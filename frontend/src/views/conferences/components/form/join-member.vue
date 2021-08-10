@@ -12,7 +12,25 @@ export default {
     Members
   },
   props: {
-    members: Array
+    rid: {
+      type: String
+    }
+  },
+  data() {
+    return {
+      members: [] // 해당 방에 참가한 유저들 목록
+    };
+  },
+  async mounted() {
+    // 마운트 될때 방의 멤버들을 다 받아온다.
+    console.log("when mounted ");
+    console.log(this.rid);
+    this.members = await this.$store.dispatch(
+      "getMembersByUsingRoomId",
+      this.rid
+    );
+    console.log("response from actions getMembersByUsingRoomId");
+    console.log(this.members);
   }
 };
 </script>

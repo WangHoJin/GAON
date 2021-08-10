@@ -1,4 +1,5 @@
 package com.ssafy.api.controller;
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.ssafy.api.request.BoardRegisterPostReq;
 import com.ssafy.api.request.PostRegisterPostReq;
@@ -22,6 +25,7 @@ import com.ssafy.api.service.BoardService;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.Board;
 import com.ssafy.db.entity.Post;
+import com.ssafy.db.entity.PostFile;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -211,6 +215,44 @@ public class BoardController {
 			return ResponseEntity.ok(PostListRes.of(200, "Success", posts));
 		} catch (Exception e) {
 			return ResponseEntity.status(404).body(PostListRes.of(404, "Board does not exist using this pid", null));
+		}
+	}
+	
+	@PostMapping("/posts/{pid}/files")
+	@ApiOperation(value = "게시글에 파일을 등록", notes = "<strong>게시글에 파일을 등록하고 서버에 저장한다</strong>") 
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "성공"),
+//		@ApiResponse(code = 401, message = "인증 실패"),
+		@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<BaseResponseBody> registPostFile(
+			@PathVariable @ApiParam(value="게시글 pid", required = true) Long pid,
+			@RequestBody @ApiParam(value="파일", required = true) MultipartFile file) {
+		try {
+			
+			PostFile postFile = boardService.registFile(pid, file);
+			
+			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+		} catch (Exception e) {
+			return ResponseEntity.status(200).body(BaseResponseBody.of(500, "fail"));
+		}
+	}
+	
+	@GetMapping("/posts/{pid}/files")
+	@ApiOperation(value = "게시글의 파일들을 반환", notes = "<strong>게시글에 달려있는 파일들을 반환한다</strong>") 
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "성공"),
+//		@ApiResponse(code = 401, message = "인증 실패"),
+		@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public List<File> findFiles(
+			@PathVariable @ApiParam(value="게시글 pid", required = true) Long pid) {
+		try {
+			List<File> res = boardService.getFiles(pid);
+			return res;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 }

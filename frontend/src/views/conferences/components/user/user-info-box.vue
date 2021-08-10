@@ -125,28 +125,30 @@ export default {
     };
   },
   mounted() {
-    // 회원id로 정보가져오기
+    gapi.load("auth2", function() {
+      gapi.auth2.init();
+    });
   },
   methods: {
     async signOut() {
-      // console.log("로그아웃버튼누름");
-      // await window.gapi.auth2.getAuthInstance().disconnect();
-      // console.log("user Signed Out");
-      // sessionStorage.removeItem("userInfo");
-      // this.$store.commit("root/setLogin", false);
-      // this.$router.push("/");
       try {
         console.log("try disconnect");
-        await window.gapi.auth2.getAuthInstance().signOut();
+        var auth2 = await gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function() {
+          console.log("user signed out");
+        });
+        await auth2.disconnect();
         sessionStorage.removeItem("userInfo");
-        this.$store.commit("root/setLogin", false);
-        this.$router.push("/");
+        localStorage.clear();
+        sessionStorage.clear();
+        this.$router.push("/googlelogin");
       } catch (error) {
         console.log("****disconnect 실패 : " + error);
         console.log("fn --- user Signed Out");
+        localStorage.clear();
+        sessionStorage.clear();
         sessionStorage.removeItem("userInfo");
-        this.$store.commit("root/setLogin", false);
-        this.$router.push("/");
+        this.$router.push("/googlelogin");
       }
     },
     // 회원정보 조회
@@ -188,10 +190,11 @@ export default {
     async quit() {
       var self = this;
       await $axios
-        .delete("/users/" + 2)
+        .delete("/users/" + JSON.parse(sessionStorage.getItem("userInfo")).id)
         .then(res => {
           console.log(res.data);
           console.log("삭제완료");
+          sessionStorage.removeItem("userInfo");
           self.visible = false;
           self.$router.push("/");
         })

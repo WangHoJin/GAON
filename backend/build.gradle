@@ -126,7 +126,8 @@ configurations {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
-    implementation("org.springframework.boot:spring-boot-starter-security")
+    //Spring Security가 적용되면 기본 설정이 적용되어 모든 HTTP endpoints의 접근에 인증을 해야 한다.
+    //implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.plugin:spring-plugin-core:2.0.0.RELEASE")

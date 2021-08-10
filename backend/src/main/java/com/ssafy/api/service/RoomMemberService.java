@@ -17,7 +17,8 @@ public interface RoomMemberService {
 	RoomMember getRoomMemberByUserId(Long userId);
 //	RoomMember getRoomMemberByRoomId(Long roomId);
 	RoomMember getRoomMemberById(Long id);
+	RoomMember getRoomMemberByUidAndRid(Long uid, Long rid);
 	List<RoomMember> getRoomMembersbyRoomId(long roomId);
-	void removeRoomById(Long id);
 	List<Room> getRoomsByUid(Long uid);
+	boolean removeById(Long id);
 }

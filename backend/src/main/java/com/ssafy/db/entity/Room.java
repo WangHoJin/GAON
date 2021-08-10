@@ -39,14 +39,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class Room extends BaseEntity{    
     String name;
     @JsonIgnore
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
     @Column(unique=true)
     String code;
     String description;
     
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.REMOVE,fetch=FetchType.LAZY)
     @JoinColumn(name="host_id", nullable=false)
+	@OnDelete(action=OnDeleteAction.CASCADE)
     Guser host;
     
     @CreatedDate

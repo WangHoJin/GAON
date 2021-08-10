@@ -14,10 +14,12 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 방 모델 관련 디비 쿼리 생성을 위한 구현 정의.
  */
+@Transactional
 @Repository
 public class RoomMemberRepositorySupport {
     @Autowired
@@ -43,5 +45,9 @@ public class RoomMemberRepositorySupport {
 			rooms.add(rm.getRoom());
 		}
 		return rooms;
+	}
+	public Long deleteById(Long id) {
+		Long res = jpaQueryFactory.delete(qRoomMember).where(qRoomMember.id.eq(id)).execute();
+		return res;
 	}
 }
