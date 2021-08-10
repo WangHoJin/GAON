@@ -125,7 +125,6 @@ export default {
     };
   },
   mounted() {
-    // 회원id로 정보가져오기
     gapi.load("auth2", function() {
       gapi.auth2.init();
     });
