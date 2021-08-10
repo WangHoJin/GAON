@@ -44,14 +44,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 	)
 public class RoomMember extends BaseEntity{    
 	
-	@ManyToOne(cascade=CascadeType.REMOVE,fetch=FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     @JoinColumn(name="room_id", nullable=false)
-	@OnDelete(action=OnDeleteAction.CASCADE)
+//	@OnDelete(action=OnDeleteAction.CASCADE)
     Room room;
     
-	@ManyToOne(cascade=CascadeType.REMOVE,fetch=FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     @JoinColumn(name="user_id", nullable=false)
-    @OnDelete(action=OnDeleteAction.CASCADE)
+//    @OnDelete(action=OnDeleteAction.CASCADE)
     Guser user;
 
 	@Override

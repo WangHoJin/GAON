@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Base64.Encoder;
@@ -10,11 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.api.request.RollBookGetReq;
 import com.ssafy.api.request.RoomRegisterPostReq;
 import com.ssafy.db.entity.Guser;
 import com.ssafy.db.entity.RollBook;
 import com.ssafy.db.entity.Room;
 import com.ssafy.db.repository.RollBookRepository;
+import com.ssafy.db.repository.RollBookRepositorySupport;
 import com.ssafy.db.repository.RoomRepository;
 import com.ssafy.db.repository.RoomRepositorySupport;
 
@@ -35,22 +38,12 @@ public class RollBookServiceImpl implements RollBookService {
 	@Autowired
 	RollBookRepository rollBookRepository;
 	
-
+	@Autowired
+	RollBookRepositorySupport rollBookRepositorySupport;
 	
-//	@Override
-//	@Transactional
-//	public Room create(RoomRegisterPostReq roomInfo) {
-//		Room room = new Room();
-//		Guser host = guserService.getGuserById(roomInfo.getHost_id());
-//		room.setName(roomInfo.getName());
-//		room.setHost(host);
-//		room.setDescription(roomInfo.getDescription());
-//		// 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
-//		room.setPassword(passwordEncoder.encode(roomInfo.getPassword()));	
-//		Room res = roomRepository.save(room);
-//		res.setCode(makeCode(res));
-//		return roomRepository.save(res);
-//	}
+	
+
+
 
 	@Override
 	@Transactional
@@ -69,6 +62,14 @@ public class RollBookServiceImpl implements RollBookService {
 			System.out.println("출석부 새로 저장"+rollBook);
 			return rollBookRepository.save(rollBook);
 		}
+	}
+
+
+
+	@Override
+	public List<RollBook> getRollBooksByDateAndRid(LocalDate date, Long rid) {
+		
+		return rollBookRepositorySupport.findByDateAndRid(date, rid);
 	}
 
 	//rollBookRepository.save(rollBook)

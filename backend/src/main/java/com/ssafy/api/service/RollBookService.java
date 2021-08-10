@@ -1,8 +1,10 @@
 package com.ssafy.api.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import com.ssafy.api.request.RollBookGetReq;
 import com.ssafy.api.request.RoomRegisterPostReq;
 import com.ssafy.db.entity.RollBook;
 import com.ssafy.db.entity.Room;
@@ -17,5 +19,6 @@ public interface RollBookService {
 //	void removeRoom(Long id);
 //	Room modifyRoom(Long id, RoomRegisterPostReq roomInfo);
 //	boolean joinRoom(Map<String, String> roomInfo);
+	List<RollBook> getRollBooksByDateAndRid(LocalDate date, Long rid);
 
 }
