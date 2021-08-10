@@ -3,10 +3,13 @@ package com.ssafy.api.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.ssafy.api.request.BoardRegisterPostReq;
 import com.ssafy.api.request.PostRegisterPostReq;
 import com.ssafy.db.entity.Board;
 import com.ssafy.db.entity.Post;
+import com.ssafy.db.entity.PostFile;
 
 /**
  *	방 관련 비즈니스 로직 처리를 위한 서비스 인터페이스 정의.
@@ -24,4 +27,7 @@ public interface BoardService {
 	boolean removePost(Long pid);
 	Post getPostByPid(Long pid);
 	List<Post> getPostsById(Long id);
+	
+	//파일
+	PostFile registPostFile(Long pid, MultipartFile file);
 }

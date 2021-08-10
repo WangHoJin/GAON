@@ -64,9 +64,6 @@ public class RoomController {
 	public  ResponseEntity<BaseResponseBody> verifyRoom(
 			@RequestBody @ApiParam(value="방 코드와 패스워드", required = true, example="{\n \"code\":\"String\", \n \"password\":\"String\"\n}") Map<String, String> roomInfo) {
 		try {
-
-
-				
 			if(roomService.joinRoom(roomInfo)) {
 				return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 			} else {

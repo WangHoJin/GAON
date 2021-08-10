@@ -43,7 +43,7 @@ public class RoomMemberController {
 	@ApiOperation(value = "방 멤버를 추가한다", notes = "<strong>(유저 id(pk), 방 id(pk))로 룸 멤버를 추가한다.</strong>") 
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공"),
-        @ApiResponse(code = 404, message = "DB 에러"),
+        @ApiResponse(code = 409, message = "이미 방에 참여 중인 유저"),
         @ApiResponse(code = 500, message = "서버 오류")
     })
 	public ResponseEntity<RoomMemberRes> create(
@@ -55,7 +55,7 @@ public class RoomMemberController {
 		} catch (Exception e) {
 			System.out.println("error");
 			e.printStackTrace();
-			return ResponseEntity.status(404).body(RoomMemberRes.of(404, "이미 방에 참여중인 유저거나, rid, uid가 잘못되었습니다.", null));
+			return ResponseEntity.status(409).body(RoomMemberRes.of(409, "이미 방에 참여중인 유저거나, rid, uid가 잘못되었습니다.", null));
 		}
 	}
 	

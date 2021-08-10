@@ -20,6 +20,8 @@ com/ssafy/db/entity/Guser.java
  com.ssafy.db.entity.Guser
 com/ssafy/db/entity/Post.java
  com.ssafy.db.entity.Post
+com/ssafy/db/repository/PostRepositorySupport.java
+ com.ssafy.db.repository.PostRepositorySupport
 com/ssafy/api/service/RoomServiceImpl.java
  com.ssafy.api.service.RoomServiceImpl
 com/ssafy/api/service/BoardServiceImpl.java
@@ -128,6 +130,8 @@ com/ssafy/common/model/response/BaseResponseBody.java
  com.ssafy.common.model.response.BaseResponseBody
 com/ssafy/db/repository/RoomMemberRepositorySupport.java
  com.ssafy.db.repository.RoomMemberRepositorySupport
+com/ssafy/api/response/PostListRes.java
+ com.ssafy.api.response.PostListRes
 com/ssafy/api/vo/GuserVO.java
  com.ssafy.api.vo.GuserVO
 com/ssafy/api/vo/BoardVO.java
