@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ssafy.api.request.RoomRegisterPostReq;
+import com.ssafy.db.entity.Board;
 import com.ssafy.db.entity.Room;
 
 /**
@@ -16,5 +17,4 @@ public interface RoomService {
 	void removeRoom(Long id);
 	Room modifyRoom(Long id, RoomRegisterPostReq roomInfo);
 	boolean joinRoom(Map<String, String> roomInfo);
-
 }

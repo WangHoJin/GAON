@@ -89,13 +89,11 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public Post writePost(Long bid, PostRegisterPostReq postInfo) {
 		Post post = new Post();
-//		post.setBoard(getBoardById(postInfo.getBid()));
-		Board board = new Board();
+//		Board board = new Board();
+//		board.setId(bid);
 		Guser user = new Guser();
-		board.setId(bid);
 		user.setId(postInfo.getUid());
-		
-		post.setBoard(board);
+		post.setBoard(getBoardById(bid));
 		post.setUser(user);
 		post.setTitle(postInfo.getTitle());
 		post.setContent(postInfo.getContent());
@@ -215,5 +213,10 @@ public class BoardServiceImpl implements BoardService {
 			}
 		}
 		return files;
+	}
+
+	@Override
+	public List<Board> getBoardsByRid(Long rid) {
+		return boardRepository.findByRoomId(rid).get();
 	}
 }
