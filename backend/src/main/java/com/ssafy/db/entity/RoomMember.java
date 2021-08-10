@@ -54,4 +54,11 @@ public class RoomMember extends BaseEntity{
     @OnDelete(action=OnDeleteAction.CASCADE)
     Guser user;
 
+	@Override
+	public String toString() {
+		return "RoomMember [room=" + room + ", user=" + user + "]";
+	}
+	
+	
+
 }

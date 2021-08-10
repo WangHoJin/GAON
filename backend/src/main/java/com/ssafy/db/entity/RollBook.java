@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,15 +34,26 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Setter
 //Entity 영속성 및 업데이트에 대한 Auditing 정보를 캡처하는 JPA Entity Listener
 @EntityListeners(AuditingEntityListener.class)
+@Table(
+		uniqueConstraints={
+				@UniqueConstraint(
+					columnNames={"rmid","date"}
+				)
+			})
 public class RollBook extends BaseEntity{    
 	
 	@ManyToOne(cascade=CascadeType.REMOVE,fetch=FetchType.LAZY)
-    @JoinColumn(name="room_member", nullable=false)
+    @JoinColumn(name="rmid", nullable=false)
 	@OnDelete(action=OnDeleteAction.CASCADE)
     RoomMember roomMember;
 	
-	Date date;
+	LocalDate date;
 	
 	String state;
+
+	@Override
+	public String toString() {
+		return "RollBook [roomMember=" + roomMember + ", date=" + date + ", state=" + state + "]";
+	}
 
 }
