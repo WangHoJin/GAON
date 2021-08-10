@@ -127,6 +127,13 @@ export default {
       }
     };
   },
+  async mounted() {
+    // mount 될때마다 main-sidebar를 갱신해준다.
+    await this.$store.dispatch(
+      "getRoomByUserId",
+      JSON.parse(sessionStorage.getItem("userInfo")).id
+    );
+  },
   components: {
     JoinMember
   },
