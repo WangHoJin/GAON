@@ -110,21 +110,39 @@
             @click="chattingOnOff()"
             value="chatting off"
           />
+          <input
+            v-if="!connectionUser"
+            class="btn btn-large btn-danger"
+            type="button"
+            id="buttonConnectionUser"
+            @click="connectionUserOnOff()"
+            value="connectionUser on"
+          />
+          <input
+            v-else
+            class="btn btn-large btn-danger"
+            type="button"
+            id="buttonConnectionUser"
+            @click="connectionUserOnOff()"
+            value="connectionUser off"
+          />
           <div v-if="chatting">
             <MessageList :msgs="msgs" />
             <MessageForm @sendMsg="sendMsg" />
           </div>
+          <div v-if="connectionUser">
+            <div v-if="publisher">
+              <el-row>
+                <ConnetionUserList
+                  :publisher="publisher"
+                  :subscribers="subscribers"
+                  @leaveSession="leaveSession"
+                />
+              </el-row>
+            </div>
+          </div>
         </el-col>
       </el-row>
-      <div v-if="publisher">
-        <el-row>
-          <ConnetionUserList
-            :publisher="publisher"
-            :subscribers="subscribers"
-            @leaveSession="leaveSession"
-          />
-        </el-row>
-      </div>
     </div>
   </div>
 </template>
@@ -164,6 +182,7 @@ export default {
       aOnOff: true,
       size: true,
       chatting: false,
+      connectionUser: false,
       mySessionId: "SessionA",
       myUserName: "Participant" + Math.floor(Math.random() * 100),
       myUserId: ""
@@ -180,6 +199,9 @@ export default {
     this.joinSession();
   },
   methods: {
+    connectionUserOnOff() {
+      this.connectionUser = !this.connectionUser;
+    },
     chattingOnOff() {
       this.chatting = !this.chatting;
     },
