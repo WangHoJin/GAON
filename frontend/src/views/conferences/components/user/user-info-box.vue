@@ -126,33 +126,30 @@ export default {
   },
   mounted() {
     // 회원id로 정보가져오기
+    gapi.load("auth2", function() {
+      gapi.auth2.init();
+    });
   },
   methods: {
     async signOut() {
-      // console.log("로그아웃버튼누름");
-      // await window.gapi.auth2.getAuthInstance().disconnect();
-      // console.log("user Signed Out");
-      // sessionStorage.removeItem("userInfo");
-      // this.$store.commit("root/setLogin", false);
-      // this.$router.push("/");
       try {
         console.log("try disconnect");
-        var auth2 = gapi.auth2.getAuthInstance();
-        await auth2.signOut().then(function() {
+        var auth2 = await gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function() {
           console.log("user signed out");
         });
         await auth2.disconnect();
         sessionStorage.removeItem("userInfo");
         localStorage.clear();
         sessionStorage.clear();
-        this.$store.commit("root/setLogin", false);
-        this.$router.push("/");
+        this.$router.push("/googlelogin");
       } catch (error) {
         console.log("****disconnect 실패 : " + error);
         console.log("fn --- user Signed Out");
+        localStorage.clear();
+        sessionStorage.clear();
         sessionStorage.removeItem("userInfo");
-        this.$store.commit("root/setLogin", false);
-        this.$router.push("/");
+        this.$router.push("/googlelogin");
       }
     },
     // 회원정보 조회
