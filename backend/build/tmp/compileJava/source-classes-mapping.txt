@@ -24,6 +24,8 @@ com/ssafy/db/repository/PostRepositorySupport.java
  com.ssafy.db.repository.PostRepositorySupport
 com/ssafy/api/service/RoomServiceImpl.java
  com.ssafy.api.service.RoomServiceImpl
+com/ssafy/db/repository/PostFileRepositorySupport.java
+ com.ssafy.db.repository.PostFileRepositorySupport
 com/ssafy/api/service/BoardServiceImpl.java
  com.ssafy.api.service.BoardServiceImpl
 com/ssafy/api/controller/AuthController.java
@@ -132,6 +134,8 @@ com/ssafy/db/repository/RoomMemberRepositorySupport.java
  com.ssafy.db.repository.RoomMemberRepositorySupport
 com/ssafy/api/response/PostListRes.java
  com.ssafy.api.response.PostListRes
+com/ssafy/db/repository/PostFileRepository.java
+ com.ssafy.db.repository.PostFileRepository
 com/ssafy/api/vo/GuserVO.java
  com.ssafy.api.vo.GuserVO
 com/ssafy/api/vo/BoardVO.java

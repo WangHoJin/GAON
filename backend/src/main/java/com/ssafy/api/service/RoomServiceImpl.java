@@ -3,11 +3,9 @@ package com.ssafy.api.service;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Base64.Encoder;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -118,7 +116,6 @@ public class RoomServiceImpl implements RoomService {
 //		System.out.println(createdAt);
 //		System.out.println(random);
 //		System.out.println(text);
-		
 		Encoder encoder = Base64.getEncoder(); 
 		byte[] encodedBytes  = encoder.encode(text.getBytes());
 		return new String(encodedBytes);
