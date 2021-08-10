@@ -137,8 +137,14 @@ export default {
       // this.$router.push("/");
       try {
         console.log("try disconnect");
-        await window.gapi.auth2.getAuthInstance().signOut();
+        var auth2 = gapi.auth2.getAuthInstance();
+        await auth2.signOut().then(function() {
+          console.log("user signed out");
+        });
+        await auth2.disconnect();
         sessionStorage.removeItem("userInfo");
+        localStorage.clear();
+        sessionStorage.clear();
         this.$store.commit("root/setLogin", false);
         this.$router.push("/");
       } catch (error) {
