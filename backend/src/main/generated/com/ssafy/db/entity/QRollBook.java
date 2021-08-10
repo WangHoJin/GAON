@@ -24,7 +24,7 @@ public class QRollBook extends EntityPathBase<RollBook> {
 
     public final QBaseEntity _super = new QBaseEntity(this);
 
-    public final DatePath<java.sql.Date> date = createDate("date", java.sql.Date.class);
+    public final DatePath<java.time.LocalDate> date = createDate("date", java.time.LocalDate.class);
 
     //inherited
     public final NumberPath<Long> id = _super.id;
