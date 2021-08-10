@@ -45,8 +45,9 @@ public class Room extends BaseEntity{
     String code;
     String description;
     
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.REMOVE,fetch=FetchType.LAZY)
     @JoinColumn(name="host_id", nullable=false)
+	@OnDelete(action=OnDeleteAction.CASCADE)
     Guser host;
     
     @CreatedDate
