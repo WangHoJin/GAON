@@ -1,7 +1,6 @@
 package com.ssafy.api.response;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.User;

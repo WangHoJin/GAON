@@ -1,4 +1,5 @@
 package com.ssafy.api.controller;
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -229,11 +230,29 @@ public class BoardController {
 			@RequestBody @ApiParam(value="파일", required = true) MultipartFile file) {
 		try {
 			
-			PostFile postFile = boardService.registPostFile(pid, file);
+			PostFile postFile = boardService.registFile(pid, file);
 			
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 		} catch (Exception e) {
 			return ResponseEntity.status(200).body(BaseResponseBody.of(500, "fail"));
+		}
+	}
+	
+	@GetMapping("/posts/{pid}/files")
+	@ApiOperation(value = "게시글의 파일들을 반환", notes = "<strong>게시글에 달려있는 파일들을 반환한다</strong>") 
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "성공"),
+//		@ApiResponse(code = 401, message = "인증 실패"),
+		@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public List<File> findFiles(
+			@PathVariable @ApiParam(value="게시글 pid", required = true) Long pid) {
+		try {
+			List<File> res = boardService.getFiles(pid);
+			return res;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 }

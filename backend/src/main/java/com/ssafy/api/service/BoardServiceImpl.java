@@ -2,6 +2,7 @@ package com.ssafy.api.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -145,7 +146,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public PostFile registPostFile(Long pid, MultipartFile file) {
+	public PostFile registFile(Long pid, MultipartFile file) {
 		Post post = getPostByPid(pid);
 		PostFile postFile = new PostFile();
 		
@@ -180,6 +181,7 @@ public class BoardServiceImpl implements BoardService {
             }
         }
         //파일 저장
+        //경로 루트 files/Room[id]/[pid]_파일명
         try {
         	File newFile = new File(filePath);
         	System.out.println(newFile.getAbsolutePath());
@@ -191,5 +193,27 @@ public class BoardServiceImpl implements BoardService {
 			e.printStackTrace();
 		}
 		return postFileRepository.save(postFile);
+	}
+
+	@Override
+	public List<File> getFiles(Long pid) {
+		Post post = getPostByPid(pid);
+		List<PostFile> postFiles = post.getFiles();
+		List<File> files = new ArrayList<>();
+		
+		String rootPath = System.getProperty("user.dir");
+        String savePath = rootPath+"\\files\\Room"+post.getBoard().getRoom().getId();
+        		
+		for(PostFile pf : postFiles) {
+			try {
+				File file = new File(savePath+"\\"+pf.getFileName());
+				files.add(file);
+			} catch (Exception e) {
+				System.out.println("파일 입출력 에러");
+				e.printStackTrace();
+				return null;
+			}
+		}
+		return files;
 	}
 }

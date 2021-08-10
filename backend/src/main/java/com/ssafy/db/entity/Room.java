@@ -39,7 +39,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class Room extends BaseEntity{    
     String name;
     @JsonIgnore
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
     @Column(unique=true)
     String code;

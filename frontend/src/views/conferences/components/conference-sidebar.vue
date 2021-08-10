@@ -1,4 +1,5 @@
 <template>
+  <div>
   <el-menu active-text-color="#ffd04b" class="sidebar-tool sidebar-menu">
     <el-menu-item
       v-for="i in $store.getters.boards"
@@ -73,6 +74,7 @@
     <!-- 방 생성 dialog 끝 -->
     <!-- 방 코드 확인 dialog끝 -->
   </el-dialog>
+  </div>
 </template>
 
 <script>

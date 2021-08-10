@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,8 +51,6 @@ public class RoomController {
 	@Autowired
 	RoomMemberService roomMemberService;
 
-	@Autowired
-	PasswordEncoder passwordEncoder;
 	@PostMapping("/verify")
 	@ApiOperation(value = "방 인증 확인", notes = "<strong>방 code와 password로 방의 패스워드가 일치하는지 확인한다</strong>") 
     @ApiResponses({

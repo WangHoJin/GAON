@@ -61,27 +61,30 @@ const routes = [
             name: "board",
             component: () =>
               import("../../views/conferences/components/board.vue"),
+              redirect: {
+                name: 'board-post-list'
+              },
             children: [
-              // {
-              //   path: "",
-              //   name: "board-post-list",
-              //   component: () => import("@/components/board/BoardList.vue")
-              // }
-              // {
-              //   path: "create",
-              //   name: "board-post-create",
-              //   component: () => import("@/components/board/BoardCreate.vue")
-              // },
-              // {
-              //   path: "view/:pid",
-              //   name: "board-post-view",
-              //   component: () => import("@/components/board/BoardView.vue")
-              // },
-              // {
-              //   path: "modify/:pid",
-              //   name: "board-post-modify",
-              //   component: () => import("@/components/board/BoardModify.vue")
-              // }
+              {
+                path: "",
+                name: "board-post-list",
+                component: () => import("@/views/conferences/components/board/BoardList.vue")
+              },
+              {
+                path: "create",
+                name: "board-post-create",
+                component: () => import("@/views/conferences/components/board/BoardCreate.vue")
+              },
+              {
+                path: "view/:pid",
+                name: "board-post-view",
+                component: () => import("@/views/conferences/components/board/BoardView.vue")
+              },
+              {
+                path: "modify/:pid",
+                name: "board-post-modify",
+                component: () => import("@/views/conferences/components/board/BoardModify.vue")
+              }
             ]
           },
           {
