@@ -2,7 +2,6 @@
   <el-container class="main-wrapper">
     <el-contianer class="main-container">
       <el-main>
-        <!-- <el-button @click="getPosts($route.params.bid)"></el-button> -->
         <el-table
           :data="pagedTableData"
           style="width: 100%"
@@ -18,7 +17,7 @@
             :formatter="formatter">
           </el-table-column>
           <el-table-column
-            prop="uid"
+            prop="nickname"
             label="작성자"
             width="180">
           </el-table-column>

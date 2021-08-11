@@ -2,9 +2,11 @@ package com.ssafy.api.controller;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,11 +38,14 @@ import io.swagger.annotations.ApiResponses;
 /**
  * 게시판 관련 API 요청 처리를 위한 컨트롤러 정의.
  */
+@CrossOrigin("*")
 @Api(value = "게시판 API", tags = {"Board"})
 @RestController
 @RequestMapping("/api/v1/boards")
 public class BoardController {
 	
+	
+	private final static Logger LOG = Logger.getGlobal();
 	@Autowired
 	BoardService boardService;
 
@@ -229,11 +234,12 @@ public class BoardController {
 			@PathVariable @ApiParam(value="게시글 pid", required = true) Long pid,
 			@RequestBody @ApiParam(value="파일", required = true) MultipartFile file) {
 		try {
-			
 			PostFile postFile = boardService.registFile(pid, file);
-			
+			LOG.info("파일 업로드 성공"+","+postFile.getFileName());
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 		} catch (Exception e) {
+			LOG.info("파일 업로드 실패");
+			e.printStackTrace();
 			return ResponseEntity.status(200).body(BaseResponseBody.of(500, "fail"));
 		}
 	}
