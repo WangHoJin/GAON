@@ -57,13 +57,19 @@ export default {
   },
   methods: {
     handleRemove(file, fileList) {
-      console.log(file, fileList);
+      console.log("지우기버튼누름");
+      console.log("file" + file);
+      console.log("fileList: " + fileList);
     },
     handlePreview(file) {
       console.log("파일클릭");
+      console.log("file" + file);
       console.log(file);
     },
     handleExceed(files, fileList) {
+      console.log("최대 업로드 갯수 초과했을때");
+      console.log("files" + files);
+      console.log("fileList: " + fileList);
       this.$message.warning(
         `The limit is 3, you selected ${
           files.length
@@ -71,6 +77,9 @@ export default {
       );
     },
     beforeRemove(file, fileList) {
+      console.log(" beforeRemove ");
+      console.log("file" + file);
+      console.log("fileList: " + fileList);
       return this.$confirm(`Cancel the transfert of ${file.name} ?`);
     }
   },
@@ -79,7 +88,10 @@ export default {
   },
   name: "conference-detail",
   mounted() {
+    console.log("mounted ");
+    console.log("this.$route.params.conferenceId");
     console.log(this.$route.params.conferenceId);
+    console.log("process env VUE_APP_API_URL");
     console.log(process.env.VUE_APP_API_URL);
   }
 };
