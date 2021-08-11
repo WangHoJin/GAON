@@ -25,13 +25,14 @@ export default {
           }
         });
     },
-    async deleteRoomMember({ state, commit }, roomMemberInfo) {
-      console.log("actions deleteRoomMember roomMemberModule");
+    async roomMemberDelete({ state, commit }, roomMemberInfo) {
+      console.log("actions roomMemberDelete roomMemberModule");
+      console.log(roomMemberInfo);
       const url = "/room-member";
       await $axios
         .delete(url, roomMemberInfo)
         .then(res => {
-          console.log("response from deleteRoomMember");
+          console.log("response from roomMemberDelete");
           console.log(res.data);
         })
         .catch(err => {

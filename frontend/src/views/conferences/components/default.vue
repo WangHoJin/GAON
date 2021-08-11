@@ -108,19 +108,6 @@
       </span>
     </template>
     <!-- 방 생성 dialog 끝 -->
-    <!-- 방 코드 확인 dialog시작 -->
-    <!-- <el-form v-if="!makeRoomFlag">
-      <el-form-item label="방 이름🏠"> {{ form.name }}</el-form-item>
-      <el-form-item label="방 참여 코드🔑"> {{ code }}</el-form-item>
-    </el-form> -->
-    <!-- <template #footer v-if="!makeRoomFlag">
-      <span class="dialog-footer">
-        <el-button @click="dialogFormVisible = false" type="info"
-          >확인</el-button
-        >
-      </span>
-    </template> -->
-    <!-- 방 코드 확인 dialog끝 -->
   </el-dialog>
   <!-- 방 참가 dialog시작 -->
   <el-dialog
