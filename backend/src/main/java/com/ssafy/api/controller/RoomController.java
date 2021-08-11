@@ -179,9 +179,9 @@ public class RoomController {
 	public ResponseEntity<BoardListRes> findBoards(
 			@PathVariable @ApiParam(value="방 id(pk)", required = true) Long id) {
 		try {
-			List<Board> list = boardService.getBoardsByRid(id);
-//			Room room = roomService.getRoomById(id);
-//			List<Board> list = room.getBoards();
+//			List<Board> list = boardService.getBoardsByRid(id);
+			Room room = roomService.getRoomById(id);
+			List<Board> list = room.getBoards();
 //			for(Board b : list) {
 //				System.out.println(b.getId()+","+b.getName());
 //			}

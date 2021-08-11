@@ -29,7 +29,7 @@ public class PostRes extends BaseResponseBody {
 		res.setStatusCode(statusCode);
 		res.setMessage(message);
 		if(post!=null) {
-			res.post = new PostVO(post.getId(), post.getTitle(), post.getContent(), post.getUser().getId(), post.getBoard().getId(), post.getCreated_time(), post.getModified_time());	
+			res.post = new PostVO(post.getId(), post.getTitle(), post.getContent(), post.getBoard().getId(), post.getCreated_time(), post.getModified_time(), post.getUser().getId(), post.getUser().getNickname(), post.getUser().getEmail());
 		}
 		return res;
 	}

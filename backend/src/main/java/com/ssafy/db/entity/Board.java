@@ -34,7 +34,7 @@ public class Board extends BaseEntity{
     Room room;
     String description;
     
-    @OneToMany(fetch = FetchType.EAGER, orphanRemoval= true, cascade=CascadeType.ALL,mappedBy = "board")
+    @OneToMany(fetch=FetchType.LAZY, orphanRemoval= true, cascade=CascadeType.ALL,mappedBy = "board")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Post> posts = new ArrayList<Post>();
 }

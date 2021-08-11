@@ -27,8 +27,8 @@ public class PostListRes extends BaseResponseBody {
 		res.setStatusCode(statusCode);
 		res.setMessage(message);
 		if(posts!=null) {
-			for(Post p : posts) {
-				PostVO item = new PostVO(p.getId(), p.getTitle(), p.getContent(), p.getUser().getId(), p.getBoard().getId(), p.getCreated_time(), p.getModified_time());
+			for(Post post : posts) {
+				PostVO item = new PostVO(post.getId(), post.getTitle(), post.getContent(), post.getBoard().getId(), post.getCreated_time(), post.getModified_time(), post.getUser().getId(), post.getUser().getNickname(), post.getUser().getEmail());
 				res.posts.add(item);
 			}
 		}
