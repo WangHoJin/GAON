@@ -2,7 +2,6 @@
   <el-container class="main-wrapper">
     <el-contianer class="main-container">
       <el-main>
-        <!-- <el-button @click="getPosts($route.params.bid)"></el-button> -->
         <el-table
           :data="pagedTableData"
           style="width: 100%"
