@@ -150,6 +150,7 @@ export default {
       // if 참여한 방이 있다면 메인으로
       if (this.$store.getters.rooms.length > 0) {
         console.log("참여한 방이 있습니다");
+        this.dialogFormVisible_modifyUser = false;
         this.$router.push({ name: "conference-main" });
       } else {
         // 없다면 방 생성 페이지로

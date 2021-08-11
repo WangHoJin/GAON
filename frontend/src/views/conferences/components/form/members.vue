@@ -38,17 +38,8 @@ export default {
   methods: {
     //룸멤버 id로 룸멤버를 삭제
     async deleteMember(user_id) {
-      console.log(this.rid);
-      console.log(user_id);
-      // var room_id = this.rid;
-
-      var roomMemberInfo = {
-        room_id: this.rid,
-        user_id: user_id
-      };
-      console.log(roomMemberInfo);
       await $axios
-        .delete("/room-member", roomMemberInfo)
+        .delete("/room-member/" + this.rid + "/" + user_id)
         .then(res => {
           console.log("response from roomMemberDelete");
           console.log(res.data);
@@ -56,8 +47,6 @@ export default {
         .catch(err => {
           console.log(err);
         });
-      // console.log(roomMemberInfo);
-      // await this.$store.dispatch("roomMemberDelete", roomMemberInfo);
       // 삭제 후 부모컴포넌트의 이벤트 실행해서 참여중인 멤버 갱신
       this.$emit("updateJoinedMember");
     }
