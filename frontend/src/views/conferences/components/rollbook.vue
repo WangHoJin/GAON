@@ -25,7 +25,7 @@
             tableData.filter(
               data =>
                 !search ||
-                data.name.toLowerCase().includes(search.toLowerCase())
+                data.nickname.toLowerCase().includes(search.toLowerCase())
             )
           "
           style="width: 100%"
