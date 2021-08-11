@@ -55,8 +55,8 @@ services:
     depends_on:
       - db
     #   - kurento
-    networks:
-      - backend
+    # networks:
+    #   - backend
 
   # AWS용 Openvidu
   openvidu-server:
