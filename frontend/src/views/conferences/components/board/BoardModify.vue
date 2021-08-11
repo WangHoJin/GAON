@@ -17,7 +17,7 @@
           class="upload-demo"
           drag
           ref="upload"
-          action="https://jsonplaceholder.typicode.com/posts/"
+          :action="URL"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
           :file-list="fileList"
@@ -74,6 +74,7 @@ export default {
         title:" ",
         content:""
         },
+      URL: process.env.VUE_APP_API_URL + `/api/v1/boards/posts/1/files/`,
     }
   },
   methods: {
