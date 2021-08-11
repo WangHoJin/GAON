@@ -34,9 +34,10 @@ services:
       context: ./
     restart: always
     container_name: gaon_app
-    ports:
-      - 5442:5442
-      - 8443:8443
+    network_mode: host
+    # ports:
+    #   - 5442:5442
+    #   - 8443:8443
     environment:
       TZ: Asia/Seoul
       # 수정사항
