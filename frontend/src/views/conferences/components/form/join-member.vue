@@ -1,7 +1,13 @@
 <template>
   <h1>참여 목록</h1>
   <el-row>
-    <Members v-for="(member, index) in members" :key="index" :member="member" />
+    <Members
+      v-for="(member, index) in members"
+      :key="index"
+      :member="member"
+      :rid="rid"
+      @updateJoinedMember="updateJoinedMember"
+    />
   </el-row>
 </template>
 <script>
@@ -31,6 +37,17 @@ export default {
     );
     console.log("response from actions getMembersByUsingRoomId");
     console.log(this.members);
+  },
+  methods: {
+    async updateJoinedMember() {
+      console.log("부모의 updateJoinedMember 실행됨.");
+      this.members = await this.$store.dispatch(
+        "getMembersByUsingRoomId",
+        this.rid
+      );
+      console.log("response from actions getMembersByUsingRoomId");
+      console.log(this.members);
+    }
   }
 };
 </script>

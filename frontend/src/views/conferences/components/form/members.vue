@@ -12,7 +12,10 @@
         <span>{{ member.email }}</span></el-col
       >
       <el-col :span="2">
-        <el-button type="danger" size="mini" @click="deleteMember()"
+        <el-button
+          type="danger"
+          size="mini"
+          @click="deleteMember(member.user_id)"
           >X</el-button
         ></el-col
       >
@@ -20,18 +23,44 @@
   </el-form-item>
 </template>
 <script>
+// API
+import $axios from "axios";
 export default {
   name: "members",
   props: {
     member: {
       type: Object
+    },
+    rid: {
+      type: String
     }
   },
   methods: {
     //룸멤버 id로 룸멤버를 삭제
-    // deleteMember() {
-    //   this.$store.dispatch("root/roomMemberDelete");
-    // }
+    async deleteMember(user_id) {
+      console.log(this.rid);
+      console.log(user_id);
+      // var room_id = this.rid;
+
+      var roomMemberInfo = {
+        room_id: this.rid,
+        user_id: user_id
+      };
+      console.log(roomMemberInfo);
+      await $axios
+        .delete("/room-member", roomMemberInfo)
+        .then(res => {
+          console.log("response from roomMemberDelete");
+          console.log(res.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      // console.log(roomMemberInfo);
+      // await this.$store.dispatch("roomMemberDelete", roomMemberInfo);
+      // 삭제 후 부모컴포넌트의 이벤트 실행해서 참여중인 멤버 갱신
+      this.$emit("updateJoinedMember");
+    }
   }
 };
 </script>
