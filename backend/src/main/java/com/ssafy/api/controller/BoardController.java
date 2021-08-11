@@ -37,7 +37,7 @@ import io.swagger.annotations.ApiResponses;
 /**
  * 게시판 관련 API 요청 처리를 위한 컨트롤러 정의.
  */
-//@CrossOrigin("*")
+@CrossOrigin("*")
 @Api(value = "게시판 API", tags = {"Board"})
 @RestController
 @RequestMapping("/api/v1/boards")
