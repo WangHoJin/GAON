@@ -60,7 +60,7 @@ public class RoomMemberController {
 	}
 	
 	
-	@DeleteMapping()
+	@DeleteMapping("/{rid}/{uid}")
 	@ApiOperation(value = "방 멤버를 삭제한다 ", notes = "<strong>방id, 유저id로 룸멤버를 삭제한다.</strong> </br>방장이 방을 나갈 경우엔 방도 삭제된다") 
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "성공"),
@@ -68,7 +68,9 @@ public class RoomMemberController {
 		@ApiResponse(code = 500, message = "서버 오류")
 	})
 	public ResponseEntity<BaseResponseBody> delete(
-			@RequestBody @ApiParam(value="유저 id, 방 id", required = true) RoomMemberRegisterPostReq roomMemberInfo){
+			@PathVariable @ApiParam(value="방 id", required = true) Long rid, 
+			@PathVariable @ApiParam(value="유저 id", required = true)Long uid){
+		RoomMemberRegisterPostReq roomMemberInfo = new RoomMemberRegisterPostReq(uid, rid);
 		try {
 			RoomMember rm = roomMemberService.getRoomMemberByUidAndRid(roomMemberInfo.getUser_id(),roomMemberInfo.getRoom_id());
 			//방장일 경우 방을 통으로 삭제한다
