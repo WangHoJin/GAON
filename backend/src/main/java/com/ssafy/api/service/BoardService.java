@@ -19,6 +19,7 @@ public interface BoardService {
 	//게시판
 	Board createBoard(BoardRegisterPostReq boardInfo);
 	Board getBoardById(Long id);
+	List<Board> getBoardsByRid(Long rid);
 	Board modifyBoard(Long id, Map<String,String> boardInfo); // name, description 속성이 담겨있으면 수정함
 	boolean removeBoard(Long id);
 	

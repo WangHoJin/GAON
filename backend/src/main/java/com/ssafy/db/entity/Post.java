@@ -54,7 +54,7 @@ public class Post extends BaseEntity{
     @LastModifiedDate
     LocalDateTime modified_time;
     
-    @OneToMany(fetch = FetchType.EAGER, orphanRemoval= true, cascade=CascadeType.ALL,mappedBy = "post")
+    @OneToMany(fetch=FetchType.LAZY, orphanRemoval= true, cascade=CascadeType.ALL,mappedBy = "post")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<PostFile> files = new ArrayList<PostFile>();
     
