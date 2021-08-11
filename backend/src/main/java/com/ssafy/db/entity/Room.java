@@ -39,27 +39,23 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class Room extends BaseEntity{    
     String name;
     @JsonIgnore
-    // @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
     @Column(unique=true)
     String code;
     String description;
     
-    @ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="host_id", nullable=false)
-//	@OnDelete(action=OnDeleteAction.CASCADE)
+	@OnDelete(action=OnDeleteAction.CASCADE)
     Guser host;
     
     @CreatedDate
     LocalDateTime created_time;
     @LastModifiedDate
     LocalDateTime modified_time;
+
     
-//    @OneToMany(fetch=FetchType.LAZY, orphanRemoval= true, cascade=CascadeType.REMOVE,mappedBy = "room")
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    private List<RoomMember> roomMembers = new ArrayList<RoomMember>();
-    
-    @OneToMany(fetch = FetchType.EAGER, orphanRemoval= true, cascade=CascadeType.ALL,mappedBy = "room")
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval= true, cascade=CascadeType.ALL,mappedBy = "room")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Board> boards = new ArrayList<Board>();
 }

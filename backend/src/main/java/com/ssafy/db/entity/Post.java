@@ -42,10 +42,11 @@ public class Post extends BaseEntity{
     
     @ManyToOne
     @JoinColumn(name="uid", nullable=false)
+    @OnDelete(action=OnDeleteAction.CASCADE)
     Guser user;
 
     @ManyToOne
-    @JoinColumn(name="bid", nullable=false)
+    @JoinColumn(name="bid", nullable=false)    
     Board board;
     
     @CreatedDate

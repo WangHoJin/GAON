@@ -42,7 +42,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 			})
 public class RollBook extends BaseEntity{    
 	
-	@ManyToOne(cascade=CascadeType.REMOVE,fetch=FetchType.LAZY)
+	@ManyToOne
     @JoinColumn(name="rmid", nullable=false)
 	@OnDelete(action=OnDeleteAction.CASCADE)
     RoomMember roomMember;
