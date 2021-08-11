@@ -34,7 +34,7 @@ services:
       context: ./
     restart: always
     container_name: gaon_app
-    network_mode: host
+    # network_mode: host
     # ports:
     #   - 5442:5442
     #   - 8443:8443
@@ -55,8 +55,8 @@ services:
     depends_on:
       - db
     #   - kurento
-    # networks:
-    #   - backend
+    networks:
+      - backend
 
   # AWS용 Openvidu
   openvidu-server:
