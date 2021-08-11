@@ -18,7 +18,7 @@
             :formatter="formatter">
           </el-table-column>
           <el-table-column
-            prop="uid"
+            prop="nickname"
             label="작성자"
             width="180">
           </el-table-column>
