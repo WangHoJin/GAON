@@ -27,20 +27,7 @@ services:
     # 이거 안해주면 aws에서 mbind: Operation not permitted 에러 뜸
     security_opt:
       - seccomp:unconfined
-  # kurento 부분, 나중에 AWS설정 후에 다시 해보기
-  # kurento:
-  #   image: kurento/kurento-media-server:latest
-  #   restart: always
-  #   ports:
-  #     - '8888:8888'
-  #   environment:
-  #     TZ: 'Asia/Seoul'
-  #     # <TURN 서버가 기동되는 퍼블릭 Ipv4 주소>
-  #     KMS_STUN_IP: i5b101.p.ssafy.io
-  #     KMS_STUN_PORT: '3478'
-  #     KMS_TURN_URL: 'root:dlfgo101@i5b101.p.ssafy.io:3478?transport=udp'
-  #   networks:
-  #     - backend
+
   app:
     # 공개된 Image 가 아닌 Dockerfile 을 통한 빌드 이미지 사용
     build:
@@ -66,6 +53,7 @@ services:
     networks:
       - backend
 
+  # AWS용 Openvidu
   openvidu-server:
     image: openvidu/openvidu-server:2.19.0
     restart: on-failure
