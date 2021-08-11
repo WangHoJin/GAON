@@ -14,6 +14,7 @@
         <el-upload
           class="upload-demo"
           drag
+          ref="upload"
           action="https://jsonplaceholder.typicode.com/posts/"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
@@ -23,6 +24,13 @@
         >
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
+          <el-button
+            style="display:none"
+            size="small"
+            type="success"
+            @click="submitUpload"
+            >upload to server</el-button
+          >
           <template #tip>
             <div class="el-upload__tip">
               jpg/png files with a size less than 500kb
@@ -30,7 +38,7 @@
           </template>
         </el-upload>
           <el-button type="info" @click="dialogFormVisible = false;submitCancle();">취소</el-button>
-          <el-button type="primary" class="gaon-button" @click="dialogFormVisible = false;createPost($route.params.bid);">글 작성</el-button>
+          <el-button type="primary" class="gaon-button" @click="dialogFormVisible = false;submitUpload();createPost($route.params.bid);">글 작성</el-button>
       </el-main>
     </el-contianer>
   </el-container>
@@ -55,6 +63,10 @@ export default {
         this.form.title = ''
         this.form.content =''
         this.$router.push({name: 'board-post-list'})
+      },
+      submitUpload() {
+        console.log("files are uploaded")
+        this.$refs.upload.submit()
       },
       // 새 글 생성하기
       async createPost(bid) {
