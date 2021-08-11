@@ -17,7 +17,12 @@ export default {
           console.log(res.data);
         })
         .catch(err => {
-          console.log(err);
+          console.log(err.response);
+          console.log("이미 참가한 방입니다");
+          if (err.response.data.statusCode == 409) {
+            alert("이미 방에 참가중입니다!");
+            response = null;
+          }
         });
     },
     async deleteRoomMember({ state, commit }, roomMemberInfo) {

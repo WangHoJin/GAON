@@ -19,18 +19,18 @@
             </div>
           </template>
         </el-calendar>
-
+        <el-button @click="modifyRollbook">수정하기</el-button>
         <el-table
           :data="
             tableData.filter(
               data =>
                 !search ||
-                data.name.toLowerCase().includes(search.toLowerCase())
+                data.nickname.toLowerCase().includes(search.toLowerCase())
             )
           "
           style="width: 100%"
         >
-          <el-table-column label="이름" prop="name"> </el-table-column>
+          <el-table-column label="이름" prop="nickname"> </el-table-column>
           <el-table-column align="right">
             <template #header>
               <el-input
@@ -39,11 +39,12 @@
                 placeholder="Type to search"
               />
             </template>
+            <!-- 라디오 토글해주면 알아서 tableData의 state(출결상태)가 바뀜 -->
             <template #default="scope">
-              <el-radio v-model="tableData[scope.$index].attendance" label="1"
+              <el-radio v-model="tableData[scope.$index].state" label="출석"
                 >출석</el-radio
               >
-              <el-radio v-model="tableData[scope.$index].attendance" label="0"
+              <el-radio v-model="tableData[scope.$index].state" label="결석"
                 >결석</el-radio
               >
             </template>
@@ -58,28 +59,7 @@ import $axios from "axios";
 export default {
   data() {
     return {
-      tableData: [
-        {
-          date: "2016-05-03",
-          name: "Tom",
-          attendance: "1"
-        },
-        {
-          date: "2016-05-02",
-          name: "John",
-          attendance: "0"
-        },
-        {
-          date: "2016-05-04",
-          name: "Morgan",
-          attendance: "1"
-        },
-        {
-          date: "2016-05-01",
-          name: "Jessy",
-          attendance: "1"
-        }
-      ],
+      tableData: [],
       search: ""
     };
   },
@@ -90,8 +70,22 @@ export default {
       $axios
         .get("/rollbook/" + this.$route.params.conferenceId + "/" + day)
         .then(res => {
-          console.log(res);
+          console.log(res.data.rollbooks);
+          this.tableData = res.data.rollbooks;
         });
+    },
+    // 출석부 수정
+    modifyRollbook() {
+      var rollbookList = this.tableData.filter(function(item, idx) {
+        delete item.email;
+        delete item.nickname;
+        return item;
+      });
+      console.log(rollbookList);
+      $axios.post("/rollbook/", rollbookList).then(res => {
+        console.log("res.data.rollbooks");
+        console.log(res.data.rollbooks);
+      });
     }
   }
 };
