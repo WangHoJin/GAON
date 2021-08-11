@@ -3,8 +3,8 @@
     <el-col :span="3"> <conference-sidevar /></el-col>
     <el-col :span="21">
       <el-main>
-        {{ $route.params.conferenceId + "번 방 상세 보기 페이지" }
-        <h3>테스트용으로 달아둠 나중에 지우겠음</h3>
+        {{ $route.params.conferenceId + "번 방 상세 보기 페이지" }}
+        <h5>테스트용 나중에 지우겠음</h5>
         <el-upload
           class="upload-demo"
           :action="URL"
