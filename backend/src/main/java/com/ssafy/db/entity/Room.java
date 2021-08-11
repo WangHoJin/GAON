@@ -55,15 +55,8 @@ public class Room extends BaseEntity{
     LocalDateTime modified_time;
 
     
-<<<<<<< HEAD
+
     @OneToMany(fetch = FetchType.LAZY, orphanRemoval= true, cascade=CascadeType.ALL,mappedBy = "room")
-=======
-//    @OneToMany(fetch=FetchType.LAZY, orphanRemoval= true, cascade=CascadeType.REMOVE,mappedBy = "room")
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    private List<RoomMember> roomMembers = new ArrayList<RoomMember>();
-    
-    @OneToMany(fetch=FetchType.LAZY, orphanRemoval= true, cascade=CascadeType.ALL,mappedBy = "room")
->>>>>>> 29f51716479693f9d74cbcdfa9d8a8392dbd5d2e
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Board> boards = new ArrayList<Board>();
 }
