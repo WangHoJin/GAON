@@ -2,6 +2,7 @@ package com.ssafy.api.controller;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +44,8 @@ import io.swagger.annotations.ApiResponses;
 @RequestMapping("/api/v1/boards")
 public class BoardController {
 	
+	
+	private final static Logger LOG = Logger.getGlobal();
 	@Autowired
 	BoardService boardService;
 
@@ -231,11 +234,12 @@ public class BoardController {
 			@PathVariable @ApiParam(value="게시글 pid", required = true) Long pid,
 			@RequestBody @ApiParam(value="파일", required = true) MultipartFile file) {
 		try {
-			
 			PostFile postFile = boardService.registFile(pid, file);
-			
+			LOG.info("파일 업로드 성공"+","+postFile.getFileName());
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 		} catch (Exception e) {
+			LOG.info("파일 업로드 실패");
+			e.printStackTrace();
 			return ResponseEntity.status(200).body(BaseResponseBody.of(500, "fail"));
 		}
 	}

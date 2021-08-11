@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,8 @@ import com.ssafy.db.repository.PostRepositorySupport;
 @Service("boardService")
 public class BoardServiceImpl implements BoardService {
 
+	private final static Logger LOG = Logger.getGlobal();
+	
 	@Autowired
 	BoardRepository boardRepository;
 	@Autowired
@@ -172,9 +175,11 @@ public class BoardServiceImpl implements BoardService {
             try{
                 new File(savePath).mkdirs();
                 System.out.println("경로 : " + savePath);
+                LOG.info("경로 : "+savePath);
             }
             catch(Exception e){
             	System.out.println("경로 만들기 실패");
+            	LOG.severe("경로 만들기 실패");
                 e.getStackTrace();
             }
         }
@@ -182,6 +187,8 @@ public class BoardServiceImpl implements BoardService {
         //경로 루트 files/Room[id]/[pid]_파일명
         try {
         	File newFile = new File(filePath);
+        	LOG.info(newFile.getAbsolutePath());
+        	LOG.info(newFile.getPath());
         	System.out.println(newFile.getAbsolutePath());
         	System.out.println(newFile.getPath());
 			file.transferTo(newFile);
