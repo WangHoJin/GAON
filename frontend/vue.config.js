@@ -2,7 +2,7 @@
 module.exports = {
   devServer: {
     disableHostCheck: true, //안해주면 로컬에서만 접속되고 외부에서 접속이 안됨!
-    https: true,
+    https: false,
     port: 8083,
     open: true,
     proxy: {
