@@ -42,6 +42,7 @@ services:
       - OPENVIDU_URL=http://localhost:5443
       - OPENVIDU_SECRET=${OPENVIDU_SECRET}
       - CALL_OPENVIDU_CERTTYPE=${CERTIFICATE_TYPE}
+
         TZ: Asia/Seoul
         # 수정사항
         #Spring application.properties DB 설정
