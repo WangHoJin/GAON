@@ -34,6 +34,9 @@
 
     <div id="session" v-if="session">
       <el-row>
+        <!-- <el-button type="" @click="roll-book-check=true;">출석체크하세요</el-button> -->
+        <!-- <RollBookCheck /> -->
+
         <el-col :span="12">
           <div id="session-header">
             <h1 id="session-title">{{ mySessionId }}</h1>
@@ -153,7 +156,7 @@ import UserVideo from "./meeting-components/UserVideo.vue";
 import MessageForm from "./meeting-components/messageForm";
 import MessageList from "./meeting-components/messageList";
 import ConnetionUserList from "./meeting-components/ConnetionUserList";
-
+// import RollBookCheck from "./meeting-components/roll-book-check.vue";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const OPENVIDU_SERVER_URL = "https://3.36.51.233:4443";
@@ -167,6 +170,7 @@ export default {
     MessageForm,
     MessageList,
     ConnetionUserList
+    // RollBookCheck
   },
 
   data() {
@@ -177,7 +181,6 @@ export default {
       publisher: undefined,
       subscribers: [],
       msgs: [],
-      memberlist: [],
       vOnOff: true,
       aOnOff: true,
       size: true,
