@@ -130,24 +130,25 @@ export default {
     });
   },
   methods: {
+    async disconnectGoogle() {
+      var auth2 = await gapi.auth2.getAuthInstance();
+      auth2.signOut().then(function() {
+        console.log("user signed out");
+      });
+      await auth2.disconnect();
+    },
+    clearStorage() {
+      sessionStorage.removeItem("userInfo");
+      localStorage.clear();
+      sessionStorage.clear();
+    },
     async signOut() {
       try {
-        console.log("try disconnect");
-        var auth2 = await gapi.auth2.getAuthInstance();
-        auth2.signOut().then(function() {
-          console.log("user signed out");
-        });
-        await auth2.disconnect();
-        sessionStorage.removeItem("userInfo");
-        localStorage.clear();
-        sessionStorage.clear();
+        await this.disconnectGoogle();
+        this.clearStorage();
         this.$router.push("/googlelogin");
       } catch (error) {
-        console.log("****disconnect 실패 : " + error);
-        console.log("fn --- user Signed Out");
-        localStorage.clear();
-        sessionStorage.clear();
-        sessionStorage.removeItem("userInfo");
+        this.clearStorage();
         this.$router.push("/googlelogin");
       }
     },
@@ -191,12 +192,12 @@ export default {
       var self = this;
       await $axios
         .delete("/users/" + JSON.parse(sessionStorage.getItem("userInfo")).id)
-        .then(res => {
-          console.log(res.data);
+        .then(async function(res) {
           console.log("삭제완료");
-          sessionStorage.removeItem("userInfo");
+          self.disconnectGoogle();
+          self.clearStorage();
           self.visible = false;
-          self.$router.push("/");
+          self.$router.push("/quit");
         })
         .catch(err => {
           console.log(err);

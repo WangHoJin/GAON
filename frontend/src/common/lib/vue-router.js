@@ -8,24 +8,17 @@ const routes = [
     path: "/",
     component: () => import("../../views/conferences/components/default.vue"),
     beforeEnter: async function(to, from, next) {
-      console.log("라우터가드");
-      console.log(store.state.roomModule.isClickPlusBtn);
       await store.dispatch(
         "getRoomByUserId",
         JSON.parse(sessionStorage.getItem("userInfo")).id
       );
       if (!store.state.roomModule.isClickPlusBtn) {
-        console.log("최초 로그인 상태일때");
-        console.log(store.getters.rooms.length);
         if (store.getters.rooms.length > 0) {
-          console.log("참여하고있는 방들이 있다면 ");
           return next("/main");
         } else {
-          console.log("참여하고 있는 방들이 없다면");
           return next();
         }
       } else {
-        console.log("plus버튼을 눌렀습니다");
         next();
       }
     }
@@ -34,6 +27,11 @@ const routes = [
     // 구글로그인 페이지
     path: "/googlelogin",
     component: () => import("../../views/google-login/google-login.vue")
+  },
+  {
+    // 회원탈퇴 페이지
+    path: "/quit",
+    component: () => import("../../views/main/Quit.vue")
   },
   {
     // 2번째 라우터
@@ -61,29 +59,33 @@ const routes = [
             name: "board",
             component: () =>
               import("../../views/conferences/components/board.vue"),
-              redirect: {
-                name: 'board-post-list'
-              },
+            redirect: {
+              name: "board-post-list"
+            },
             children: [
               {
                 path: "",
                 name: "board-post-list",
-                component: () => import("@/views/conferences/components/board/BoardList.vue")
+                component: () =>
+                  import("@/views/conferences/components/board/BoardList.vue")
               },
               {
                 path: "create",
                 name: "board-post-create",
-                component: () => import("@/views/conferences/components/board/BoardCreate.vue")
+                component: () =>
+                  import("@/views/conferences/components/board/BoardCreate.vue")
               },
               {
                 path: "view/:pid",
                 name: "board-post-view",
-                component: () => import("@/views/conferences/components/board/BoardView.vue")
+                component: () =>
+                  import("@/views/conferences/components/board/BoardView.vue")
               },
               {
                 path: "modify/:pid",
                 name: "board-post-modify",
-                component: () => import("@/views/conferences/components/board/BoardModify.vue")
+                component: () =>
+                  import("@/views/conferences/components/board/BoardModify.vue")
               }
             ]
           },
@@ -120,20 +122,25 @@ const router = createRouter({
 });
 
 router.afterEach(to => {
-  console.log(to);
+  // console.log(to);
 });
 
 router.beforeEach((to, from, next) => {
   console.log("구글라우터가드==============================================");
-  console.log(sessionStorage.getItem("userInfo"));
+  // 회원탈퇴한 경우 탈퇴 페이지로 이동하기
+  if (to.fullPath == "/quit") {
+    next();
+  }
+  // 세션에 유저정보가 없는경우
   if (sessionStorage.getItem("userInfo") === null) {
     if (to.fullPath != "/googlelogin") {
-      console.log("로그인해주세요");
       return next("/googlelogin");
     } else {
       next();
     }
-  } else if (sessionStorage.getItem("userInfo") != null) {
+  }
+  // 세션에 유저정보가 있는 경우
+  else if (sessionStorage.getItem("userInfo") != null) {
     return next();
   }
 });
