@@ -1,25 +1,44 @@
 <template lang="">
   <el-container class="main-wrapper">
     <el-contianer class="main-container">
+    <el-scrollbar class="show-scroll" height="400px">
       <el-main>
-        {{ form }}
-        <el-footer v-if="form.uid === uid">
-          <el-button @click="editPost($route.params.pid)">Edit</el-button>
-
-          <el-popconfirm
-            confirmButtonText='OK'
-            cancelButtonText='No, Thanks'
-            icon="el-icon-info"
-            iconColor="red"
-            title="Are you sure to delete this?"
-            @confirm="deletePost($route.params.pid)"
-          >
-          <template #reference>
-            <el-button type="danger">Delete</el-button>
-            </template>
-          </el-popconfirm>
-        </el-footer>
+        <div class="horizontal-border">
+        <p class="title">
+        {{ form.title }}
+        </p>
+        <p class="content">
+        {{ form.nickname }}
+        <div class="vertical-border"></div>
+        {{ form.created_time }}
+        </p>
+        </div>
+        <p>
+        {{ form.content }}
+        </p>
       </el-main>
+
+      <!-- <el-footer v-if="form.uid === uid"> -->
+        <el-row :gutter="20" v-if="form.uid === uid">
+          <el-col :span="6" :offset="18">
+            <el-button @click="editPost($route.params.pid)">Edit</el-button>
+            <el-popconfirm
+              confirmButtonText='OK'
+              cancelButtonText='No, Thanks'
+              icon="el-icon-info"
+              iconColor="red"
+              title="Are you sure to delete this?"
+              @confirm="deletePost($route.params.pid)"
+            >
+            <template #reference>
+              <el-button type="danger">Delete</el-button>
+              </template>
+            </el-popconfirm>
+
+          </el-col>
+        </el-row>
+      <!-- </el-footer> -->
+      </el-scrollbar>
     </el-contianer>
   </el-container>
 </template>
@@ -35,15 +54,27 @@ export default {
     const route = useRoute()
     const url = `/boards/posts/${route.params.pid}`;
     // console.log("mounted")
-      $axios
-        .get(url)
-        .then(res => {
-          console.log(res.data.post)
-          this.form = res.data.post
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    $axios
+      .get(url)
+      .then(res => {
+        console.log(res.data.post)
+        this.form = res.data.post
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    const fileURL = `/boards/posts/${route.params.pid}/files`
+    $axios
+      .get(fileURL)
+      .then(res => {
+        console.log("get uploaded files")
+        console.log(res.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
   },
   data() {
     return {
@@ -97,4 +128,36 @@ export default {
 
 };
 </script>
-<style lang=""></style>
+<style scoped>
+  .el-row {
+    margin-bottom: 20px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .el-col {
+    border-radius: 4px;
+  }
+  .row-bg {
+    padding: 10px 0;
+    background-color: #f9fafc;
+  }
+  .title {
+    text-align: left;
+  }
+  .content {
+    text-align: left;
+  }
+  .horizontal-border {
+    border-bottom: 1px solid #eee;
+  }
+  .vertical-border {
+    content: "";
+    display: inline-block;
+    background: #ccc;
+    width: 1px;
+    height: 14px;
+    margin: 0 10px 0 6px;
+    vertical-align: -2px;
+  }
+</style>
