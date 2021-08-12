@@ -154,6 +154,12 @@
               </el-row>
             </div>
           </div>
+          <el-button type="" @click="RollBookCheck = true"
+            >출석체크하세요</el-button
+          >
+          <div>
+            <RollBookCheck :publisher="publisher" :subscribers="subscribers" />
+          </div>
         </el-col>
       </el-row>
     </div>
@@ -169,7 +175,7 @@ import MessageList from "./meeting-components/messageList";
 import ConnetionUserList from "./meeting-components/ConnetionUserList";
 import alarm from "../../../common/mp3/alarm.mp3";
 import { h } from "vue";
-// import RollBookCheck from "./meeting-components/roll-book-check.vue";
+import RollBookCheck from "./meeting-components/roll-book-check.vue";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const OPENVIDU_SERVER_URL = "https://i5b101.p.ssafy.io:4443";
@@ -182,8 +188,8 @@ export default {
     UserVideo,
     MessageForm,
     MessageList,
-    ConnetionUserList
-    // RollBookCheck
+    ConnetionUserList,
+    RollBookCheck
   },
 
   data() {
@@ -199,6 +205,7 @@ export default {
       size: true,
       chatting: false,
       connectionUser: false,
+      rollBookCheck: false,
       mySessionId: "SessionA",
       myUserName: "Participant" + Math.floor(Math.random() * 100),
       myUserId: ""
@@ -229,6 +236,9 @@ export default {
         .catch(error => {
           console.error(error);
         });
+    },
+    rollBookCheckOnOff() {
+      this.rollBookCheck = !this.rollBookCheck;
     },
     connectionUserOnOff() {
       this.connectionUser = !this.connectionUser;

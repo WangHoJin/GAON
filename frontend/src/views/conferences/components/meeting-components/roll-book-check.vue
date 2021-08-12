@@ -40,6 +40,10 @@ export default {
       search: ""
     };
   },
+  props: {
+    publisher: undefined,
+    subscribers: []
+  },
   async created() {
     // 기본이 state가
     this.rollbookmemberList = await this.$store.dispatch(
@@ -47,11 +51,17 @@ export default {
       this.$route.params.conferenceId
     );
     // state 기본은 결석으로 설정해주기
-    this.rollbookmemberList = this.rollbookmemberList.filter(function(
-      item,
-      idx
-    ) {
-      item["state"] = "결석";
+    this.rollbookmemberList = this.rollbookmemberList.filter(function(item) {
+      if (this.subscribers != undefined) {
+        this.subscribers.forEach(sub => {
+          const { idData } = JSON.parse(sub.stream.connection.data);
+          console.log("찾는다ㅏㅏㅏ");
+          console.log(idData);
+        });
+        console.log("찾아라ㅏㅏ");
+        console.log(item);
+      }
+      item.state = "결석";
       return item;
     });
   }
