@@ -38,6 +38,9 @@
         <!-- <RollBookCheck /> -->
 
         <el-col :span="12">
+          <el-button type="" @click="toggleScreanshare()"
+            >화면공유버튼</el-button
+          >
           <div id="session-header">
             <h1 id="session-title">{{ mySessionId }}</h1>
             <input
@@ -179,6 +182,7 @@ export default {
       session: undefined,
       mainStreamManager: undefined,
       publisher: undefined,
+      tempPublisher: undefined,
       subscribers: [],
       msgs: [],
       vOnOff: true,
@@ -188,7 +192,8 @@ export default {
       connectionUser: false,
       mySessionId: "SessionA",
       myUserName: "Participant" + Math.floor(Math.random() * 100),
-      myUserId: ""
+      myUserId: "",
+      tg: false
     };
   },
   async created() {
@@ -202,6 +207,56 @@ export default {
     this.joinSession();
   },
   methods: {
+    toggleScreanshare() {
+      if (!this.tg) {
+        this.tg = true;
+        var newPublisher = this.OV.initPublisher("user-video", {
+          audioSource: undefined, // The source of audio. If undefined default microphone
+          videoSource: "screen",
+          publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+          publishVideo: true, // Whether you want to start publishing with your video enabled or not
+          resolution: "320x200", // The resolution of your video
+          frameRate: 30, // The frame rate of your video
+          insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
+          mirror: false // Whether to mirror your local video or not
+        });
+
+        newPublisher.once("accessAllowed", event => {
+          newPublisher.stream
+            .getMediaStream()
+            .getVideoTracks()[0]
+            .addEventListener("ended", () => {
+              this.toggleScreanshare();
+            });
+        });
+
+        newPublisher.once("accessAllowed", () => {
+          try {
+            console.log("크기조정실행됐냐????????????");
+            newPublisher.stream
+              .getMediaStream()
+              .getVideoTracks()[0]
+              .applyConstraints({
+                width: 320,
+                height: 200
+              });
+          } catch (error) {
+            console.error("Error applying constraints: ", error);
+          }
+        });
+
+        this.session.unpublish(this.publisher);
+        this.tempPublisher = this.publisher;
+        this.publisher = newPublisher;
+        this.mainStreamManager = this.publisher;
+        this.session.publish(this.publisher);
+      } else {
+        this.tg = false;
+        this.session.unpublish(this.publisher);
+        this.publisher = this.tempPublisher;
+        this.session.publish(this.publisher);
+      }
+    },
     connectionUserOnOff() {
       this.connectionUser = !this.connectionUser;
     },
@@ -291,7 +346,7 @@ export default {
           .then(() => {
             // --- Get your own camera stream with the desired properties ---
 
-            let publisher = this.OV.initPublisher(undefined, {
+            let publisher = this.OV.initPublisher("user-video", {
               audioSource: undefined, // The source of audio. If undefined default microphone
               videoSource: undefined, // The source of video. If undefined default webcam
               publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
@@ -301,6 +356,9 @@ export default {
               insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
               mirror: false // Whether to mirror your local video or not
             });
+
+            console.log("this publisher");
+            console.log(publisher);
 
             this.mainStreamManager = publisher;
             this.publisher = publisher;
@@ -337,6 +395,7 @@ export default {
     },
 
     updateMainVideoStreamManager(stream) {
+      console.log("updateMainVideoStreamManager===================");
       if (this.mainStreamManager === stream) return;
       this.mainStreamManager = stream;
     },
