@@ -152,19 +152,17 @@ public class BoardServiceImpl implements BoardService {
 		PostFile postFile = new PostFile();
 		
         String originalName = file.getOriginalFilename(); //원본 파일명
-        String storedName = pid+"_"+originalName; //서버에 저장될 파일명
         String fileExtension = originalName.substring(originalName.lastIndexOf(".")); //파일 확장자
 		long fileSize = file.getSize(); //파일 사이즈
-		
-//		System.out.println("원본 파일명 : "+ originalFile);
-//		System.out.println("저장 파일명 : "+ fileName);
-//		System.out.println("파일 확장자 : "+ fileExtension);
-//		System.out.println("파일 사이즈 : "+ fileSize);
 		postFile.setPost(post);
 		postFile.setOriginName(originalName);
-		postFile.setFileName(storedName);
 		postFile.setFileType(fileExtension);
 		postFile.setFileSize(fileSize);
+		
+		postFile = postFileRepository.save(postFile);
+		
+		String storedName = pid+"_"+postFile.getId()+"_"+originalName; //서버에 저장될 파일명
+		postFile.setFileName(storedName);
 		
 	     //파일을 저장하기 위한 파일 객체 생성  
 		String rootPath = System.getProperty("user.dir");
@@ -184,11 +182,9 @@ public class BoardServiceImpl implements BoardService {
             }
         }
         //파일 저장
-        //경로 루트 files/Room[id]/[pid]_파일명
+        //경로 루트 files/Room[id]/[pid]_[pfid]_파일명
         try {
         	File newFile = new File(filePath);
-        	LOG.info(newFile.getAbsolutePath());
-        	LOG.info(newFile.getPath());
         	System.out.println(newFile.getAbsolutePath());
         	System.out.println(newFile.getPath());
 			file.transferTo(newFile);
@@ -207,7 +203,8 @@ public class BoardServiceImpl implements BoardService {
 		List<File> files = new ArrayList<>();
 		
 		String rootPath = System.getProperty("user.dir");
-        String savePath = rootPath+"\\files\\Room"+post.getBoard().getRoom().getId();
+		Long rid = post.getBoard().getRoom().getId();
+        String savePath = rootPath+"\\files\\Room"+rid;
         		
 		for(PostFile pf : postFiles) {
 			try {
@@ -231,7 +228,8 @@ public class BoardServiceImpl implements BoardService {
 	public File getFileByPfid(Long pfid) {
 		PostFile pf = postFileRepository.findById(pfid).get();
 		String rootPath = System.getProperty("user.dir");
-        String savePath = rootPath+"\\files\\Room"+pf.getPost().getBoard().getRoom().getId();
+		Long rid = pf.getPost().getBoard().getRoom().getId();
+        String savePath = rootPath+"\\files\\Room"+rid;
 		try {
 			File file = new File(savePath+"\\"+pf.getFileName());
 			return file;
@@ -240,5 +238,10 @@ public class BoardServiceImpl implements BoardService {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	@Override
+	public List<PostFile> getPostFiles(Long pid) {
+		return getPostByPid(pid).getFiles();
 	}
 }
