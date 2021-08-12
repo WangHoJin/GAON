@@ -3,7 +3,7 @@
     <el-col :span="3"> <conference-sidevar /></el-col>
     <el-col :span="21">
       <el-main>
-        {{ $route.params.conferenceId + "번 방 상세 보기 페이지" }}
+        <!-- {{ $route.params.conferenceId + "번 방 상세 보기 페이지" }}
         <a
           href="https://localhost:8443/api/v1/boards/posts/1/file/3"
           class="modal_refer_font"
@@ -27,7 +27,7 @@
           <div slot="tip" class="el-upload__tip">
             size less than 500kb
           </div>
-        </el-upload>
+        </el-upload> -->
 
         <router-view></router-view>
       </el-main>
