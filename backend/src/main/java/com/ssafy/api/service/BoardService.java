@@ -32,6 +32,7 @@ public interface BoardService {
 	
 	//파일
 	PostFile registFile(Long pid, MultipartFile file);
+	List<PostFile> getPostFiles(Long pid);
 	List<File> getFiles(Long pid);
 	File getFileByPfid(Long pfid);
 }
