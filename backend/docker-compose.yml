@@ -1,5 +1,5 @@
 # Docker compose 버전
-version: '3.8'
+version: "3.8"
 # 가동할 컨테이너 목록
 services:
   db:
@@ -14,13 +14,13 @@ services:
     environment:
       # <설정한 Database root 계정 비밀 번호>
       MYSQL_ROOT_PASSWORD: root
-      TZ: 'Asia/Seoul'
+      TZ: "Asia/Seoul"
     # privileged: true
     # 실제 드라이브와 컨테이너의 드라이브를 연결(Mount)
     volumes:
       - ./db:/docker-entrypoint-initdb.d
       #볼륨에 db 연결 (컨테이너 종료시에도 날아가지 않게)
-      - 'gaon_volume:/var/lib/mysql'
+      - "gaon_volume:/var/lib/mysql"
     # 컨테이너 내부에서 사용되는 네트워크
     networks:
       - backend
@@ -42,14 +42,14 @@ services:
       # 수정사항
       #Spring application.properties DB 설정
       #  SPRING_DATASOURCE_URL: 'jdbc:mysql://localhost:3306/gaon?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true'
-      SPRING_DATASOURCE_URL: 'jdbc:mysql://db:3306/gaon?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true'
+      SPRING_DATASOURCE_URL: "jdbc:mysql://db:3306/gaon?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true"
       # Kurento Media Client 동작을 위한 Kurento Media Server URL 설정
       # JAVA_TOOL_OPTIONS: '-Dkms.url=ws://kurento:8888/kurento'
-      server.address: 0.0.0.0
-      SERVER_PORT: 8443
-      OPENVIDU_URL: http://localhost:5443
-      OPENVIDU_SECRET: ${OPENVIDU_SECRET}
-      CALL_OPENVIDU_CERTTYPE: ${CERTIFICATE_TYPE}
+      # server.address: 0.0.0.0
+      # SERVER_PORT: 5442
+      # OPENVIDU_URL: http://localhost:5443
+      # OPENVIDU_SECRET: ${OPENVIDU_SECRET}
+      # CALL_OPENVIDU_CERTTYPE: ${CERTIFICATE_TYPE}
       # 의존 컨테이너
     depends_on:
       - db
@@ -62,7 +62,7 @@ services:
     image: openvidu/openvidu-server:2.19.0
     restart: on-failure
     network_mode: host
-    entrypoint: ['/usr/local/bin/entrypoint.sh']
+    entrypoint: ["/usr/local/bin/entrypoint.sh"]
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${OPENVIDU_RECORDING_PATH}:${OPENVIDU_RECORDING_PATH}
@@ -79,7 +79,7 @@ services:
       - COTURN_IP=${COTURN_IP:-auto-ipv4}
     logging:
       options:
-        max-size: '${DOCKER_LOGS_MAX_SIZE:-100M}'
+        max-size: "${DOCKER_LOGS_MAX_SIZE:-100M}"
 
   kms:
     image: ${KMS_IMAGE:-kurento/kurento-media-server:6.16.0}
@@ -99,7 +99,7 @@ services:
       - KURENTO_LOGS_PATH=/opt/openvidu/kurento-logs
     logging:
       options:
-        max-size: '${DOCKER_LOGS_MAX_SIZE:-100M}'
+        max-size: "${DOCKER_LOGS_MAX_SIZE:-100M}"
 
   redis:
     image: openvidu/openvidu-redis:3.0.0
@@ -109,7 +109,7 @@ services:
       - REDIS_PASSWORD=${OPENVIDU_SECRET}
     logging:
       options:
-        max-size: '${DOCKER_LOGS_MAX_SIZE:-100M}'
+        max-size: "${DOCKER_LOGS_MAX_SIZE:-100M}"
 
   coturn:
     image: openvidu/openvidu-coturn:5.0.0
@@ -130,7 +130,7 @@ services:
       - --verbose
     logging:
       options:
-        max-size: '${DOCKER_LOGS_MAX_SIZE:-100M}'
+        max-size: "${DOCKER_LOGS_MAX_SIZE:-100M}"
 
   nginx:
     image: openvidu/openvidu-proxy:7.0.0
@@ -157,7 +157,7 @@ services:
       - PUBLIC_IP=${PROXY_PUBLIC_IP:-auto-ipv4}
     logging:
       options:
-        max-size: '${DOCKER_LOGS_MAX_SIZE:-100M}'
+        max-size: "${DOCKER_LOGS_MAX_SIZE:-100M}"
 
 volumes:
   gaon_volume:
