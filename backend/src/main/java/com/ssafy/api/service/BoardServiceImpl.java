@@ -226,4 +226,19 @@ public class BoardServiceImpl implements BoardService {
 	public List<Board> getBoardsByRid(Long rid) {
 		return boardRepository.findByRoomId(rid).get();
 	}
+
+	@Override
+	public File getFileByPfid(Long pfid) {
+		PostFile pf = postFileRepository.findById(pfid).get();
+		String rootPath = System.getProperty("user.dir");
+        String savePath = rootPath+"\\files\\Room"+pf.getPost().getBoard().getRoom().getId();
+		try {
+			File file = new File(savePath+"\\"+pf.getFileName());
+			return file;
+		} catch (Exception e) {
+			System.out.println("파일 입출력 에러");
+			e.printStackTrace();
+			return null;
+		}
+	}
 }
