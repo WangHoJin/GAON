@@ -57,7 +57,7 @@ export default {
     $axios
       .get(url)
       .then(res => {
-        console.log(res.data.post)
+        // console.log(res.data.post)
         this.form = res.data.post
       })
       .catch(err => {
@@ -69,11 +69,12 @@ export default {
       .get(fileURL)
       .then(res => {
         console.log("get uploaded files")
-        console.log(res.data)
+        console.log(res)
       })
       .catch(err => {
         console.log(err)
       })
+
 
   },
   data() {
@@ -131,9 +132,6 @@ export default {
 <style scoped>
   .el-row {
     margin-bottom: 20px;
-    &:last-child {
-      margin-bottom: 0;
-    }
   }
   .el-col {
     border-radius: 4px;
