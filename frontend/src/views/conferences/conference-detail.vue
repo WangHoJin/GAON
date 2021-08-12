@@ -71,21 +71,11 @@ export default {
     },
     handlePreview(file) {
       console.log("파일클릭");
-      console.dir("클릭한 파일", file);
-      console.dir(file);
-      console.log(file);
-      let url = file.url;
-      console.log(url);
-      // let bytes = atob(res.data);
-      // let fileName = getFileName(res.headers["content-disposition"]);
-      // let fileName = res.headers["content-disposition"];
-      // let newFile = Base64.decode(res.data);
-      // console.log("new", newFile);
-      let fileName = "텍스트파일.txt";
+      let fileName = "파일.png";
       console.log("fileName : " + fileName);
       fileName = decodeURI(fileName); // 파일명 디코딩 (프로젝트에 따라 사용여부 옵션)
       let link = document.createElement("a");
-      link.href = window.URL.createObjectURL(url);
+      link.href = file.url;
       link.target = "_self";
       if (fileName) link.download = fileName;
       link.click();
