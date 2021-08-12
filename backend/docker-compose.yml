@@ -35,7 +35,7 @@ services:
     restart: always
     container_name: gaon_app
     ports:
-      - 5442:5442
+      - 8080:8080
       - 8443:8443
     environment:
       TZ: Asia/Seoul
@@ -45,11 +45,11 @@ services:
       SPRING_DATASOURCE_URL: "jdbc:mysql://db:3306/gaon?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true"
       # Kurento Media Client 동작을 위한 Kurento Media Server URL 설정
       # JAVA_TOOL_OPTIONS: '-Dkms.url=ws://kurento:8888/kurento'
-      server.address: 0.0.0.0
+      # server.address: 0.0.0.0
       SERVER_PORT: 5442
-      OPENVIDU_URL: http://localhost:5443
-      OPENVIDU_SECRET: ${OPENVIDU_SECRET}
-      CALL_OPENVIDU_CERTTYPE: ${CERTIFICATE_TYPE}
+      # OPENVIDU_URL: http://localhost:5443
+      # OPENVIDU_SECRET: ${OPENVIDU_SECRET}
+      # CALL_OPENVIDU_CERTTYPE: ${CERTIFICATE_TYPE}
       # 의존 컨테이너
     depends_on:
       - db
