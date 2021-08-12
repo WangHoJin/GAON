@@ -4,6 +4,12 @@
     <el-col :span="21">
       <el-main>
         {{ $route.params.conferenceId + "번 방 상세 보기 페이지" }}
+        <a
+          href="https://localhost:8443/api/v1/boards/posts/1/file/3"
+          class="modal_refer_font"
+        >
+          파일
+        </a>
         <h5>테스트용 나중에 지우겠음</h5>
         <el-upload
           class="upload-demo"
@@ -36,6 +42,8 @@ import ConferenceSidevar from "../conferences/components/conference-sidebar.vue"
 import { reactive, onMounted, onUnmounted } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
+import $axios from "axios";
+import { Base64 } from "js-base64";
 
 export default {
   data() {
@@ -43,9 +51,9 @@ export default {
       URL: process.env.VUE_APP_API_URL + "/api/v1/boards/posts/2/files/",
       fileList: [
         {
-          name: "food.jpeg",
-          url:
-            "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
+          name: "파일",
+          // url: "https://localhost:8443/api/v1/boards/posts/1/file/30"
+          url: "https://localhost:8443/api/v1/boards/posts/1/file/3"
         },
         {
           name: "food2.jpeg",
@@ -63,8 +71,14 @@ export default {
     },
     handlePreview(file) {
       console.log("파일클릭");
-      console.log("file" + file);
-      console.log(file);
+      let fileName = "파일.png";
+      console.log("fileName : " + fileName);
+      fileName = decodeURI(fileName); // 파일명 디코딩 (프로젝트에 따라 사용여부 옵션)
+      let link = document.createElement("a");
+      link.href = file.url;
+      link.target = "_self";
+      if (fileName) link.download = fileName;
+      link.click();
     },
     handleExceed(files, fileList) {
       console.log("최대 업로드 갯수 초과했을때");

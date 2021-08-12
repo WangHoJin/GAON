@@ -1,10 +1,29 @@
 package com.ssafy.api.controller;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import javax.xml.bind.DatatypeConverter;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.ssafy.api.request.BoardRegisterPostReq;
 import com.ssafy.api.request.PostRegisterPostReq;
@@ -28,12 +48,16 @@ import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.Board;
 import com.ssafy.db.entity.Post;
 import com.ssafy.db.entity.PostFile;
+import com.ssafy.db.repository.PostFileRepository;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Example;
+import io.swagger.annotations.ExampleProperty;
 
 /**
  * 게시판 관련 API 요청 처리를 위한 컨트롤러 정의.
@@ -245,17 +269,49 @@ public class BoardController {
 	}
 	
 	@GetMapping("/posts/{pid}/files")
-	@ApiOperation(value = "게시글의 파일들을 반환", notes = "<strong>게시글에 달려있는 파일들을 반환한다</strong>") 
+	@ApiOperation(value = "게시글의 파일들의 name, id를 반환", notes = "<strong>게시글에 달려있는 파일들의 정보를 반환한다</strong>") 
+	@ApiResponses({
+//		@ApiResponse(code = 200, message = "성공", examples=@Example(value = { @ExampleProperty(value = "{\n \"pfid\":\"Long\", \n \"file_name\":\"String\"\n}") })),
+		@ApiResponse(code = 200, message = "성공"),
+//		@ApiResponse(code = 401, message = "인증 실패"),
+		@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public List<Map<String, Object>> findFiles(
+			@PathVariable @ApiParam(value="게시글 pid", required = true) Long pid) {
+		List<Map<String,Object>> res = new ArrayList<>();
+		try {
+			List<PostFile> pfs = boardService.getPostFiles(pid);
+			for(PostFile pf : pfs) {
+				Map<String,Object> map = new HashMap<>();
+				map.put("pfid", pf.getId());
+				map.put("file_name", pf.getOriginName());
+				res.add(map);
+			}
+			return res;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	@GetMapping("/posts/files/{pfid}")
+	@ApiOperation(value = "해당 id의 파일을 반환", notes = "<strong>pfid로 파일을 반환한다</strong>") 
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "성공"),
 //		@ApiResponse(code = 401, message = "인증 실패"),
 		@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public List<File> findFiles(
-			@PathVariable @ApiParam(value="게시글 pid", required = true) Long pid) {
+	public ResponseEntity<?> findFile(
+			@PathVariable @ApiParam(value="게시글 pid", required = true) Long pid,
+			@PathVariable @ApiParam(value="파일 pfid", required = true) Long pfid) {
 		try {
-			List<File> res = boardService.getFiles(pid);
-			return res;
+			 File file = boardService.getFileByPfid(pfid);
+			 Path path = Paths.get(file.getAbsolutePath());
+			 ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
+			 return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_LENGTH, String.valueOf(file.length()))	//파일 사이즈 설정
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM.toString())	//바이너리 데이터로 받아오기 설정
+				.header(HttpHeaders.CONTENT_DISPOSITION,file.getName())	//다운 받아지는 파일 명 설정
+				.body(resource);	//파일 넘기기
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;

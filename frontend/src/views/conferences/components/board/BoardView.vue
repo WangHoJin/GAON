@@ -3,7 +3,7 @@
     <el-contianer class="main-container">
       <el-main>
         {{ form }}
-        <el-footer>
+        <el-footer v-if="form.uid === uid">
           <el-button @click="editPost($route.params.pid)">Edit</el-button>
 
           <el-popconfirm
@@ -31,6 +31,7 @@ export default {
     // this.$nextTick(function() {
     //       // 모든 화면이 렌더링된 후 실행합니다.
     //   })
+    this.uid = JSON.parse(sessionStorage.getItem("userInfo")).id;
     const route = useRoute()
     const url = `/boards/posts/${route.params.pid}`;
     // console.log("mounted")
@@ -55,6 +56,7 @@ export default {
           created_time: "2021-08-10 00:14:01.130000",
           modified_time: "2021-08-10 00:14:01.130000"
         },
+        uid: 0
     }
   },
   methods: {
