@@ -37,9 +37,9 @@
         <!-- <el-button type="" @click="roll-book-check=true;">출석체크하세요</el-button> -->
         <!-- <RollBookCheck /> -->
 
-        <el-col :span="12">
+        <el-col :span="19">
           <div id="session-header">
-            <h1 id="session-title">{{ mySessionId }}</h1>
+            <!-- <h1 id="session-title">{{ mySessionId }}</h1> -->
             <input
               class="btn btn-large btn-danger"
               type="button"
@@ -106,7 +106,7 @@
             <!-- 화상회의 출력 END -->
           </div>
         </el-col>
-        <el-col :span="10">
+        <el-col :span="5">
           <input
             v-if="!chatting"
             class="btn btn-large btn-danger"
@@ -141,7 +141,7 @@
           />
           <div v-if="chatting">
             <MessageList :msgs="msgs" />
-            <MessageForm @sendMsg="sendMsg" />
+            <MessageForm @sendMsg="sendMsg" :user-name="myUserName" />
           </div>
           <div v-if="connectionUser">
             <div v-if="publisher">
@@ -300,9 +300,9 @@ export default {
       // Receiver of the message (usually before calling 'session.connect')
 
       this.session.on("signal:my-chat", event => {
-        console.log(event.data); // Message
-        console.log(event.from); // Connection object of the sender
-        console.log(event.type); // The type of message ("my-chat")
+        // console.log(event.data); // Message
+        // console.log(event.from); // Connection object of the sender
+        // console.log(event.type); // The type of message ("my-chat")
         const tmp = this.msgs.slice();
         tmp.push(event.data);
         this.msgs = tmp;
@@ -480,5 +480,10 @@ export default {
   position: relative;
   top: -265px;
   left: 145px;
+}
+
+#userv {
+  display: inline-block;
+  margin: 1px;
 }
 </style>

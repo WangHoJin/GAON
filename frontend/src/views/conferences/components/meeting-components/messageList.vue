@@ -8,23 +8,23 @@
 </template>
 
 <script>
-import Message from './message'
+import Message from "./message";
 export default {
-  name: 'MessageList',
+  name: "MessageList",
   components: {
-    Message,
+    Message
   },
   props: {
     msgs: {
       type: Array
     }
   }
-}
+};
 </script>
 
 <style scoped>
 .container {
   height: 500px;
-  background: rgb(223, 208, 81);
+  background: rgba(255, 209, 2, 0.61);
 }
 </style>
