@@ -19,7 +19,9 @@
             </div>
           </template>
         </el-calendar>
-        <el-button @click="modifyRollbook">수정하기</el-button>
+        <el-button v-if="host_id == myid" @click="modifyRollbook"
+          >수정하기</el-button
+        >
         <el-table
           :data="
             tableData.filter(
@@ -60,10 +62,19 @@ export default {
   data() {
     return {
       tableData: [],
-      search: ""
+      search: "",
+      host_i: "",
+      myid: ""
     };
   },
-
+  async mounted() {
+    let roomInfo = await this.$store.dispatch(
+      "getRoomById",
+      this.$route.params.conferenceId
+    );
+    this.host_id = roomInfo.host_id;
+    this.myid = JSON.parse(sessionStorage.getItem("userInfo")).id;
+  },
   methods: {
     selectday(day) {
       console.log(day);
