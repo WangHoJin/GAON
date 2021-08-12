@@ -80,20 +80,30 @@
               value="audio on"
             />
           </div>
-          <div id="main-video" class="col-md-6">
+          <!-- <div id="main-video" class="col-md-6">
             <user-video :stream-manager="mainStreamManager" />
-          </div>
+          </div> -->
           <div id="video-container" class="col-md-6">
             <user-video
               :stream-manager="publisher"
               @click.native="updateMainVideoStreamManager(publisher)"
             />
-            <user-video
-              v-for="sub in subscribers"
-              :key="sub.stream.connection.connectionId"
-              :stream-manager="sub"
-              @click.native="updateMainVideoStreamManager(sub)"
-            />
+            <!-- 유저 화상회의 목록 출력 START -->
+            <div id="userv" v-for="sub in subscribers">
+              <user-video
+                :key="sub.stream.connection.connectionId"
+                :stream-manager="sub"
+                @click.native="updateMainVideoStreamManager(sub)"
+              />
+              <img
+                style="cursor:pointer"
+                :src="require(`@/common/img/alram.png`)"
+                id="alertbtn"
+                @click="sendAlert(sub)"
+                value="알람보내기"
+              />
+            </div>
+            <!-- 화상회의 출력 END -->
           </div>
         </el-col>
         <el-col :span="10">
@@ -151,11 +161,14 @@
 </template>
 <script>
 import axios from "axios";
+import alramimg from "../../../common/mp3/alarm.mp3";
 import { OpenVidu } from "openvidu-browser";
 import UserVideo from "./meeting-components/UserVideo.vue";
 import MessageForm from "./meeting-components/messageForm";
 import MessageList from "./meeting-components/messageList";
 import ConnetionUserList from "./meeting-components/ConnetionUserList";
+import alarm from "../../../common/mp3/alarm.mp3";
+import { h } from "vue";
 // import RollBookCheck from "./meeting-components/roll-book-check.vue";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
@@ -202,6 +215,21 @@ export default {
     this.joinSession();
   },
   methods: {
+    sendAlert(sub) {
+      console.log(sub.stream.connection);
+      this.session
+        .signal({
+          data: "알람울리기", // Any string (optional)
+          to: [sub.stream.connection], // Array of Connection objects (optional. Broadcast to everyone if empty)
+          type: "my-alrarm" // The type of message (optional)
+        })
+        .then(() => {
+          console.log("Message successfully sent");
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
     connectionUserOnOff() {
       this.connectionUser = !this.connectionUser;
     },
@@ -268,6 +296,19 @@ export default {
         const tmp = this.msgs.slice();
         tmp.push(event.data);
         this.msgs = tmp;
+      });
+      this.session.on("signal:my-alrarm", event => {
+        console.log(event.date + " " + event.from + " " + event.type);
+        this.$notify({
+          title: "졸지마세요시발아ㅋㅋㅋㅋ",
+          message: h(
+            "i",
+            { style: "color: teal" },
+            "일어나~!~!~!~!~!~!~!~!~!~!~!~!~!!"
+          )
+        });
+        var audio = new Audio(alarm);
+        audio.play();
       });
 
       // Receiver of all messages (usually before calling 'session.connect')
@@ -423,5 +464,11 @@ export default {
 #video {
   height: 100px;
   width: 100px;
+}
+
+#alertbtn {
+  position: relative;
+  top: -265px;
+  left: 145px;
 }
 </style>
