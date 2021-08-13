@@ -37,9 +37,12 @@
         <!-- <el-button type="" @click="roll-book-check=true;">출석체크하세요</el-button> -->
         <!-- <RollBookCheck /> -->
 
-        <el-col :span="12">
+        <el-col :span="19">
+          <el-button type="" @click="toggleScreanshare()"
+            >화면공유버튼</el-button
+          >
           <div id="session-header">
-            <h1 id="session-title">{{ mySessionId }}</h1>
+            <!-- <h1 id="session-title">{{ mySessionId }}</h1> -->
             <input
               class="btn btn-large btn-danger"
               type="button"
@@ -80,7 +83,7 @@
               value="audio on"
             />
           </div>
-          <div id="main-video" class="col-md-6">
+          <div v-if="mainOnOff" id="main-video" class="col-md-6">
             <user-video :stream-manager="mainStreamManager" />
           </div>
           <div id="video-container" class="col-md-6">
@@ -88,15 +91,33 @@
               :stream-manager="publisher"
               @click.native="updateMainVideoStreamManager(publisher)"
             />
-            <user-video
-              v-for="sub in subscribers"
-              :key="sub.stream.connection.connectionId"
-              :stream-manager="sub"
-              @click.native="updateMainVideoStreamManager(sub)"
-            />
+            <!-- <img
+              style="cursor:pointer"
+              :src="require(`@/common/img/alram.png`)"
+              id="alertbtn"
+              @click="toggleScreanshare(publisher)"
+              value="채연이꺼"
+            /> -->
+
+            <!-- 유저 화상회의 목록 출력 START -->
+            <div id="userv" v-for="sub in subscribers">
+              <user-video
+                :key="sub.stream.connection.connectionId"
+                :stream-manager="sub"
+                @click.native="updateMainVideoStreamManager(sub)"
+              />
+              <img
+                style="cursor:pointer"
+                :src="require(`@/common/img/alram.png`)"
+                id="alertbtn"
+                @click="sendAlert(sub)"
+                value="알람보내기"
+              />
+            </div>
+            <!-- 화상회의 출력 END -->
           </div>
         </el-col>
-        <el-col :span="10">
+        <el-col :span="5">
           <input
             v-if="!chatting"
             class="btn btn-large btn-danger"
@@ -131,7 +152,7 @@
           />
           <div v-if="chatting">
             <MessageList :msgs="msgs" />
-            <MessageForm @sendMsg="sendMsg" />
+            <MessageForm @sendMsg="sendMsg" :user-name="myUserName" />
           </div>
           <div v-if="connectionUser">
             <div v-if="publisher">
@@ -144,6 +165,12 @@
               </el-row>
             </div>
           </div>
+          <el-button type="" @click="RollBookCheck = true"
+            >출석체크하세요</el-button
+          >
+          <div>
+            <RollBookCheck :publisher="publisher" :subscribers="subscribers" />
+          </div>
         </el-col>
       </el-row>
     </div>
@@ -151,12 +178,15 @@
 </template>
 <script>
 import axios from "axios";
+import alramimg from "../../../common/mp3/alarm.mp3";
 import { OpenVidu } from "openvidu-browser";
 import UserVideo from "./meeting-components/UserVideo.vue";
 import MessageForm from "./meeting-components/messageForm";
 import MessageList from "./meeting-components/messageList";
 import ConnetionUserList from "./meeting-components/ConnetionUserList";
-// import RollBookCheck from "./meeting-components/roll-book-check.vue";
+import alarm from "../../../common/mp3/alarm.mp3";
+import { h } from "vue";
+import RollBookCheck from "./meeting-components/roll-book-check.vue";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const OPENVIDU_SERVER_URL = "https://i5b101.p.ssafy.io:4443";
@@ -169,8 +199,8 @@ export default {
     UserVideo,
     MessageForm,
     MessageList,
-    ConnetionUserList
-    // RollBookCheck
+    ConnetionUserList,
+    RollBookCheck
   },
 
   data() {
@@ -179,6 +209,7 @@ export default {
       session: undefined,
       mainStreamManager: undefined,
       publisher: undefined,
+      tempPublisher: undefined,
       subscribers: [],
       msgs: [],
       vOnOff: true,
@@ -186,9 +217,14 @@ export default {
       size: true,
       chatting: false,
       connectionUser: false,
+      rollBookCheck: false,
+      mainOnOff: false,
       mySessionId: "SessionA",
       myUserName: "Participant" + Math.floor(Math.random() * 100),
-      myUserId: ""
+      myUserId: "",
+      tg: false,
+      width: "320",
+      height: "200"
     };
   },
   async created() {
@@ -201,12 +237,113 @@ export default {
     this.myUserId = JSON.parse(sessionStorage.getItem("userInfo")).id;
     this.joinSession();
   },
+  computed: {
+    subscribers() {
+      console.log("감지 발생");
+      this.subscribers.forEach(sub => {
+        if (sub.stream.typeOfVideo == "SCREEN") {
+          console.log("내가 공유한 놈이다");
+          this.updateMainVideoStreamManager(sub);
+        }
+      });
+      return this.subscribers;
+    }
+  },
   methods: {
+    sendPublisher(subId) {
+      // Sender of the message (after 'session.connect')
+      this.session
+        .signal({
+          data: subId, // Any string (optional)
+          to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+          type: "my-subId" // The type of message (optional)
+        })
+        .then(() => {
+          console.log("Message successfully sent");
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+    sendAlert(sub) {
+      console.log(sub.stream.connection);
+      this.session
+        .signal({
+          data: "알람울리기", // Any string (optional)
+          to: [sub.stream.connection], // Array of Connection objects (optional. Broadcast to everyone if empty)
+          type: "my-alrarm" // The type of message (optional)
+        })
+        .then(() => {
+          console.log("Message successfully sent");
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+    rollBookCheckOnOff() {
+      this.rollBookCheck = !this.rollBookCheck;
+    },
+    toggleScreanshare(publisher) {
+      if (!this.tg) {
+        this.tg = true;
+        var newPublisher = this.OV.initPublisher("user-video", {
+          audioSource: undefined, // The source of audio. If undefined default microphone
+          videoSource: "screen",
+          publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+          publishVideo: true, // Whether you want to start publishing with your video enabled or not
+          resolution: "320x200", // The resolution of your video
+          frameRate: 30, // The frame rate of your video
+          insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
+          mirror: false // Whether to mirror your local video or not
+        });
+
+        newPublisher.once("accessAllowed", event => {
+          newPublisher.stream
+            .getMediaStream()
+            .getVideoTracks()[0]
+            .addEventListener("ended", () => {
+              this.toggleScreanshare();
+              this.mainOnOff = false;
+            });
+        });
+        this.width = "960";
+        this.height = "600";
+        // this.updateMainVideoStreamManager(newPublisher);
+        newPublisher.once("accessAllowed", () => {
+          try {
+            console.log("크기조정실행됐냐????????????");
+            newPublisher.stream
+              .getMediaStream()
+              .getVideoTracks()[0]
+              .applyConstraints({
+                width: this.width,
+                height: this.height
+              });
+          } catch (error) {
+            console.error("Error applying constraints: ", error);
+          }
+        });
+
+        this.session.unpublish(this.publisher);
+        this.tempPublisher = this.publisher;
+        this.publisher = newPublisher;
+        this.mainStreamManager = this.publisher;
+        this.session.publish(this.publisher);
+        //this.updateMainVideoStreamManager(this.publisher);
+      } else {
+        this.tg = false;
+        this.session.unpublish(this.publisher);
+        this.publisher = this.tempPublisher;
+        this.session.publish(this.publisher);
+      }
+    },
     connectionUserOnOff() {
       this.connectionUser = !this.connectionUser;
     },
     chattingOnOff() {
       this.chatting = !this.chatting;
+      console.log(" 공유 여부 ");
+      console.log(this.subscribers[1].stream.typeOfVideo);
     },
     audioOnOff() {
       this.publisher.publishAudio(!this.aOnOff);
@@ -262,12 +399,25 @@ export default {
       // Receiver of the message (usually before calling 'session.connect')
 
       this.session.on("signal:my-chat", event => {
-        console.log(event.data); // Message
-        console.log(event.from); // Connection object of the sender
-        console.log(event.type); // The type of message ("my-chat")
+        // console.log(event.data); // Message
+        // console.log(event.from); // Connection object of the sender
+        // console.log(event.type); // The type of message ("my-chat")
         const tmp = this.msgs.slice();
         tmp.push(event.data);
         this.msgs = tmp;
+      });
+      this.session.on("signal:my-alrarm", event => {
+        console.log(event.date + " " + event.from + " " + event.type);
+        this.$notify({
+          title: "졸지마세요시발아ㅋㅋㅋㅋ",
+          message: h(
+            "i",
+            { style: "color: teal" },
+            "일어나~!~!~!~!~!~!~!~!~!~!~!~!~!!"
+          )
+        });
+        var audio = new Audio(alarm);
+        audio.play();
       });
 
       // Receiver of all messages (usually before calling 'session.connect')
@@ -291,22 +441,29 @@ export default {
           .then(() => {
             // --- Get your own camera stream with the desired properties ---
 
-            let publisher = this.OV.initPublisher(undefined, {
+            let publisher = this.OV.initPublisher("user-video", {
               audioSource: undefined, // The source of audio. If undefined default microphone
               videoSource: undefined, // The source of video. If undefined default webcam
               publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
               publishVideo: true, // Whether you want to start publishing with your video enabled or not
-              resolution: "320x200", // The resolution of your video
+              resolution: this.width + "x" + this.height, // "320x200", // The resolution of your video
               frameRate: 30, // The frame rate of your video
               insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
               mirror: false // Whether to mirror your local video or not
             });
 
+            console.log("this publisher");
+            console.log(publisher);
+            // console.log(publisher.videoSource("screen"));
             this.mainStreamManager = publisher;
             this.publisher = publisher;
 
             // --- Publish your stream ---
             this.session.publish(this.publisher);
+            console.log("this publisher2");
+            console.log(this.publisher);
+
+            console.log(this.session);
           })
           .catch(error => {
             console.log(
@@ -337,6 +494,7 @@ export default {
     },
 
     updateMainVideoStreamManager(stream) {
+      this.mainOnOff = true;
       if (this.mainStreamManager === stream) return;
       this.mainStreamManager = stream;
     },
@@ -423,5 +581,16 @@ export default {
 #video {
   height: 100px;
   width: 100px;
+}
+
+#alertbtn {
+  position: relative;
+  top: -265px;
+  left: 145px;
+}
+
+#userv {
+  display: inline-block;
+  margin: 1px;
 }
 </style>
