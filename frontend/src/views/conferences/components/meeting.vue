@@ -112,6 +112,11 @@
           <div v-if="connectionUser">
             <div v-if="publisher">
               <el-row>
+                <!-- <ConnetionUserList
+                  :publisher="publisher"
+                  :subscribers="subscribers"
+                  @leaveSession="leaveSession"
+                /> -->
                 <ConnetionUserList
                   :publisher="publisher"
                   :subscribers="subscribers"
@@ -187,6 +192,7 @@ import ConnetionUserList from "./meeting-components/ConnetionUserList";
 import alarm from "../../../common/mp3/alarm.mp3";
 import { h } from "vue";
 import RollBookCheck from "./meeting-components/roll-book-check.vue";
+
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const OPENVIDU_SERVER_URL = "https://i5b101.p.ssafy.io:443";
