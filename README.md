@@ -35,23 +35,23 @@ gantt
     [F] 방 초대, 방 참여   :  done, ch2, after ch1, 3d
     [B] 방 초대, 방 참여   :  done, ch2, after ch1, 3d
    
-    게시판 : active, 08-08, 4d
+    게시판 : done, 08-08, 4d
     
     section Web RTC
     화상회의 : done, rtc1, 08-02, 2d
     채팅      :done, rtc2, after rtc1, 3d
-    출석체크   : active, 08-10, 3d
-    접속현황  : active, 08-10, 3d
-    상단 플로팅 알람 : active, 08-10, 3d
-    개인 알람 보내기 : active, 08-10, 3d
+    출석체크   : active, 08-10, 4d
+    접속현황  : done, 08-10, 4d
+    상단 플로팅 알람 : active, 08-10, 4d
+    개인 알람 보내기 : active, 08-10, 4d
     
     section 산출물
-    시퀸스 다이어그램 작성   :07-28, 1d
-    README 작성  			:07-28, 1d
-    QA 및 버그 찾기  	  :08-01, 2d
+    시퀸스 다이어그램 작성   :08-15, 1d
+    README 작성  			:08-15, 1d
+    QA 및 버그 찾기  	  :08-15, 2d
     
     section 기타
-    UCC제작 :08-10, 7d
+    UCC제작 :08-15, 7d
     발표준비 :08-17, 3d
 ```
 
