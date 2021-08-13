@@ -74,7 +74,7 @@ export default {
         title:" ",
         content:""
         },
-      URL: process.env.VUE_APP_API_URL + `/api/v1/boards/posts/1/files/`,
+      URL: process.env.VUE_APP_API_URL,
     }
   },
   methods: {
@@ -93,12 +93,11 @@ export default {
         this.$refs.upload.submit()
         console.log("files are uploaded")
       },
-      // 새 글 생성하기
+      // 글 수정하기
       async editPost(formname, pid) {
         this.$refs[formname].validate((valid) => {
           if (valid) {
             console.log("글 수정");
-            this.submitUpload()
             const url = `/boards/posts/${pid}`;
             const uid = JSON.parse(sessionStorage.getItem("userInfo")).id;
             this.form.uid = uid
@@ -107,13 +106,17 @@ export default {
               .then(res => {
                 // console.log(res.data);
                 // response = res.data;
-                this.$router.push({
-              name: 'board-post-view',
-              params: {
-                pid: pid
-              }
-            })
+                this.URL += `/api/v1/boards/posts/${res.data.post.id}/files/`
               })
+                .then(res => {
+                  this.submitUpload()
+                  this.$router.push({
+                name: 'board-post-view',
+                params: {
+                  pid: pid
+                }
+              })
+                })
               .catch(err => {
                 console.log(err);
               });
