@@ -187,22 +187,7 @@ export default {
       code: ""
     };
   },
-  async beforeRouteEnter(to, from, next) {
-    console.log("default페이지");
-    await store.dispatch(
-      "getRoomByUserId",
-      JSON.parse(sessionStorage.getItem("userInfo")).id
-    );
-    if (!store.state.roomModule.isClickPlusBtn) {
-      if (store.getters.rooms.length > 0) {
-        return next("/main");
-      } else {
-        return next();
-      }
-    } else {
-      next();
-    }
-  },
+
   beforeUnmount() {
     console.log("beforeUnmount");
     this.$store.state.roomModule.isClickPlusBtn = false;

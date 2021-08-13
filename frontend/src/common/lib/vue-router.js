@@ -6,7 +6,22 @@ const routes = [
   {
     // 처음 들어왔을떄 들어간 방이 있는지 없는지 판단하는 페이지
     path: "/",
-    component: () => import("../../views/conferences/components/default.vue")
+    component: () => import("../../views/conferences/components/default.vue"),
+    beforeEnter: async function(to, from, next) {
+      await store.dispatch(
+        "getRoomByUserId",
+        JSON.parse(sessionStorage.getItem("userInfo")).id
+      );
+      if (!store.state.roomModule.isClickPlusBtn) {
+        if (store.getters.rooms.length > 0) {
+          return next("/main");
+        } else {
+          return next();
+        }
+      } else {
+        next();
+      }
+    }
   },
   {
     // 구글로그인 페이지
@@ -133,12 +148,10 @@ router.beforeEach(async (to, from, next) => {
           auth2.disconnect(); // 사용자가 부여한 모든 범위 취소
           isGoogleLogin = await auth2.isSignedIn.get();
         } else {
-          console.log("로그인이 안되어있으면 아무것도 하지않기");
         }
         resolve();
       });
     });
-    console.log("구글로그인으로 가는게 먼저 실행되었음");
     if (to.fullPath != "/googlelogin") {
       return next("/googlelogin");
     } else {
