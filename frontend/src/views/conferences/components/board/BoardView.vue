@@ -28,7 +28,7 @@
         </a> -->
         <button
           v-for="file in fileList"
-          @click="download(file.pfid)">
+          @click="download(file.pfid, file.filename)">
               {{ file.filename }}
         </button>
         </p>
@@ -148,21 +148,19 @@ export default {
         });
       },
 
-      async download(pfid) {
+      async download(pfid, filename) {
         console.log(pfid)
         const url = `/boards/posts/files/${pfid}`
         await $axios
           .get(url, {responseType: 'blob'})
           .then(res => {
             console.log(res)
-            const url = window.URL
-                  .createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', 'image.jpg');
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            const fileurl = window.URL.createObjectURL(new Blob([res.data]))
+            const link = document.createElement('a')
+            link.href = fileurl
+            link.setAttribute('download', `${filename}`)
+            document.body.appendChild(link)
+            link.click()
           })
           .catch(err => {
             console.log(err)
