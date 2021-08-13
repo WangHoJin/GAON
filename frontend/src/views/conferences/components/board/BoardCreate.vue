@@ -79,7 +79,6 @@ export default {
             const url = `/boards/${bid}/posts`;
             const uid = JSON.parse(sessionStorage.getItem("userInfo")).id;
             this.form.uid = uid
-            // this.submitUpload()
             $axios
               .post(url, this.form)
               .then(res => {
