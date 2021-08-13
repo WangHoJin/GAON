@@ -5,7 +5,7 @@
       <el-main>
         <!-- {{ $route.params.conferenceId + "번 방 상세 보기 페이지" }}
         <a
-          href="https://localhost:8443/api/v1/boards/posts/1/file/3"
+          href="https://localhost:8443/api/v1/boards/posts/1/file/1_test"
           class="modal_refer_font"
         >
           파일
@@ -22,7 +22,6 @@
           :on-exceed="handleExceed"
           :file-list="fileList"
         >
-          >
           <el-button size="small" type="primary">Click to upload</el-button>
           <div slot="tip" class="el-upload__tip">
             size less than 500kb

@@ -50,6 +50,7 @@
 import { useRoute } from "vue-router";
 // API
 import $axios from "axios";
+import axios from 'axios';
 export default {
   mounted() {
     const route = useRoute()
@@ -66,15 +67,35 @@ export default {
         .catch(err => {
           console.log(err);
         });
+
+    const fileURL = `/boards/posts/${route.params.pid}/files`
+    $axios
+      .get(fileURL)
+      .then(res => {
+        // console.log(res.data)
+        res.data.forEach((element, idx, arr) => this.fileList.push({pfid: arr[idx].pfid, name: arr[idx].file_name, url:`${this.URL}/api/v1/boards/posts/files/${arr[idx].pfid}`}))
+        // this.fileList
+        // console.log(this.fileList)
+        console.log("get uploaded files")
+
+      })
+      .catch(err => {
+        console.log(err)
+      })
   },
   data() {
     return {
+      fileList:[
+      ],
+      deleteFileList: [
+
+      ],
       form: {
         bid:1,
         title:" ",
         content:""
         },
-      URL: process.env.VUE_APP_API_URL + `/api/v1/boards/posts/1/files/`,
+      URL: process.env.VUE_APP_API_URL,
     }
   },
   methods: {
@@ -93,12 +114,25 @@ export default {
         this.$refs.upload.submit()
         console.log("files are uploaded")
       },
-      // 새 글 생성하기
+      delteUploadedFiles() {
+        this.deleteFileList.forEach(element =>
+        $axios
+          .delete(element.url)
+          .then(res => {
+            console.log("deleted")
+          })
+          .catch(err => {
+            console.log(err)
+          })
+
+        )
+        console.log("files are deleted")
+      },
+      // 글 수정하기
       async editPost(formname, pid) {
         this.$refs[formname].validate((valid) => {
           if (valid) {
             console.log("글 수정");
-            this.submitUpload()
             const url = `/boards/posts/${pid}`;
             const uid = JSON.parse(sessionStorage.getItem("userInfo")).id;
             this.form.uid = uid
@@ -107,13 +141,18 @@ export default {
               .then(res => {
                 // console.log(res.data);
                 // response = res.data;
-                this.$router.push({
-              name: 'board-post-view',
-              params: {
-                pid: pid
-              }
-            })
+                this.URL += `/api/v1/boards/posts/${res.data.post.id}/files/`
               })
+                .then(res => {
+                  this.delteUploadedFiles()
+                  this.submitUpload()
+                  this.$router.push({
+                name: 'board-post-view',
+                params: {
+                  pid: pid
+                }
+              })
+                })
               .catch(err => {
                 console.log(err);
               });
@@ -123,6 +162,11 @@ export default {
             return false
           }
         })
+      },
+
+      handleRemove (file, fileList) {
+        this.deleteFileList.push(file)
+        console.log(this.deleteFileList)
       }
   }
 }

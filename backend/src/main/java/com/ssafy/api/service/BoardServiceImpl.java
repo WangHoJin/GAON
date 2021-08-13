@@ -34,7 +34,7 @@ import com.ssafy.db.repository.PostRepositorySupport;
 public class BoardServiceImpl implements BoardService {
 
 	private final static Logger LOG = Logger.getGlobal();
-	
+
 	@Autowired
 	BoardRepository boardRepository;
 	@Autowired
@@ -243,5 +243,27 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<PostFile> getPostFiles(Long pid) {
 		return getPostByPid(pid).getFiles();
+	}
+
+	@Override
+	public boolean removeFile(Long pfid) {
+		File file = getFileByPfid(pfid);
+		if (file.exists()) {
+			if (file.delete()) {
+				System.out.println("파일삭제 성공");
+			} else {
+				System.out.println("파일삭제 실패");
+				return false;
+			}
+		} else {
+			System.out.println("파일이 존재하지 않습니다.");
+			return false;
+		}
+		long res = postFileRepositorySupport.deletePostFileById(pfid);
+		if (res > 0)
+			return true;
+		else {
+			return false;
+		}
 	}
 }

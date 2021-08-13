@@ -57,7 +57,7 @@ export default {
           uid: '',
           content: ''
         },
-        URL: process.env.VUE_APP_API_URL + `/api/v1/boards/posts/1/files/`,
+        URL: process.env.VUE_APP_API_URL,
     }
   },
   methods: {
@@ -79,15 +79,18 @@ export default {
             const url = `/boards/${bid}/posts`;
             const uid = JSON.parse(sessionStorage.getItem("userInfo")).id;
             this.form.uid = uid
-            this.submitUpload()
             $axios
               .post(url, this.form)
               .then(res => {
                 // console.log(res.data);
-                // response = res.data;
                 this.form.title = ''
                 this.form.content = ''
                 this.form.uid = ''
+                this.URL += `/api/v1/boards/posts/${res.data.post.id}/files/`
+                // console.log(this.URL)
+              })
+              .then(res => {
+                this.submitUpload()
                 this.$router.push({name: 'board-post-list'})
               })
               .catch(err => {

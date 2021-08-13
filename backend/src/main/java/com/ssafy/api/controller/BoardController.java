@@ -16,8 +16,6 @@ import java.util.logging.Logger;
 import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -35,8 +33,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.ssafy.api.request.BoardRegisterPostReq;
 import com.ssafy.api.request.PostRegisterPostReq;
@@ -301,7 +297,6 @@ public class BoardController {
 		@ApiResponse(code = 500, message = "서버 오류")
 	})
 	public ResponseEntity<?> findFile(
-			@PathVariable @ApiParam(value="게시글 pid", required = true) Long pid,
 			@PathVariable @ApiParam(value="파일 pfid", required = true) Long pfid) {
 		try {
 			 File file = boardService.getFileByPfid(pfid);
@@ -315,6 +310,25 @@ public class BoardController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
+		}
+	}
+	@DeleteMapping("/posts/files/{pfid}")
+	@ApiOperation(value = "해당 id의 파일을 삭제", notes = "<strong>pfid로 파일을 삭제한다</strong>") 
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "성공"),
+		@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<BaseResponseBody> deleteFile(
+			@PathVariable @ApiParam(value="파일 pfid", required = true) Long pfid) {
+		try {
+			if(boardService.removeFile(pfid)) {
+				return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+			}
+			else {
+				return ResponseEntity.status(404).body(BaseResponseBody.of(404, "File does not exist"));
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(500).body(BaseResponseBody.of(404, "server error"));
 		}
 	}
 }
