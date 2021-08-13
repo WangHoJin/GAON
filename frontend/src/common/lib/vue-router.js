@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-
 import store from "../lib/store";
 
 const routes = [
@@ -111,70 +110,45 @@ const router = createRouter({
 router.afterEach(to => {
   // console.log(to);
 });
-function second(to, from, next) {
-  console.log("2");
-  console.log("구글로그인으로 가는게 먼저 실행되었음");
-  // goGoogleLogin(to, next);
-  if (to.fullPath != "/googlelogin") {
-    return next("/googlelogin");
-  } else {
-    next();
-  }
-}
-async function first() {
-  console.log("1");
-  let authObject = undefined;
-  await gapi.load("auth2", function() {
-    console.log("init실행됐니? 1-1");
-    gapi.auth2.init();
-    authObject = gapi.auth2.getAuthInstance();
-    console.log("authObject: " + authObject);
-    console.log(authObject);
 
-    let isGoogleLogin = authObject.isSignedIn.get();
-    console.log("isGoogleLogin");
-    console.log(isGoogleLogin);
-
-    if (isGoogleLogin) {
-      // 구글로그인이 되어있는 상태이면 disconnect
-      console.log("만약 로그인이 되어있는 상태면 끊기");
-      authObject.signOut().then(function() {
-        console.log("user first signed out");
-      });
-      authObject.disconnect();
-    } else {
-      // 안되어있는 상태이면 아무것도하지않기.
-      console.log("로그인이 안되어있으면 아무것도 하지않기");
-    }
-  });
-}
-router.beforeEach(async function(to, from, next) {
+router.beforeEach(async (to, from, next) => {
   console.log("구글라우터가드==============================================");
   // 회원탈퇴한 경우 탈퇴 페이지로 이동하기
   if (to.fullPath == "/quit") {
-    next();
+    return next();
   }
-  // 세션에 유저정보가 없는경우 = 세션 만료가 돼서 로그아웃이 됐다 or 최초접속자다
+  var auth2 = undefined;
   if (sessionStorage.getItem("userInfo") === null) {
-    await first().then(() => {
-      console.log("기다려기다려기다려");
-      // second(to, from, next);
+    await new Promise((resolve, reject) => {
+      gapi.load("auth2", async function() {
+        await gapi.auth2.init();
+        auth2 = await gapi.auth2.getAuthInstance();
+
+        let isGoogleLogin = await auth2.isSignedIn.get();
+        if (isGoogleLogin) {
+          // 구글로그인이 되어있는 상태이면 로그아웃 isGoogleLogin -> false가 된다.
+          await auth2.signOut().then(function() {
+            console.log("user first signed out");
+          });
+          auth2.disconnect(); // 사용자가 부여한 모든 범위 취소
+          isGoogleLogin = await auth2.isSignedIn.get();
+        } else {
+          console.log("로그인이 안되어있으면 아무것도 하지않기");
+        }
+        resolve();
+      });
     });
-    // await first().then();
+    console.log("구글로그인으로 가는게 먼저 실행되었음");
+    if (to.fullPath != "/googlelogin") {
+      return next("/googlelogin");
+    } else {
+      return next();
+    }
   }
   // 세션에 유저정보가 있는 경우
   else if (sessionStorage.getItem("userInfo") != null) {
     return next();
   }
 });
-
-function goGoogleLogin(to, next) {
-  console.log("구글로그인 함수를 참조 가능했음.");
-  if (to.fullPath != "/googlelogin") {
-    next("/googlelogin");
-  } else {
-    next();
-  }
-}
 
 export default router;
