@@ -10,7 +10,9 @@
       <span>홈</span>
     </el-menu-item>
     <div>
+      <!-- 방 버튼 -->
       <el-menu-item
+        style="padding:0px"
         v-for="i in $store.getters.rooms"
         :key="i.id"
         :index="i.id"
@@ -18,11 +20,17 @@
         @mousedown.right="mouseRightClick(i.id)"
         @mousedown.stop
       >
-        <span>{{ i.name }}</span>
+        <el-button
+          circle
+          color="primary"
+          style="width: 46px; height: 46px; min-height: 0px; min-width: 0px; padding: 0px; overflow: hidden;"
+        >
+          <span>{{ i.name }}</span>
+        </el-button>
       </el-menu-item>
     </div>
     <!-- 방 생성 버튼 -->
-    <el-button type="warning" @click="plusBtn()"
+    <el-button style="margin-top:5px" type="warning" @click="plusBtn()"
       ><div
         class="iconify"
         id="main-sidebar-make-room"

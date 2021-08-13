@@ -6,7 +6,7 @@
     @close="handleClose"
   >
     <el-submenu index="1">
-      <template #title style="min-width: 0px; padding:0px">
+      <template #title>
         <el-row>
           <el-col :span="8">
             <img
@@ -14,11 +14,12 @@
               style="width : 30px; border-radius: 70%;  vertical-align: middle "
             />
           </el-col>
-          <el-col :span="16">
+          <el-col :span="13" style="overflow: hidden;">
             <span style="font-size:middle;">
               {{ username }}
             </span>
           </el-col>
+          <el-col :span="3"></el-col>
         </el-row>
       </template>
       <el-menu-item
@@ -238,4 +239,11 @@ export default {
 .user-info-box * {
   margin: 4px 4px;
 }
+
+/* element.style {
+  padding-left: 0px !important;
+}
+.el-submenu__title {
+  padding: 0px !important;
+} */
 </style>
