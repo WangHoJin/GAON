@@ -50,6 +50,7 @@
 import { useRoute } from "vue-router";
 // API
 import $axios from "axios";
+import axios from 'axios';
 export default {
   mounted() {
     const route = useRoute()
@@ -66,9 +67,29 @@ export default {
         .catch(err => {
           console.log(err);
         });
+
+    const fileURL = `/boards/posts/${route.params.pid}/files`
+    $axios
+      .get(fileURL)
+      .then(res => {
+        // console.log(res.data)
+        res.data.forEach((element, idx, arr) => this.fileList.push({pfid: arr[idx].pfid, name: arr[idx].file_name, url:`${this.URL}/api/v1/boards/posts/files/${arr[idx].pfid}`}))
+        // this.fileList
+        // console.log(this.fileList)
+        console.log("get uploaded files")
+
+      })
+      .catch(err => {
+        console.log(err)
+      })
   },
   data() {
     return {
+      fileList:[
+      ],
+      deleteFileList: [
+
+      ],
       form: {
         bid:1,
         title:" ",
@@ -93,6 +114,20 @@ export default {
         this.$refs.upload.submit()
         console.log("files are uploaded")
       },
+      delteUploadedFiles() {
+        this.deleteFileList.forEach(element =>
+        $axios
+          .delete(element.url)
+          .then(res => {
+            console.log("deleted")
+          })
+          .catch(err => {
+            console.log(err)
+          })
+
+        )
+        console.log("files are deleted")
+      },
       // 글 수정하기
       async editPost(formname, pid) {
         this.$refs[formname].validate((valid) => {
@@ -109,6 +144,7 @@ export default {
                 this.URL += `/api/v1/boards/posts/${res.data.post.id}/files/`
               })
                 .then(res => {
+                  this.delteUploadedFiles()
                   this.submitUpload()
                   this.$router.push({
                 name: 'board-post-view',
@@ -126,6 +162,11 @@ export default {
             return false
           }
         })
+      },
+
+      handleRemove (file, fileList) {
+        this.deleteFileList.push(file)
+        console.log(this.deleteFileList)
       }
   }
 }
