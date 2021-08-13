@@ -16,6 +16,15 @@
         <p>
         {{ form.content }}
         </p>
+        <p>
+          <a
+          v-for="file in fileList" :key="pfid"
+          href="https://localhost:8443/api/v1/boards/posts/1/file/1_test"
+          class="modal_refer_font"
+        >
+          파일
+        </a>
+        </p>
       </el-main>
 
       <!-- <el-footer v-if="form.uid === uid"> -->
