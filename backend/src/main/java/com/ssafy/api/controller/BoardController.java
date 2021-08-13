@@ -301,7 +301,6 @@ public class BoardController {
 		@ApiResponse(code = 500, message = "서버 오류")
 	})
 	public ResponseEntity<?> findFile(
-			@PathVariable @ApiParam(value="게시글 pid", required = true) Long pid,
 			@PathVariable @ApiParam(value="파일 pfid", required = true) Long pfid) {
 		try {
 			 File file = boardService.getFileByPfid(pfid);
