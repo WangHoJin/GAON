@@ -131,11 +131,13 @@ export default {
   },
   methods: {
     async disconnectGoogle() {
-      var auth2 = await gapi.auth2.getAuthInstance();
-      auth2.signOut().then(function() {
+      let authObject = await gapi.auth2.getAuthInstance();
+      console.log("authObject: " + authObject);
+      console.log(authObject);
+      authObject.signOut().then(function() {
         console.log("user signed out");
       });
-      await auth2.disconnect();
+      await authObject.disconnect();
     },
     clearStorage() {
       sessionStorage.removeItem("userInfo");

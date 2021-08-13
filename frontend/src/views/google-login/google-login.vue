@@ -23,14 +23,27 @@ export default {
       pic: pic
     };
   },
-  mounted() {
-    window.gapi.signin2.render("google-signin-btn", {
+  async mounted() {
+    await window.gapi.signin2.render("google-signin-btn", {
       onsuccess: this.onSignIn,
       width: 240,
       height: 50,
       longtitle: true,
       theme: "dark"
     });
+
+    // gapi.load("auth2", function() {
+    //   console.log("init실행됐니?");
+    //   gapi.auth2.init();
+    //   var auth2 = gapi.auth2.getAuthInstance();
+    //   console.log(auth2);
+    //   var isGoogleLogin = auth2.isSignedIn.get();
+    //   console.log("isGoogleLogin");
+    //   console.log(isGoogleLogin);
+    //   console.log("init실행됐니? 끝");
+    // });
+
+    // console.log("auth2: " + auth2);
   },
   methods: {
     onSignIn(googleUser) {
