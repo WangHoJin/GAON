@@ -1,6 +1,6 @@
 <template>
   <div v-if="streamManager">
-    <ov-video :stream-manager="streamManager" />
+    <ov-video :stream-manager="streamManager" :mainStream="mainStream" />
     <div>
       <p>{{ clientData }}</p>
     </div>
@@ -18,7 +18,8 @@ export default {
   },
 
   props: {
-    streamManager: Object
+    streamManager: Object,
+    mainStream: Boolean
   },
 
   computed: {

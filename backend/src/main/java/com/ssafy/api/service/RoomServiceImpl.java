@@ -111,7 +111,7 @@ public class RoomServiceImpl implements RoomService {
 	public String makeCode(Room room) {
 		String id = room.getId().toString();
 		String createdAt = room.getCreated_time().format(DateTimeFormatter.ofPattern("yyMMddhhmmss"));
-		String random = Integer.toString((int)Math.floor(Math.random() * 10));
+		String random = Integer.toString((int)Math.floor(Math.random() * 100));
 		System.out.println(random);
 		String text = id + createdAt + random;
 		System.out.println(text);
@@ -120,7 +120,9 @@ public class RoomServiceImpl implements RoomService {
 //		System.out.println(text);
 		Encoder encoder = Base64.getEncoder(); 
 		byte[] encodedBytes  = encoder.encode(text.getBytes());
-		return new String(encodedBytes);
+		String res = new String(encodedBytes).replace("=","");
+//		System.out.println("방 코드 : " + res);
+		return res;
 	}
 
 }

@@ -84,7 +84,11 @@
             />
           </div>
           <div v-if="mainOnOff" id="main-video" class="col-md-6">
-            <user-video :stream-manager="mainStreamManager" />
+            <user-video
+              :stream-manager="mainStreamManager"
+              :mainStream="true"
+              @click.native="deleteMainVideoStreamManager"
+            />
           </div>
           <div id="video-container" class="col-md-6">
             <user-video
@@ -238,16 +242,16 @@ export default {
     this.joinSession();
   },
   computed: {
-    subscribers() {
-      console.log("감지 발생");
-      this.subscribers.forEach(sub => {
-        if (sub.stream.typeOfVideo == "SCREEN") {
-          console.log("내가 공유한 놈이다");
-          this.updateMainVideoStreamManager(sub);
-        }
-      });
-      return this.subscribers;
-    }
+    // subscribers() {
+    //   console.log("감지 발생");
+    //   this.subscribers.forEach(sub => {
+    //     if (sub.stream.typeOfVideo == "SCREEN") {
+    //       console.log("내가 공유한 놈이다");
+    //       this.updateMainVideoStreamManager(sub);
+    //     }
+    //   });
+    //   return this.subscribers;
+    // }
   },
   methods: {
     sendPublisher(subId) {
@@ -311,7 +315,6 @@ export default {
         // this.updateMainVideoStreamManager(newPublisher);
         newPublisher.once("accessAllowed", () => {
           try {
-            console.log("크기조정실행됐냐????????????");
             newPublisher.stream
               .getMediaStream()
               .getVideoTracks()[0]
@@ -329,9 +332,8 @@ export default {
         this.publisher = newPublisher;
         this.mainStreamManager = this.publisher;
         this.session.publish(this.publisher);
-        //this.updateMainVideoStreamManager(this.publisher);
+        // this.updateMainVideoStreamManager(this.publisher);
       } else {
-        this.tg = false;
         this.session.unpublish(this.publisher);
         this.publisher = this.tempPublisher;
         this.session.publish(this.publisher);
@@ -497,6 +499,16 @@ export default {
       this.mainOnOff = true;
       if (this.mainStreamManager === stream) return;
       this.mainStreamManager = stream;
+      this.mainStreamManager.stream.videoDimensions = {
+        width: 960,
+        height: 600
+      };
+      console.log("바뀐 메인스트림정보");
+      console.log(this.mainStreamManager);
+      console.log(this.mainStreamManager.stream.videoDimensions);
+    },
+    deleteMainVideoStreamManager() {
+      this.mainOnOff = false;
     },
 
     /**
@@ -578,9 +590,9 @@ export default {
 };
 </script>
 <style scoped>
-#video {
-  height: 100px;
-  width: 100px;
+video {
+  height: 320px;
+  width: 200px;
 }
 
 #alertbtn {
