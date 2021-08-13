@@ -1,5 +1,6 @@
 <template>
-  <video autoplay />
+  <video v-if="mainStream" class="main" autoplay />
+  <video v-else autoplay />
 </template>
 
 <script>
@@ -7,7 +8,8 @@ export default {
   name: "OvVideo",
 
   props: {
-    streamManager: Object
+    streamManager: Object,
+    mainStream: Boolean
   },
   ////
   mounted() {
@@ -15,3 +17,9 @@ export default {
   }
 };
 </script>
+<style scoped>
+.main {
+  width: 960px;
+  height: 600px;
+}
+</style>
