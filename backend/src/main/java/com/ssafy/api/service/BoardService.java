@@ -35,4 +35,5 @@ public interface BoardService {
 	List<PostFile> getPostFiles(Long pid);
 	List<File> getFiles(Long pid);
 	File getFileByPfid(Long pfid);
+	boolean removeFile(Long pfid);
 }
