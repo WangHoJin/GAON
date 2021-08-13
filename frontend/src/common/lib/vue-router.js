@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+
 import store from "../lib/store";
 
 const routes = [
@@ -6,22 +7,7 @@ const routes = [
   {
     // 처음 들어왔을떄 들어간 방이 있는지 없는지 판단하는 페이지
     path: "/",
-    component: () => import("../../views/conferences/components/default.vue"),
-    beforeEnter: async function(to, from, next) {
-      await store.dispatch(
-        "getRoomByUserId",
-        JSON.parse(sessionStorage.getItem("userInfo")).id
-      );
-      if (!store.state.roomModule.isClickPlusBtn) {
-        if (store.getters.rooms.length > 0) {
-          return next("/main");
-        } else {
-          return next();
-        }
-      } else {
-        next();
-      }
-    }
+    component: () => import("../../views/conferences/components/default.vue")
   },
   {
     // 구글로그인 페이지
@@ -39,6 +25,7 @@ const routes = [
     path: "/main",
     name: "main",
     component: () => import("../../views/main/main.vue"),
+
     children: [
       {
         // 3번째 라우터
@@ -124,25 +111,70 @@ const router = createRouter({
 router.afterEach(to => {
   // console.log(to);
 });
+function second(to, from, next) {
+  console.log("2");
+  console.log("구글로그인으로 가는게 먼저 실행되었음");
+  // goGoogleLogin(to, next);
+  if (to.fullPath != "/googlelogin") {
+    return next("/googlelogin");
+  } else {
+    next();
+  }
+}
+async function first() {
+  console.log("1");
+  let authObject = undefined;
+  await gapi.load("auth2", function() {
+    console.log("init실행됐니? 1-1");
+    gapi.auth2.init();
+    authObject = gapi.auth2.getAuthInstance();
+    console.log("authObject: " + authObject);
+    console.log(authObject);
 
-router.beforeEach((to, from, next) => {
+    let isGoogleLogin = authObject.isSignedIn.get();
+    console.log("isGoogleLogin");
+    console.log(isGoogleLogin);
+
+    if (isGoogleLogin) {
+      // 구글로그인이 되어있는 상태이면 disconnect
+      console.log("만약 로그인이 되어있는 상태면 끊기");
+      authObject.signOut().then(function() {
+        console.log("user first signed out");
+      });
+      authObject.disconnect();
+    } else {
+      // 안되어있는 상태이면 아무것도하지않기.
+      console.log("로그인이 안되어있으면 아무것도 하지않기");
+    }
+  });
+}
+router.beforeEach(async function(to, from, next) {
   console.log("구글라우터가드==============================================");
   // 회원탈퇴한 경우 탈퇴 페이지로 이동하기
   if (to.fullPath == "/quit") {
     next();
   }
-  // 세션에 유저정보가 없는경우
+  // 세션에 유저정보가 없는경우 = 세션 만료가 돼서 로그아웃이 됐다 or 최초접속자다
   if (sessionStorage.getItem("userInfo") === null) {
-    if (to.fullPath != "/googlelogin") {
-      return next("/googlelogin");
-    } else {
-      next();
-    }
+    await first().then(() => {
+      console.log("기다려기다려기다려");
+      // second(to, from, next);
+    });
+    // await first().then();
   }
   // 세션에 유저정보가 있는 경우
   else if (sessionStorage.getItem("userInfo") != null) {
     return next();
   }
 });
+
+function goGoogleLogin(to, next) {
+  console.log("구글로그인 함수를 참조 가능했음.");
+  if (to.fullPath != "/googlelogin") {
+    next("/googlelogin");
+  } else {
+    next();
+  }
+}
 
 export default router;
