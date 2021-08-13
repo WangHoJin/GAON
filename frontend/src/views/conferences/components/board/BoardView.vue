@@ -17,13 +17,20 @@
         {{ form.content }}
         </p>
         <p>
-          <a
-          v-for="file in fileList" :key="pfid"
-          href="https://localhost:8443/api/v1/boards/posts/1/file/1_test"
-          class="modal_refer_font"
+          <!-- <a
+          v-for="file in fileList"
+          :key="file.pfid"
+          href="https://localhost:8443/api/v1/boards/posts/files/14"
         >
-          파일
-        </a>
+          <p>
+          {{ file.filename }}
+          </p>
+        </a> -->
+        <button
+          v-for="file in fileList"
+          @click="download(file.pfid)">
+              {{ file.filename }}
+        </button>
         </p>
       </el-main>
 
@@ -77,8 +84,12 @@ export default {
     $axios
       .get(fileURL)
       .then(res => {
+        console.log(res.data)
+        res.data.forEach((element, idx, arr) => this.fileList.push({pfid: arr[idx].pfid, filename: arr[idx].file_name}))
+        // this.fileList
+        // console.log(this.fileList)
         console.log("get uploaded files")
-        console.log(res)
+
       })
       .catch(err => {
         console.log(err)
@@ -97,6 +108,8 @@ export default {
           created_time: "2021-08-10 00:14:01.130000",
           modified_time: "2021-08-10 00:14:01.130000"
         },
+        fileList: [
+        ],
         uid: 0
     }
   },
@@ -133,7 +146,28 @@ export default {
         .catch(err => {
           console.log(err);
         });
-      }
+      },
+
+      async download(pfid) {
+        console.log(pfid)
+        const url = `/boards/posts/files/${pfid}`
+        await $axios
+          .get(url, {responseType: 'blob'})
+          .then(res => {
+            console.log(res)
+            const url = window.URL
+                  .createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'image.jpg');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          })
+          .catch(err => {
+            console.log(err)
+          })
+        }
     }
 
 };
