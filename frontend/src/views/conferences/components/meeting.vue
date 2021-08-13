@@ -38,53 +38,12 @@
         <!-- <RollBookCheck /> -->
 
         <el-col :span="19">
-          <el-button type="" @click="toggleScreanshare()"
-            >화면공유버튼</el-button
-          >
           <div id="session-header">
             <!-- <h1 id="session-title">{{ mySessionId }}</h1> -->
-            <input
-              class="btn btn-large btn-danger"
-              type="button"
-              id="buttonLeaveSession"
-              @click="leaveSession"
-              value="Leave session"
-            />
-            <input
-              v-if="vOnOff"
-              class="btn btn-large btn-danger"
-              type="button"
-              id="buttonVideoOff"
-              @click="videoOnOff()"
-              value="video off"
-            />
-            <input
-              v-else
-              class="btn btn-large btn-danger"
-              type="button"
-              id="buttonVideoOn"
-              @click="videoOnOff()"
-              value="video on"
-            />
-            <input
-              v-if="aOnOff"
-              class="btn btn-large btn-danger"
-              type="button"
-              id="buttonAudioOff"
-              @click="audioOnOff()"
-              value="audio off"
-            />
-            <input
-              v-else
-              class="btn btn-large btn-danger"
-              type="button"
-              id="buttonAudioOn"
-              @click="audioOnOff()"
-              value="audio on"
-            />
           </div>
-          <div v-if="mainOnOff" id="main-video" class="col-md-6">
+          <div id="main-video" class="col-md-6">
             <user-video
+              v-if="mainOnOff"
               :stream-manager="mainStreamManager"
               :mainStream="true"
               @click.native="deleteMainVideoStreamManager"
@@ -178,6 +137,51 @@
         </el-col>
       </el-row>
     </div>
+    <el-row>
+      <div id="conferenceFooter">
+        <el-button
+          v-if="vOnOff"
+          type="success"
+          icon="el-icon-camera"
+          circle
+          @click="videoOnOff()"
+        ></el-button>
+        <el-button
+          v-else
+          type="danger"
+          icon="el-icon-camera-solid"
+          circle
+          @click="videoOnOff()"
+        ></el-button>
+        <el-button
+          v-if="aOnOff"
+          type="success"
+          icon="el-icon-microphone"
+          circle
+          @click="audioOnOff()"
+        ></el-button>
+        <el-button
+          v-else
+          type="danger"
+          icon="el-icon-turn-off-microphone"
+          circle
+          @click="audioOnOff()"
+        ></el-button>
+        <el-button
+          type="success"
+          icon="el-icon-monitor"
+          circle
+          @click="toggleScreanshare()"
+        ></el-button>
+        <el-button
+          type="danger"
+          icon="el-icon-close"
+          circle
+          @click="leaveSession"
+        ></el-button>
+        <h2>위치좀여</h2>
+      </div>
+    </el-row>
   </div>
 </template>
 <script>
