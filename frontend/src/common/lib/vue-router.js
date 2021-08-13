@@ -156,10 +156,43 @@ router.beforeEach(async function(to, from, next) {
   }
   // 세션에 유저정보가 없는경우 = 세션 만료가 돼서 로그아웃이 됐다 or 최초접속자다
   if (sessionStorage.getItem("userInfo") === null) {
-    await first().then(() => {
-      console.log("기다려기다려기다려");
-      // second(to, from, next);
-    });
+    // console.log("1");
+    // let authObject = undefined;
+    // await gapi.load("auth2", function() {
+    //   console.log("init실행됐니? 1-1");
+    //   gapi.auth2.init();
+    //   authObject = gapi.auth2.getAuthInstance();
+    //   console.log("authObject: " + authObject);
+    //   console.log(authObject);
+
+    //   let isGoogleLogin = authObject.isSignedIn.get();
+    //   console.log("isGoogleLogin");
+    //   console.log(isGoogleLogin);
+
+    //   if (isGoogleLogin) {
+    //     // 구글로그인이 되어있는 상태이면 disconnect
+    //     console.log("만약 로그인이 되어있는 상태면 끊기");
+    //     authObject.signOut().then(function() {
+    //       console.log("user first signed out");
+    //     });
+    //     authObject.disconnect();
+    //   } else {
+    //     // 안되어있는 상태이면 아무것도하지않기.
+    //     console.log("로그인이 안되어있으면 아무것도 하지않기");
+    //   }
+    // });
+    // console.log("2");
+    // console.log("구글로그인으로 가는게 먼저 실행되었음");
+    // goGoogleLogin(to, next);
+    if (to.fullPath != "/googlelogin") {
+      return next("/googlelogin");
+    } else {
+      next();
+    }
+    // await first().then(() => {
+    //   console.log("기다려기다려기다려");
+    //   // second(to, from, next);
+    // });
     // await first().then();
   }
   // 세션에 유저정보가 있는 경우
