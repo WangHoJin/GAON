@@ -1,79 +1,95 @@
 <template>
   <div>
-  <el-menu active-text-color="#ffd04b" class="sidebar-tool sidebar-menu">
-    <el-menu-item
-      v-for="i in $store.getters.boards"
-      :key="i.id"
-      :index="i.id"
-      @click="mvList(i.id)"
+    <el-menu active-text-color="#ffd04b" class="sidebar-tool sidebar-menu">
+      <!-- 유저 정보 조회 -->
+      <el-divider style="margin-top:0px;margin-bottom:10px"></el-divider>
+      <UserInfoBox />
+      <el-divider style="margin:0px">
+        <i class="el-icon-star-on"></i>
+      </el-divider>
+      <!-- 화상미팅 -->
+      <el-button @click="meetingSelect()" id="meeting-btn" style="width:100%">
+        <span
+          class="iconify"
+          data-inline="false"
+          data-icon="noto:school"
+          style="font-size: 100px;"
+        ></span>
+      </el-button>
+      <!-- 출석부 -->
+      <el-menu-item @click="rollBookSelect()">
+        <i class="el-icon-s-management" style="margin-bottom:2px"></i>
+        출석부
+      </el-menu-item>
+      <!-- 게시판 목록 -->
+      <el-menu-item
+        v-for="i in $store.getters.boards"
+        :key="i.id"
+        :index="i.id"
+        @click="mvList(i.id)"
+      >
+        <i class="el-icon-edit" style="margin-bottom:2px"></i>
+        <span>{{ i.name }}</span>
+      </el-menu-item>
+      <!-- 게시판 추가 버튼 -->
+      <el-button
+        @click="dialogFormVisible_board = true"
+        icon="el-icon-plus"
+        circle
+        style="width: 30px; height: 30px; min-height: 0px; min-width: 0px; padding: 0px; margin-top:20px"
+      ></el-button>
+    </el-menu>
+    <!-- 게시판 생성 시작 -->
+    <el-dialog
+      title="새 게시판 만들기"
+      v-model="dialogFormVisible_board"
+      center
+      top="10vh"
     >
-      <span>{{ i.name }}</span>
-    </el-menu-item>
-    <el-menu-item @click="rollBookSelect()">
-      출석부
-    </el-menu-item>
-    <el-button @click="meetingSelect()" id="meeting-btn">
-      <span
-        class="iconify"
-        data-inline="false"
-        data-icon="noto:school"
-        style="font-size: 100px;"
-      ></span
-    ></el-button>
-    <el-button @click="dialogFormVisible_board = true">게시판 생성</el-button>
-    <UserInfoBox />
-  </el-menu>
-  <!-- 게시판 생성 시작 -->
-  <el-dialog
-    title="새 게시판 만들기"
-    v-model="dialogFormVisible_board"
-    center
-    top="10vh"
-  >
-    <el-divider></el-divider>
-    <!-- 방 생성 dialog일 때 -->
-    <el-form :model="roomInfo">
-      <el-form-item
-        label="게시판 이름을 입력해주세요"
-        :label-width="formLabelWidth"
-        id="room-make-form-label"
-      >
-        <el-input
-          v-model="roomInfo.name"
-          autocomplete="off"
-          placeholder=""
-        ></el-input>
-      </el-form-item>
-      <el-form-item
-        label="게시판 설명을 입력해주세요"
-        :label-width="formLabelWidth"
-        id="room-make-form-label"
-      >
-        <el-input v-model="roomInfo.description"></el-input>
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button
-          class="gaon-button"
-          type="warning"
-          @click="makeBoard(roomInfo)"
-          >게시판 생성</el-button
+      <el-divider></el-divider>
+      <!-- 방 생성 dialog일 때 -->
+      <el-form :model="roomInfo">
+        <el-form-item
+          label="게시판 이름을 입력해주세요"
+          :label-width="formLabelWidth"
+          id="room-make-form-label"
         >
-        <el-button
-          @click="
-            dialogFormVisible_board = false;
-            roomInfo.name = '';
-            roomInfo.description = '';
-          "
-          type="info"
-          >취소</el-button
+          <el-input
+            v-model="roomInfo.name"
+            autocomplete="off"
+            placeholder=""
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          label="게시판 설명을 입력해주세요"
+          :label-width="formLabelWidth"
+          id="room-make-form-label"
         >
-      </span>
-    </template>
-    <!-- 방 생성 dialog 끝 -->
-    <!-- 방 코드 확인 dialog끝 -->
-  </el-dialog>
+          <el-input v-model="roomInfo.description"></el-input>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button
+            class="gaon-button"
+            type="warning"
+            @click="makeBoard(roomInfo)"
+            >게시판 생성</el-button
+          >
+          <el-button
+            @click="
+              dialogFormVisible_board = false;
+              roomInfo.name = '';
+              roomInfo.description = '';
+            "
+            type="info"
+            >취소</el-button
+          >
+        </span>
+      </template>
+      <!-- 방 생성 dialog 끝 -->
+      <!-- 방 코드 확인 dialog끝 -->
+    </el-dialog>
   </div>
 </template>
 

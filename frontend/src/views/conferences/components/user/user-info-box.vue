@@ -1,27 +1,45 @@
 <template>
-  <el-card class="user-info-box">
-    <img
-      :src="`${img}`"
-      style="width : 30px; border-radius: 70%;  vertical-align: middle "
-    />
-    <span>
-      {{ username }}
-    </span>
-    <el-button
-      class="button"
-      @click="signOut"
-      type="small"
-      icon="el-icon-remove-outline"
-      >sign out</el-button
-    >
-    <el-button
-      class="button"
-      @click="showUserInfo"
-      type="small"
-      icon="el-icon-setting"
-      >유저정보</el-button
-    >
-  </el-card>
+  <el-menu
+    default-active="2"
+    class="el-menu-vertical-demo"
+    @open="handleOpen"
+    @close="handleClose"
+  >
+    <el-submenu index="1">
+      <template #title style="min-width: 0px; padding:0px">
+        <el-row>
+          <el-col :span="8">
+            <img
+              :src="`${img}`"
+              style="width : 30px; border-radius: 70%;  vertical-align: middle "
+            />
+          </el-col>
+          <el-col :span="16">
+            <span style="font-size:middle;">
+              {{ username }}
+            </span>
+          </el-col>
+        </el-row>
+      </template>
+      <el-menu-item
+        index="1-1"
+        @click="signOut"
+        style="min-width: 0px; padding:0px"
+      >
+        <i class="el-icon-remove-outline"></i>
+        로그아웃</el-menu-item
+      >
+      <el-menu-item
+        index="1-2"
+        @click="showUserInfo"
+        style="min-width: 0px; padding:0px"
+      >
+        <i class="el-icon-setting"></i>
+        유저정보</el-menu-item
+      >
+    </el-submenu>
+  </el-menu>
+  <el-card class="user-info-box" body-style="padding:0px"> </el-card>
   <!-- 회원정보조회 dialog 시작 -->
   <el-dialog
     title="회원 정보 조회"

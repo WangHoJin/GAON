@@ -111,7 +111,7 @@ public class RoomServiceImpl implements RoomService {
 	public String makeCode(Room room) {
 		String id = room.getId().toString();
 		String createdAt = room.getCreated_time().format(DateTimeFormatter.ofPattern("yyMMddhhmmss"));
-		String random = Integer.toString((int)Math.floor(Math.random() * 100));
+		String random = Integer.toString((int)Math.floor(Math.random() * 10));
 		System.out.println(random);
 		String text = id + createdAt + random;
 		System.out.println(text);
