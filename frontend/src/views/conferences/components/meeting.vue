@@ -1,8 +1,8 @@
 <template lang="">
   <div id="main-container" class="container">
     <!-- 공지배너 START  -->
-    <transition name="slide-fade" mode="out-in">
-      <div v-if="totalTime > 0">
+    <transition name="fade" id="transi">
+      <div class="noticeB" v-if="totalTime > 0">
         <h2>{{ reciveMsg }}</h2>
         <span>남은시간 [ {{ minutes }}</span>
         <span>:</span>
@@ -708,16 +708,17 @@ video {
   display: inline-block;
   margin: 1px;
 }
-.slide-fade-enter {
-  transform: translateX(10px);
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
-.slide-fade-enter-active,
-.slide-fade-leave-active {
-  transition: all 0.2s ease;
-}
-.slide-fade-leave-to {
-  transform: translateX(-10px);
-  opacity: 0;
+.noticeB {
+  background-color: #ffd344;
+  margin: 20px;
+  border-radius: 20px;
+  padding: 10px;
 }
 </style>
