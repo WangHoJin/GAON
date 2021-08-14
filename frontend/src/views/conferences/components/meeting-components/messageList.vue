@@ -23,7 +23,7 @@ export default {
     msgs: function() {
       console.log("출력");
       var objDiv = document.getElementById("app_chat_list");
-      objDiv.scrollTop = objDiv.scrollHeight;
+      objDiv.scrollTop = objDiv.scrollHeight + 10;
     }
   }
 };
@@ -32,7 +32,8 @@ export default {
 <style scoped>
 .container {
   height: 500px;
-  background: rgba(255, 209, 2, 0.61);
+  background: #b4b4b4;
   overflow: scroll;
+  border-radius: 10px;
 }
 </style>
