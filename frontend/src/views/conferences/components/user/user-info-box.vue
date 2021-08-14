@@ -45,7 +45,7 @@
         :label-width="formLabelWidth"
         id="room-make-form-label"
       >
-        <el-input v-model="username" placeholder=""></el-input>
+        <el-input v-model="mofidyUsername" placeholder=""></el-input>
       </el-form-item>
 
       <el-form-item
@@ -88,7 +88,12 @@
           </template>
         </el-popover>
 
-        <el-button @click="dialogFormVisible_showUserInfo = false" type="info"
+        <el-button
+          @click="
+            dialogFormVisible_showUserInfo = false;
+            mofidyUsername = username;
+          "
+          type="info"
           >취소</el-button
         >
       </span>
@@ -100,6 +105,7 @@
           @click="
             dialogFormVisible_showUserInfo = false;
             isModify = false;
+            mofidyUsername = username;
           "
           type="info"
           >취소</el-button
@@ -121,7 +127,8 @@ export default {
       email: JSON.parse(sessionStorage.getItem("userInfo")).email,
       dialogFormVisible_showUserInfo: false, // 회원정보 조회 dialog 표시
       isModify: false, //수정폼인지 그냥인지 확인
-      visible: false // 탈퇴 innerdialog 띄우기용
+      visible: false, // 탈퇴 innerdialog 띄우기용
+      mofidyUsername: JSON.parse(sessionStorage.getItem("userInfo")).nickname // binding 방지용
     };
   },
   mounted() {
@@ -170,11 +177,11 @@ export default {
       await $axios
         .put("/users", {
           email: this.email,
-          nickname: this.username
+          nickname: this.mofidyUsername
         })
         .then(res => {
           console.log(res.data);
-          self.nickname = res.data.nickname;
+          self.username = res.data.nickname;
           sessionStorage.setItem(
             "userInfo",
             JSON.stringify({
