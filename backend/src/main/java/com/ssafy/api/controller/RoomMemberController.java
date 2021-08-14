@@ -2,6 +2,7 @@ package com.ssafy.api.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +29,7 @@ import io.swagger.annotations.ApiResponses;
 /**
  * 방 멤버 관련 API 컨트롤러
  */
+@CrossOrigin("*")
 @Api(value = "룸 멤버 API", tags = {"RoomMember"})
 @RestController
 @RequestMapping("/api/v1/room-member")

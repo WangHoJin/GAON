@@ -2,6 +2,7 @@ package com.ssafy.api.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +29,7 @@ import io.swagger.annotations.ApiResponses;
 /**
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
  */
+@CrossOrigin("*")
 @Api(value = "유저 API", tags = {"User"})
 @RestController
 @RequestMapping("/api/v1/users")
