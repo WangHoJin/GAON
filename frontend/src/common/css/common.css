@@ -50,3 +50,6 @@ body {
     display: none !important;
   }
 }
+#pw {
+  font-family: none;
+}

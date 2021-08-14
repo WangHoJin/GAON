@@ -2,7 +2,7 @@
   <div class="container">
     <el-row align="middle" justify="center">
       <el-col :span="12">
-        <el-card class="box-card" shadow="hover">
+        <el-card class="box-card" shadow="hover" style="margin-left:230px;">
           <template #header>
             <div class="card-header">
               <div class="icon-wrapper">
@@ -18,7 +18,7 @@
         </el-card>
       </el-col>
       <el-col :span="12">
-        <el-card class="box-card" shadow="hover">
+        <el-card class="box-card" shadow="hover" style="margin-right:230px;">
           <template #header>
             <div class="card-header">
               <div class="icon-wrapper">
@@ -366,4 +366,7 @@ export default {
   /* box-shadow: 2px 2px 3px #999; */
   transform: scale(1.2, 1.2);
 }
+/* .el-row:nth-child(1) .el-card {
+  margin-left: 40px;
+} */
 </style>
