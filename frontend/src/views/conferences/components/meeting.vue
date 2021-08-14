@@ -1,36 +1,28 @@
 <template lang="">
   <div id="main-container" class="container">
-    <div id="join" v-if="!session">
-      <!-- <div id="img-div"></div> -->
-      <!-- <div id="join-dialog" class="jumbotron vertical-center"> -->
-      <!-- <h1>Join a video session</h1> -->
-      <!-- <div class="form-group">
-          <p>
-            <label>Participant</label>
-            <input
-              v-model="myUserName"
-              class="form-control"
-              type="text"
-              required
-            />
-          </p>
-          <p>
-            <label>Session</label>
-            <input
-              v-model="mySessionId"
-              class="form-control"
-              type="text"
-              required
-            />
-          </p>
-          <p class="text-center">
-            <button class="btn btn-lg btn-success" @click="joinSession()">
-              Join!
-            </button>
-          </p>
-        </div> -->
-      <!-- </div> -->
+    <!-- 공지배너 START  -->
+    <transition name="slide-fade" mode="out-in">
+      <div v-if="totalTime > 0">
+        <h2>{{ reciveMsg }}</h2>
+        <span>남은시간 [ {{ minutes }}</span>
+        <span>:</span>
+        <span>{{ seconds }}]</span>
+        <span>[{{ nowtime }} 까지 유효 ]</span>
+      </div>
+    </transition>
+    <!-- 공지배너 END  -->
+
+    <!-- 공지보내기 START -->
+    <div>
+      <input v-model="noticeMsg" />
+      <input v-model.number="sendtime" type="number" />
+      <img
+        style="cursor:pointer"
+        :src="require(`@/common/img/alram.png`)"
+        @click="makeNotice()"
+      />
     </div>
+    <!-- 공지보내기 END -->
 
     <div id="session" v-if="session">
       <el-row>
@@ -120,6 +112,11 @@
           <div v-if="connectionUser">
             <div v-if="publisher">
               <el-row>
+                <!-- <ConnetionUserList
+                  :publisher="publisher"
+                  :subscribers="subscribers"
+                  @leaveSession="leaveSession"
+                /> -->
                 <ConnetionUserList
                   :publisher="publisher"
                   :subscribers="subscribers"
@@ -195,6 +192,7 @@ import ConnetionUserList from "./meeting-components/ConnetionUserList";
 import alarm from "../../../common/mp3/alarm.mp3";
 import { h } from "vue";
 import RollBookCheck from "./meeting-components/roll-book-check.vue";
+
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const OPENVIDU_SERVER_URL = "https://i5b101.p.ssafy.io:443";
@@ -232,7 +230,15 @@ export default {
       myUserId: "",
       tg: false,
       width: "320",
-      height: "200"
+      height: "200",
+
+      noticeSig: "",
+      reciveMsg: "",
+      noticeMsg: "",
+      sendtime: 0,
+      timer: null,
+      totalTime: 0,
+      resetButton: false
     };
   },
   async created() {
@@ -256,8 +262,58 @@ export default {
     //   });
     //   return this.subscribers;
     // }
+    minutes: function() {
+      const minutes = Math.floor(this.totalTime / 60);
+      return this.padTime(minutes);
+    },
+    seconds: function() {
+      const seconds = this.totalTime - this.minutes * 60;
+      return this.padTime(seconds);
+    }
+  },
+  watch: {
+    sendtime: function() {
+      if (this.sendtime >= 3600) {
+        console.log("이상 이상");
+        this.sendtime = 3600;
+      }
+    }
   },
   methods: {
+    //타이머종료시간 설정
+    setTimertime() {},
+    //타이머 시작
+    startTimer: function() {
+      clearInterval(this.timer);
+      var date = new Date();
+      console.log(date);
+      this.nowtime =
+        date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+      this.timer = setInterval(() => this.countdown(), 1000);
+      this.resetButton = true;
+    },
+    stopTimer: function() {
+      clearInterval(this.timer);
+      this.timer = nullthis.resetButton = true;
+    },
+    resetTimer: function() {
+      this.totalTime = 1 * 60;
+      clearInterval(this.timer);
+      this.timer = null;
+      this.resetButton = false;
+    },
+    padTime: function(time) {
+      return (time < 10 ? "0" : "") + time;
+    },
+    countdown: function() {
+      if (this.totalTime >= 1) {
+        this.totalTime--;
+      } else {
+        this.totalTime = 0;
+        this.resetTimer;
+      }
+    },
+    //타이머 종료
     sendPublisher(subId) {
       // Sender of the message (after 'session.connect')
       this.session
@@ -280,6 +336,43 @@ export default {
           data: "알람울리기", // Any string (optional)
           to: [sub.stream.connection], // Array of Connection objects (optional. Broadcast to everyone if empty)
           type: "my-alrarm" // The type of message (optional)
+        })
+        .then(() => {
+          console.log("Message successfully sent");
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+    makeNotice() {
+      var nowtime = new Date();
+      var nexttime = Date.parse(nowtime) + this.sendtime * 1000;
+      var sig = JSON.stringify({
+        nexttime: nexttime,
+        noticeMsg: this.noticeMsg
+      });
+      console.log(sig);
+      this.noticeSig = sig;
+      this.sendNotice();
+    },
+    checkNotice() {
+      if (this.noticeSig != "") {
+        var time = Date.parse(new Date());
+        var signal = JSON.parse(this.noticeSig);
+        if (time < signal.nexttime) {
+          this.sendNotice();
+        } else {
+          this.noticeSig = "";
+          this.noticeMsg = "";
+        }
+      }
+    },
+    sendNotice() {
+      this.session
+        .signal({
+          data: this.noticeSig, // Any string (optional)
+          to: [], // Array of Connection objects (optional. Broadcast to everyone if empty)
+          type: "notice" // The type of message (optional)
         })
         .then(() => {
           console.log("Message successfully sent");
@@ -387,6 +480,8 @@ export default {
       this.session.on("streamCreated", ({ stream }) => {
         const subscriber = this.session.subscribe(stream);
         this.subscribers.push(subscriber);
+        console.log("인원 변경이 감지되었다.");
+        this.checkNotice();
       });
 
       // On every Stream destroyed...
@@ -426,12 +521,16 @@ export default {
         audio.play();
       });
 
-      // Receiver of all messages (usually before calling 'session.connect')
-
-      this.session.on("signal", event => {
-        console.log(event.data); // Message
-        console.log(event.from); // Connection object of the sender
-        console.log(event.type); // The type of message
+      this.session.on("signal:notice", event => {
+        var nowtime = Date.parse(new Date());
+        var data = JSON.parse(event.data);
+        var nexttime = data.nexttime;
+        var msg = data.noticeMsg;
+        var endtime = (nexttime - nowtime) / 1000;
+        console.log(endtime + " " + msg);
+        this.reciveMsg = msg;
+        this.totalTime = endtime;
+        this.startTimer();
       });
 
       // --- Connect to the session with a valid user token ---
@@ -608,5 +707,17 @@ video {
 #userv {
   display: inline-block;
   margin: 1px;
+}
+.slide-fade-enter {
+  transform: translateX(10px);
+  opacity: 0;
+}
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.2s ease;
+}
+.slide-fade-leave-to {
+  transform: translateX(-10px);
+  opacity: 0;
 }
 </style>
