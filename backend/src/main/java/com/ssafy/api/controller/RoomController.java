@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,6 +44,7 @@ import io.swagger.annotations.ExampleProperty;
 /**
  * 방 관련 API 요청 처리를 위한 컨트롤러 정의.
  */
+@CrossOrigin("*")
 @Api(value = "방 API", tags = {"Room"})
 @RestController
 @RequestMapping("/api/v1/rooms")
