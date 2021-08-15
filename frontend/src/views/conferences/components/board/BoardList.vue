@@ -38,6 +38,7 @@
             <h1>게시글 목록</h1>
           </el-card> -->
           <el-table
+            empty-text="글이 없어요. 새 글을 작성해 주세요😥!"
             :data="pagedTableData"
             style="width: 100%"
             @current-change="handleCurrentChange"
