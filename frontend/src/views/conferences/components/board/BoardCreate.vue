@@ -39,6 +39,7 @@
             </div>
           </template>
         </el-upload>
+
           <el-button type="info" @click="submitCancle();">취소</el-button>
           <el-button type="primary" class="gaon-button" @click="createPost('form', $route.params.bid);">글 작성</el-button>
       </el-main>
