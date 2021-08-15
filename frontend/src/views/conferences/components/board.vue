@@ -1,5 +1,5 @@
 <template lang="">
-  <el-container class="main-wrapper" style="background-color:#f6e46c">
+  <el-container class="main-wrapper">
     <el-contianer class="main-container">
       <el-main>
         <router-view></router-view>

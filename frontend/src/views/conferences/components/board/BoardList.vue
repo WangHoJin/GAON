@@ -16,11 +16,12 @@
                 {{ boardDescription }}
               </div>
             </el-card>
-            <div style="text-align:left; ">
-              <!-- <h1 style="margin-bottom: 0px; margin-left:5px; ">
+
+            <!-- <div style="text-align:left; ">
+              <h1 style="margin-bottom: 0px; margin-left:5px; ">
                 게시글목록
-              </h1> -->
-            </div>
+              </h1>
+            </div> -->
           </el-col>
           <el-col :span="4"
             ><el-button
@@ -58,12 +59,7 @@
               </template>
             </el-table-column>
           </el-table>
-          <div
-            align="center"
-            style="
-    width: 100%;
-"
-          >
+          <div align="center" style="width: 100%;">
             <el-pagination
               id="pg"
               background
