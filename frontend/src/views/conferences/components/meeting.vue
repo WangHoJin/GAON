@@ -249,7 +249,24 @@ export default {
     ConnetionUserList,
     RollBookCheck
   },
+  beforeRouteLeave(to, from, next) {
+    // console.log(to.fullPath);
+    if (to.fullPath == `/conference/${this.$route.params.conferenceId}`) {
+      return next();
+    } else {
+      if (this.session) {
+        this.session.disconnect();
+      }
+      this.session = undefined;
+      this.mainStreamManager = undefined;
+      this.publisher = undefined;
+      this.subscribers = [];
+      this.OV = undefined;
 
+      window.removeEventListener("beforeunload", this.leaveSession);
+      return next();
+    }
+  },
   data() {
     return {
       OV: undefined,
@@ -289,9 +306,12 @@ export default {
       "getRoomById",
       this.$route.params.conferenceId
     );
+
     this.mySessionId = roomInfo.code;
     this.myUserName = JSON.parse(sessionStorage.getItem("userInfo")).nickname;
     this.myUserId = JSON.parse(sessionStorage.getItem("userInfo")).id;
+    console.log("세션 검색");
+    console.log(this.getSession(this.mySessionId));
     this.joinSession();
   },
   computed: {
@@ -675,7 +695,19 @@ export default {
         this.createToken(sessionId)
       );
     },
-
+    getSession(mySessionId) {
+      axios
+        .get(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${mySessionId}`)
+        .then(response => {
+          console.log("가져온 세션");
+          console.log(response);
+          console.log(response.data);
+        })
+        .catch(err => {
+          console.log("못가져옴");
+          console.log(err);
+        });
+    },
     // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-openviduapisessions
     createSession(sessionId) {
       return new Promise((resolve, reject) => {
