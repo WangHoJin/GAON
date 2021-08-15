@@ -48,11 +48,13 @@
     >
       <el-divider></el-divider>
       <!-- 방 생성 dialog일 때 -->
-      <el-form :model="roomInfo">
+      <el-form :model="roomInfo" ref="roomInfo">
         <el-form-item
           label="게시판 이름을 입력해주세요"
           :label-width="formLabelWidth"
           id="room-make-form-label"
+          prop="name"
+          :rules="{ required: true, message: '게시판 이름을 입력해주세요.', trigger: 'blur' }"
         >
           <el-input
             v-model="roomInfo.name"
@@ -73,7 +75,7 @@
           <el-button
             class="gaon-button"
             type="warning"
-            @click="makeBoard(roomInfo)"
+            @click="makeBoard(roomInfo, 'roomInfo')"
             >게시판 생성</el-button
           >
           <el-button
@@ -130,29 +132,36 @@ export default {
       this.$router.push({ name: "board", params: { bid: bid } });
     },
     // 게시판 생성하기
-    async makeBoard(roomInfo) {
-      console.log("게시판 생성");
-      const url = "/boards";
-      await $axios
-        .post(url, roomInfo)
-        .then(res => {
-          console.log(res.data);
-          response = res.data;
-          console.log("makeboard ");
-          console.log("res.data");
-        })
-        .catch(err => {
-          console.log(err);
-        });
-      // boards 배열 갱신
-      await this.$store.dispatch(
-        "getBoardsByRoomId",
-        this.$route.params.conferenceId
-      );
-      // 모달창 닫기
-      this.dialogFormVisible_board = false;
-      this.roomInfo.name = "";
-      this.roomInfo.description = "";
+    async makeBoard(roomInfo, form) {
+      this.$refs[form].validate((valid) => {
+        if (valid) {
+          console.log("게시판 생성");
+          const url = "/boards";
+          $axios
+            .post(url, roomInfo)
+            .then(res => {
+              // console.log(res.data);
+              // response = res.data;
+              // console.log("makeboard ");
+              // console.log("res.data");
+              // boards 배열 갱신
+              this.$store.dispatch(
+                "getBoardsByRoomId",
+                this.$route.params.conferenceId
+              );
+              // 모달창 닫기
+              this.dialogFormVisible_board = false;
+              this.roomInfo.name = "";
+              this.roomInfo.description = "";
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        } else {
+          console.log("error submit!")
+          return false
+        }
+      })
     },
     rollBookSelect() {
       this.$router.push({
