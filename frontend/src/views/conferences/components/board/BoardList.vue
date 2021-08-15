@@ -1,43 +1,23 @@
 <template lang="">
   <el-container class="main-wrapper">
     <el-contianer class="main-container">
-      <!-- <div class="background"> -->
       <el-main>
         <el-row>
-          <el-col :span="20">
-            <el-card class="box-card">
-              <template #header>
-                <div class="card-header">
-                  {{ boardName }}
-                </div>
-              </template>
-              <div class="card-body">
-                <i class="header-icon el-icon-info"></i>
-                {{ boardDescription }}
-              </div>
-            </el-card>
-
-            <!-- <div style="text-align:left; ">
-              <h1 style="margin-bottom: 0px; margin-left:5px; ">
-                게시글목록
-              </h1>
-            </div> -->
-          </el-col>
-          <el-col :span="4"
-            ><el-button
-              icon="el-icon-edit"
-              circle
-              class="write-btn"
-              @click="boardCreate()"
-            ></el-button
-          ></el-col>
-
-          <!-- <el-card
-            id="title"
-            style=" width: 100%;  background: linear-gradient(90deg, #f56c6c 1%, #fff 1%);     align-self: start;"
+          <el-card
+            class="box-card"
+            style="padding-bottom: 0px;padding-top: 1px;padding-left: 40px; text-align: left;    max-height: 60px;"
           >
-            <h1>게시글 목록</h1>
-          </el-card> -->
+            {{ boardName }} |
+            <span style="font-size:12px; vertical-align:middle">
+              <i class="header-icon el-icon-info"></i>{{ boardDescription }}
+            </span>
+          </el-card>
+          <el-button
+            icon="el-icon-edit"
+            circle
+            class="write-btn"
+            @click="boardCreate()"
+          ></el-button>
           <el-table
             empty-text="글이 없어요. 새 글을 작성해 주세요😥!"
             :data="pagedTableData"
@@ -69,14 +49,9 @@
               @current-change="setPage"
             >
             </el-pagination>
-
-            <!-- <div class="right">
-            <el-button placement="right-end">새 글 작성</el-button>
-          </div> -->
           </div>
         </el-row>
       </el-main>
-      <!-- </div> -->
     </el-contianer>
   </el-container>
 </template>
@@ -91,7 +66,7 @@ export default {
     return {
       tableData: [],
       page: 1,
-      pageSize: 5,
+      pageSize: 10,
       formLabelWidth: "120px",
       currentRow: null,
       boardName: null,
@@ -230,8 +205,8 @@ export default {
   border: none;
 }
 .el-card {
-  padding: 10px;
-  border-radius: 35px;
+  /* padding: 10px 10px 20px 10px; */
+  /* border-radius: 35px; */
 }
 .card-header {
   display: flex;
@@ -250,8 +225,8 @@ export default {
   display: flex;
 }
 .box-card {
-  width: 200px;
-  background: linear-gradient(90deg, #a2df14 7%, #fff 7%);
+  width: 100%;
+  background: linear-gradient(90deg, #a2df14 3%, #fff 3%);
 }
 .el-table--fit {
   width: 100%;
@@ -270,8 +245,8 @@ export default {
 
 .write-btn {
   position: absolute;
-  right: 0px;
-  margin-top: 90px;
+  right: 20px;
+  margin-top: 7px;
   background-color: #a2df14;
   color: white;
   width: 50px;
@@ -287,5 +262,8 @@ export default {
 }
 #title {
   padding: 0px;
+}
+.el-table--fit[data-v-03b67118] {
+  margin-top: 5px;
 }
 </style>
