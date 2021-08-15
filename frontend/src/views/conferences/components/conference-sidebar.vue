@@ -27,6 +27,8 @@
         :key="i.id"
         :index="i.id"
         @click="mvList(i.id)"
+        @mousedown.right="mouseRightClick($route.params.conferenceId, i)"
+        @mousedown.stop
       >
         <i class="el-icon-edit" style="margin-bottom:2px"></i>
         <span>{{ i.name }}</span>
@@ -48,11 +50,13 @@
     >
       <el-divider></el-divider>
       <!-- 방 생성 dialog일 때 -->
-      <el-form :model="roomInfo">
+      <el-form :model="roomInfo" ref="roomInfo">
         <el-form-item
           label="게시판 이름을 입력해주세요"
           :label-width="formLabelWidth"
           id="room-make-form-label"
+          prop="name"
+          :rules="{ required: true, message: '게시판 이름을 입력해주세요.', trigger: 'blur' }"
         >
           <el-input
             v-model="roomInfo.name"
@@ -73,7 +77,7 @@
           <el-button
             class="gaon-button"
             type="warning"
-            @click="makeBoard(roomInfo)"
+            @click="makeBoard(roomInfo, 'roomInfo')"
             >게시판 생성</el-button
           >
           <el-button
@@ -87,9 +91,80 @@
           >
         </span>
       </template>
+      </el-dialog>
       <!-- 방 생성 dialog 끝 -->
       <!-- 방 코드 확인 dialog끝 -->
+
+    <el-dialog
+      title="방 정보를 수정하시겠습니까?"
+      v-model="showModifyDialog"
+      width="30%"
+    >
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button type="primary" @click="openModifyDialog()">네</el-button>
+          <el-button @click="showModifyDialog = false" type="info"
+            >아니오</el-button
+          >
+        </span>
+      </template>
     </el-dialog>
+    <!-- 방 정보 수정 확인 dialog 끝-->
+      <!-- 방 정보 수정 dialog 시작 -->
+  <el-dialog
+    title="게시판 수정"
+    v-model="dialogFormVisible_modifyUser"
+    center
+    top="5vh"
+  >
+    <el-divider></el-divider>
+    <!-- 방 생성 dialog일 때 -->
+      <el-form :model="selectedBoardInfo" ref="selectedBoardInfo">
+        <el-form-item
+          label="게시판 이름을 입력해주세요"
+          :label-width="formLabelWidth"
+          id="room-make-form-label"
+          prop="name"
+          :rules="{ required: true, message: '게시판 이름을 입력해주세요.', trigger: 'blur' }"
+        >
+          <el-input
+            v-model="selectedBoardInfo.name"
+            autocomplete="off"
+            placeholder=""
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          label="게시판 설명을 입력해주세요"
+          :label-width="formLabelWidth"
+          id="room-make-form-label"
+        >
+          <el-input v-model="selectedBoardInfo.description"></el-input>
+        </el-form-item>
+      </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button class="gaon-button" type="warning" @click="modifyBoardInfo()"
+          >적용하기</el-button
+        >
+        <el-button @click="dialogFormVisible_modifyUser = false" type="info"
+          >취소</el-button
+        >
+        <el-popconfirm
+          confirmButtonText='OK'
+          cancelButtonText='No, Thanks'
+          icon="el-icon-info"
+          iconColor="red"
+          title="Are you sure to delete this?"
+          @confirm="deleteBoard"
+        >
+        <template #reference>
+          <el-button type="danger">게시판 삭제</el-button>
+        </template>
+        </el-popconfirm>
+      </span>
+    </template>
+  </el-dialog>
+  <!-- 방 정보 수정 dialog 끝 -->
   </div>
 </template>
 
@@ -114,6 +189,10 @@ export default {
     return {
       boards: [], // 해당 방의 게시판들을 저장할 배열
       dialogFormVisible_board: false, // 게시판 생성 모달
+      showModifyDialog: false,
+      dialogFormVisible_modifyUser: false,
+      selectedBoardInfo: {},
+      uid: 0,
       roomInfo: {
         rid: this.$route.params.conferenceId,
         name: "",
@@ -130,30 +209,99 @@ export default {
       this.$router.push({ name: "board", params: { bid: bid } });
     },
     // 게시판 생성하기
-    async makeBoard(roomInfo) {
-      console.log("게시판 생성");
-      const url = "/boards";
+    async makeBoard(roomInfo, form) {
+      this.$refs[form].validate((valid) => {
+        if (valid) {
+          console.log("게시판 생성");
+          const url = "/boards";
+          $axios
+            .post(url, roomInfo)
+            .then(res => {
+              // console.log(res.data);
+              // response = res.data;
+              // console.log("makeboard ");
+              // console.log("res.data");
+              // boards 배열 갱신
+              this.$store.dispatch(
+                "getBoardsByRoomId",
+                this.$route.params.conferenceId
+              );
+              // 모달창 닫기
+              this.dialogFormVisible_board = false;
+              this.roomInfo.name = "";
+              this.roomInfo.description = "";
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        } else {
+          console.log("error submit!")
+          return false
+        }
+      })
+    },
+    //게시판 삭제
+    async deleteBoard() {
+      const url = `/boards/${this.selectedBoardInfo.id}`;
       await $axios
-        .post(url, roomInfo)
+        .delete(url)
         .then(res => {
-          console.log(res.data);
-          response = res.data;
-          console.log("makeboard ");
-          console.log("res.data");
+          console.log("board is deleted")
+          // boards 배열 갱신
+          this.$store.dispatch(
+            "getBoardsByRoomId",
+            this.$route.params.conferenceId
+          );
+          this.dialogFormVisible_modifyUser = false;
         })
         .catch(err => {
-          console.log(err);
-        });
-      // boards 배열 갱신
-      await this.$store.dispatch(
-        "getBoardsByRoomId",
-        this.$route.params.conferenceId
-      );
-      // 모달창 닫기
-      this.dialogFormVisible_board = false;
-      this.roomInfo.name = "";
-      this.roomInfo.description = "";
+          console.log(err)
+        })
     },
+    mouseRightClick(rid, boardInfo) {
+      const url = `/rooms/id/${rid}`
+      console.log(boardInfo)
+      this.selectedBoardInfo = {id: boardInfo.id, name: boardInfo.name, description: boardInfo.description }
+      $axios
+        .get(url)
+        .then(res => {
+          // console.log(res.data)
+          if (res.data.host_id == JSON.parse(sessionStorage.getItem("userInfo")).id) {
+            // console.log("로그인한 사용자는 방장입니다.")
+            this.showModifyDialog = true;
+            // console.log(this.showModifyDialog)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+
+    },
+
+    openModifyDialog() {
+      this.showModifyDialog = false;
+      this.dialogFormVisible_modifyUser = true;
+    },
+
+    modifyBoardInfo() {
+      const url = `/boards/${this.selectedBoardInfo.id}`
+      const form = {name: this.selectedBoardInfo.name, description: this.selectedBoardInfo.description}
+      $axios
+      .put(url, form)
+      .then(res => {
+        console.log(res)
+        // boards 배열 갱신
+        this.$store.dispatch(
+          "getBoardsByRoomId",
+          this.$route.params.conferenceId
+        );
+        this.dialogFormVisible_modifyUser = false;
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+
     rollBookSelect() {
       this.$router.push({
         name: "conference-rollbook"

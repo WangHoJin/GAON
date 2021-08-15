@@ -1,6 +1,6 @@
 <template>
   <el-row align="center">
-    <el-col :span="3"> <conference-sidevar /></el-col>
+    <el-col :span="3" @contextmenu.prevent> <conference-sidevar /></el-col>
     <el-col :span="21">
       <el-main>
         <!-- {{ $route.params.conferenceId + "번 방 상세 보기 페이지" }}
