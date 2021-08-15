@@ -144,6 +144,13 @@ export default {
       },
       URL: process.env.VUE_APP_API_URL
     };
+
+    //     bid:1,
+    //     title:" ",
+    //     content:""
+    //     },
+    //   URL: process.env.VUE_APP_API_URL
+    // }
   },
   methods: {
     submitCancle(pid) {

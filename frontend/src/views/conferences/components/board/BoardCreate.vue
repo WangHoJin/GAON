@@ -90,6 +90,17 @@
       </el-form>
 
       <!-- </el-main> -->
+
+      <!-- <template #tip>
+            <div class="el-upload__tip">
+              jpg/png files with a size less than 500kb
+            </div>
+          </template>
+        </el-upload>
+
+          <el-button type="info" @click="submitCancle();">취소</el-button>
+          <el-button type="primary" class="gaon-button" @click="createPost('form', $route.params.bid);">글 작성</el-button>
+      </el-main> -->
     </el-contianer>
   </el-container>
 </template>
@@ -100,6 +111,7 @@ import $axios from "axios";
 export default {
   data() {
     return {
+      fileList: [],
       form: {
         title: "",
         uid: "",

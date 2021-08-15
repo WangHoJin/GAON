@@ -13,15 +13,52 @@
     <!-- 공지배너 END  -->
 
     <!-- 공지보내기 START -->
-    <div>
-      <input v-model="noticeMsg" />
-      <input v-model.number="sendtime" type="number" />
-      <img
-        style="cursor:pointer"
-        :src="require(`@/common/img/alram.png`)"
-        @click="makeNotice()"
-      />
-    </div>
+    <el-dialog
+      width="500px"
+      title="새 공지사항 보내기"
+      v-model="noticeFormModal"
+      center
+      top="10vh"
+    >
+      <el-divider></el-divider>
+      <!--  공지 dialog일 때 -->
+      <el-form>
+        <el-form-item
+          label="공지사항 내용을 입력해주세요"
+          :label-width="formLabelWidth"
+          id="notice-make-form-label"
+        >
+          <el-input
+            v-model="noticeMsg"
+            autocomplete="off"
+            placeholder=""
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          label="공지 시간을 설정해주세요(1~3600초)"
+          :label-width="formLabelWidth"
+          id="notice-make-form-label"
+        >
+          <el-input v-model.number="sendtime" type="number"></el-input>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button class="gaon-button" type="warning" @click="makeNotice()"
+            >공지사항 생성</el-button
+          >
+          <el-button
+            @click="
+              noticeFormModal = false;
+              noticeMsg = '';
+              sendtime = 0;
+            "
+            type="info"
+            >취소</el-button
+          >
+        </span>
+      </template>
+    </el-dialog>
     <!-- 공지보내기 END -->
 
     <div id="session" v-if="session">
@@ -38,29 +75,26 @@
               v-if="mainOnOff"
               :stream-manager="mainStreamManager"
               :mainStream="true"
-              @click.native="deleteMainVideoStreamManager"
+              v-on:dblclick="deleteMainVideoStreamManager"
             />
           </div>
           <div id="video-container" class="col-md-6">
-            <user-video
-              :stream-manager="publisher"
-              @click.native="updateMainVideoStreamManager(publisher)"
-            />
-            <!-- <img
-              style="cursor:pointer"
-              :src="require(`@/common/img/alram.png`)"
-              id="alertbtn"
-              @click="toggleScreanshare(publisher)"
-              value="채연이꺼"
-            /> -->
+            <div id="myvideo">
+              <user-video
+                id="vid"
+                :stream-manager="publisher"
+                v-on:dblclick="updateMainVideoStreamManager(publisher)"
+              />
+            </div>
 
             <!-- 유저 화상회의 목록 출력 START -->
             <div id="userv" v-for="sub in subscribers">
               <user-video
+                id="vid"
                 :key="sub.stream.connection.connectionId"
                 :stream-manager="sub"
-                @click.native="updateMainVideoStreamManager(sub)"
-              />
+                v-on:dblclick="updateMainVideoStreamManager(sub)"
+              ></user-video>
               <img
                 style="cursor:pointer"
                 :src="require(`@/common/img/alram.png`)"
@@ -71,63 +105,125 @@
             </div>
             <!-- 화상회의 출력 END -->
           </div>
+          <el-button
+            v-if="vOnOff"
+            type="success"
+            icon="el-icon-camera"
+            circle
+            @click="videoOnOff()"
+          ></el-button>
+          <el-button
+            v-else
+            type="danger"
+            icon="el-icon-camera-solid"
+            circle
+            @click="videoOnOff()"
+          ></el-button>
+          <el-button
+            v-if="aOnOff"
+            type="success"
+            icon="el-icon-microphone"
+            circle
+            @click="audioOnOff()"
+          ></el-button>
+          <el-button
+            v-else
+            type="danger"
+            icon="el-icon-turn-off-microphone"
+            circle
+            @click="audioOnOff()"
+          ></el-button>
+          <el-button
+            type="success"
+            icon="el-icon-monitor"
+            circle
+            @click="toggleScreanshare()"
+          ></el-button>
+          <el-button
+            type="danger"
+            icon="el-icon-close"
+            circle
+            @click="leaveSession"
+          ></el-button>
+          <!-- 공지사항 보내기 버튼 -->
+          <img
+            style="cursor:pointer;"
+            :src="require(`@/common/img/notice.png`)"
+            @click="noticeFormModal = true"
+          />
         </el-col>
         <el-col :span="5">
-          <input
-            v-if="!chatting"
-            class="btn btn-large btn-danger"
-            type="button"
-            id="buttonChatting"
-            @click="chattingOnOff()"
-            value="chatting on"
-          />
-          <input
-            v-else
-            class="btn btn-large btn-danger"
-            type="button"
-            id="buttonChatting"
-            @click="chattingOnOff()"
-            value="chatting off"
-          />
-          <input
-            v-if="!connectionUser"
-            class="btn btn-large btn-danger"
-            type="button"
-            id="buttonConnectionUser"
-            @click="connectionUserOnOff()"
-            value="connectionUser on"
-          />
-          <input
-            v-else
-            class="btn btn-large btn-danger"
-            type="button"
-            id="buttonConnectionUser"
-            @click="connectionUserOnOff()"
-            value="connectionUser off"
-          />
-          <div v-if="chatting">
-            <MessageList :msgs="msgs" />
-            <MessageForm @sendMsg="sendMsg" :user-name="myUserName" />
-          </div>
-          <div v-if="connectionUser">
-            <div v-if="publisher">
-              <el-row>
-                <!-- <ConnetionUserList
+          <el-row style="margin-left:60%;height:50px">
+            <!-- 채팅 on/off 버튼 -->
+            <el-col :span="12">
+              <!-- 채팅 on 버튼 -->
+              <el-button
+                type="warning"
+                icon="el-icon-chat-dot-round"
+                circle
+                v-if="!chatting"
+                id="buttonChatting"
+                @click="chattingOnOff()"
+              ></el-button>
+              <!-- 채팅 off 버튼 -->
+              <el-button
+                type="info"
+                icon="el-icon-chat-round"
+                circle
+                v-else
+                @click="chattingOnOff()"
+              ></el-button>
+            </el-col>
+            <!-- 접속자 현황 on/off 버튼 -->
+            <el-col :span="12">
+              <!-- 접속자 현황 on 버튼 -->
+              <el-button
+                v-if="!connectionUser"
+                type="warning"
+                icon="el-icon-s-custom"
+                circle
+                @click="connectionUserOnOff()"
+              ></el-button>
+              <el-button
+                v-else
+                type="info"
+                icon="el-icon-s-custom"
+                circle
+                @click="connectionUserOnOff()"
+              ></el-button>
+            </el-col>
+          </el-row>
+
+          <!-- 애니메이션 참고 사이트 https://runebook.dev/ko/docs/vue/guide/transitions-enterleave -->
+          <!-- 채팅 창 -->
+          <transition name="slide">
+            <div id="chat-box" v-if="chatting">
+              <MessageList :msgs="msgs" />
+              <MessageForm @sendMsg="sendMsg" :user-name="myUserName" />
+            </div>
+          </transition>
+
+          <!-- 접속자 현황 -->
+          <transition name="slide">
+            <div v-if="connectionUser">
+              <div v-if="publisher">
+                <el-row>
+                  <!-- <ConnetionUserList
                   :publisher="publisher"
                   :subscribers="subscribers"
                   @leaveSession="leaveSession"
                 /> -->
-                <ConnetionUserList
-                  :publisher="publisher"
-                  :subscribers="subscribers"
-                  @leaveSession="leaveSession"
-                />
-              </el-row>
+                  <ConnetionUserList
+                    :publisher="publisher"
+                    :subscribers="subscribers"
+                    @leaveSession="leaveSession"
+                  />
+                </el-row>
+              </div>
             </div>
-          </div>
-          <el-button type="" @click="RollBookCheck = true"
-            >출석체크하세요</el-button
-          >
+          </transition>
+
+          <!-- 출석부 -->
           <div>
             <RollBookCheck :publisher="publisher" :subscribers="subscribers" />
           </div>
@@ -135,49 +231,7 @@
       </el-row>
     </div>
     <el-row>
-      <div id="conferenceFooter">
-        <el-button
-          v-if="vOnOff"
-          type="success"
-          icon="el-icon-camera"
-          circle
-          @click="videoOnOff()"
-        ></el-button>
-        <el-button
-          v-else
-          type="danger"
-          icon="el-icon-camera-solid"
-          circle
-          @click="videoOnOff()"
-        ></el-button>
-        <el-button
-          v-if="aOnOff"
-          type="success"
-          icon="el-icon-microphone"
-          circle
-          @click="audioOnOff()"
-        ></el-button>
-        <el-button
-          v-else
-          type="danger"
-          icon="el-icon-turn-off-microphone"
-          circle
-          @click="audioOnOff()"
-        ></el-button>
-        <el-button
-          type="success"
-          icon="el-icon-monitor"
-          circle
-          @click="toggleScreanshare()"
-        ></el-button>
-        <el-button
-          type="danger"
-          icon="el-icon-close"
-          circle
-          @click="leaveSession"
-        ></el-button>
-        <h2>위치좀여</h2>
-      </div>
+      <div id="conferenceFooter"></div>
     </el-row>
   </div>
 </template>
@@ -208,7 +262,24 @@ export default {
     ConnetionUserList,
     RollBookCheck
   },
+  beforeRouteLeave(to, from, next) {
+    // console.log(to.fullPath);
+    if (to.fullPath == `/conference/${this.$route.params.conferenceId}`) {
+      return next();
+    } else {
+      if (this.session) {
+        this.session.disconnect();
+      }
+      this.session = undefined;
+      this.mainStreamManager = undefined;
+      this.publisher = undefined;
+      this.subscribers = [];
+      this.OV = undefined;
 
+      window.removeEventListener("beforeunload", this.leaveSession);
+      return next();
+    }
+  },
   data() {
     return {
       OV: undefined,
@@ -229,8 +300,8 @@ export default {
       myUserName: "Participant" + Math.floor(Math.random() * 100),
       myUserId: "",
       tg: false,
-      width: "320",
-      height: "200",
+      width: "640",
+      height: "400",
 
       noticeSig: "",
       reciveMsg: "",
@@ -238,7 +309,9 @@ export default {
       sendtime: 0,
       timer: null,
       totalTime: 0,
-      resetButton: false
+      resetButton: false,
+
+      noticeFormModal: false
     };
   },
   async created() {
@@ -246,9 +319,12 @@ export default {
       "getRoomById",
       this.$route.params.conferenceId
     );
+
     this.mySessionId = roomInfo.code;
     this.myUserName = JSON.parse(sessionStorage.getItem("userInfo")).nickname;
     this.myUserId = JSON.parse(sessionStorage.getItem("userInfo")).id;
+    console.log("세션 검색");
+    console.log(this.getSession(this.mySessionId));
     this.joinSession();
   },
   computed: {
@@ -345,6 +421,7 @@ export default {
         });
     },
     makeNotice() {
+      this.noticeFormModal = false;
       var nowtime = new Date();
       var nexttime = Date.parse(nowtime) + this.sendtime * 1000;
       var sig = JSON.stringify({
@@ -392,7 +469,7 @@ export default {
           videoSource: "screen",
           publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
           publishVideo: true, // Whether you want to start publishing with your video enabled or not
-          resolution: "320x200", // The resolution of your video
+          resolution: "1920x1080", // The resolution of your video
           frameRate: 30, // The frame rate of your video
           insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
           mirror: false // Whether to mirror your local video or not
@@ -407,8 +484,8 @@ export default {
               this.mainOnOff = false;
             });
         });
-        this.width = "960";
-        this.height = "600";
+        this.width = "1920";
+        this.height = "1080";
         // this.updateMainVideoStreamManager(newPublisher);
         newPublisher.once("accessAllowed", () => {
           try {
@@ -439,6 +516,7 @@ export default {
     connectionUserOnOff() {
       this.connectionUser = !this.connectionUser;
     },
+    //채팅 on/off버튼을 눌렀을 때 실행되는 함수
     chattingOnOff() {
       this.chatting = !this.chatting;
       console.log(" 공유 여부 ");
@@ -631,7 +709,19 @@ export default {
         this.createToken(sessionId)
       );
     },
-
+    getSession(mySessionId) {
+      axios
+        .get(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${mySessionId}`)
+        .then(response => {
+          console.log("가져온 세션");
+          console.log(response);
+          console.log(response.data);
+        })
+        .catch(err => {
+          console.log("못가져옴");
+          console.log(err);
+        });
+    },
     // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-openviduapisessions
     createSession(sessionId) {
       return new Promise((resolve, reject) => {
@@ -693,18 +783,18 @@ export default {
 };
 </script>
 <style scoped>
-video {
-  height: 320px;
-  width: 200px;
-}
-
 #alertbtn {
+  display: inline;
   position: relative;
-  top: -265px;
-  left: 145px;
+  top: -260px;
+  float: right;
 }
 
 #userv {
+  display: inline-block;
+  margin: 1px;
+}
+#myvideo {
   display: inline-block;
   margin: 1px;
 }
@@ -720,5 +810,40 @@ video {
   margin: 20px;
   border-radius: 20px;
   padding: 10px;
+}
+
+.slide-enter-active {
+  animation-duration: 1s;
+  animation-name: slidein;
+}
+
+.slide-leave-active {
+  animation-duration: 1s;
+  animation-name: slideout;
+}
+
+/* 오른쪽에서 왼쪽으로 슬라이드 등장 */
+@keyframes slidein {
+  from {
+    margin-left: 100%;
+    width: 300%;
+  }
+
+  to {
+    margin-left: 0%;
+    width: 100%;
+  }
+}
+/* 왼쪽에서 오른쪽으로 슬라이드 등장 */
+@keyframes slideout {
+  from {
+    margin-left: 0%;
+    width: 100%;
+  }
+
+  to {
+    margin-left: 100%;
+    width: 300%;
+  }
 }
 </style>
