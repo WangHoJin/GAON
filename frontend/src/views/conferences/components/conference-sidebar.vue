@@ -143,7 +143,7 @@
       </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button class="gaon-button" type="warning" @click="modifyBoardInfo()"
+        <el-button class="gaon-button" type="warning" @click="modifyBoardInfo('selectedBoardInfo')"
           >적용하기</el-button
         >
         <el-button @click="dialogFormVisible_modifyUser = false" type="info"
@@ -283,22 +283,29 @@ export default {
       this.dialogFormVisible_modifyUser = true;
     },
 
-    modifyBoardInfo() {
-      const url = `/boards/${this.selectedBoardInfo.id}`
-      const form = {name: this.selectedBoardInfo.name, description: this.selectedBoardInfo.description}
-      $axios
-      .put(url, form)
-      .then(res => {
-        console.log(res)
-        // boards 배열 갱신
-        this.$store.dispatch(
-          "getBoardsByRoomId",
-          this.$route.params.conferenceId
-        );
-        this.dialogFormVisible_modifyUser = false;
-      })
-      .catch(err => {
-        console.log(err)
+    modifyBoardInfo(form) {
+      this.$refs[form].validate((valid) => {
+        if (valid) {
+          const url = `/boards/${this.selectedBoardInfo.id}`
+          const form = {name: this.selectedBoardInfo.name, description: this.selectedBoardInfo.description}
+          $axios
+          .put(url, form)
+          .then(res => {
+            console.log(res)
+            // boards 배열 갱신
+            this.$store.dispatch(
+              "getBoardsByRoomId",
+              this.$route.params.conferenceId
+            );
+            this.dialogFormVisible_modifyUser = false;
+          })
+          .catch(err => {
+            console.log(err)
+          })
+        } else {
+          console.log("error submit!")
+          return false
+        }
       })
     },
 
