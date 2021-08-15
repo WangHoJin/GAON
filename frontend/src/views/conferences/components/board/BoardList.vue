@@ -1,43 +1,85 @@
 <template lang="">
   <el-container class="main-wrapper">
     <el-contianer class="main-container">
+      <!-- <div class="background"> -->
       <el-main>
-        <el-table
-          :data="pagedTableData"
-          style="width: 100%"
-          @current-change="handleCurrentChange"
-        >
-          <el-table-column prop="id" label="No" width="180"> </el-table-column>
-          <el-table-column prop="title" label="제목" :formatter="formatter">
-          </el-table-column>
-          <el-table-column prop="nickname" label="작성자" width="180">
-          </el-table-column>
-          <el-table-column prop="created_time" label="작성시간" width="180">
-            <template #default="scope">
-              <i class="el-icon-time"></i>
-              <span style="margin-left: 10px">{{
-                scope.row.created_time
-              }}</span>
-            </template>
-          </el-table-column>
-        </el-table>
-        <div>
-          <el-pagination
-            background
-            layout="prev, pager, next"
-            :page-size="pageSize"
-            :total="tableData.length"
-            @current-change="setPage"
-          >
-          </el-pagination>
+        <el-row>
+          <el-col :span="20">
+            <el-card class="box-card">
+              <template #header>
+                <div class="card-header">
+                  {{ boardName }}
+                </div>
+              </template>
+              <div class="card-body">
+                <i class="header-icon el-icon-info"></i>
+                {{ boardDescription }}
+              </div>
+            </el-card>
+            <div style="text-align:left; ">
+              <!-- <h1 style="margin-bottom: 0px; margin-left:5px; ">
+                게시글목록
+              </h1> -->
+            </div>
+          </el-col>
+          <el-col :span="4"
+            ><el-button
+              icon="el-icon-edit"
+              circle
+              class="write-btn"
+              @click="boardCreate()"
+            ></el-button
+          ></el-col>
 
-          <div class="right">
-            <el-button placement="right-end" @click="boardCreate()"
-              >새 글 작성</el-button
+          <!-- <el-card
+            id="title"
+            style=" width: 100%;  background: linear-gradient(90deg, #f56c6c 1%, #fff 1%);     align-self: start;"
+          >
+            <h1>게시글 목록</h1>
+          </el-card> -->
+          <el-table
+            :data="pagedTableData"
+            style="width: 100%"
+            @current-change="handleCurrentChange"
+          >
+            <el-table-column prop="id" label="No" width="180">
+            </el-table-column>
+            <el-table-column prop="title" label="제목" :formatter="formatter">
+            </el-table-column>
+            <el-table-column prop="nickname" label="작성자" width="300">
+            </el-table-column>
+            <el-table-column prop="created_time" label="작성시간" width="300">
+              <template #default="scope">
+                <i class="el-icon-time"></i>
+                <span style="margin-left: 10px">{{
+                  scope.row.created_time
+                }}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div
+            align="center"
+            style="
+    width: 100%;
+"
+          >
+            <el-pagination
+              id="pg"
+              background
+              layout="prev, pager, next"
+              :page-size="pageSize"
+              :total="tableData.length"
+              @current-change="setPage"
             >
+            </el-pagination>
+
+            <!-- <div class="right">
+            <el-button placement="right-end">새 글 작성</el-button>
+          </div> -->
           </div>
-        </div>
+        </el-row>
       </el-main>
+      <!-- </div> -->
     </el-contianer>
   </el-container>
 </template>
@@ -48,14 +90,22 @@ import { useStore } from "vuex";
 // API
 import $axios from "axios";
 export default {
-  mounted() {
-    // this.$nextTick(function() {
-    //       // 모든 화면이 렌더링된 후 실행합니다.
-    //   })
+  data() {
+    return {
+      tableData: [],
+      page: 1,
+      pageSize: 5,
+      formLabelWidth: "120px",
+      currentRow: null,
+      boardName: null,
+      boardDescription: null
+    };
+  },
+  async mounted() {
     const route = useRoute();
     const url = `/boards/${route.params.bid}/posts`;
     console.log("mounted");
-    $axios
+    await $axios
       .get(url)
       .then(res => {
         // console.log(res.data.posts);
@@ -71,33 +121,54 @@ export default {
       .catch(err => {
         console.log(err);
       });
-  },
-  updated() {
-    const route = useRoute();
-    const url = `/boards/${route.params.bid}/posts`;
-    console.log("updated");
-    $axios
-      .get(url)
+    // 게시판의 정보를 가져오기
+    await $axios
+      .get(`/boards/id/${this.$route.params.bid}`)
       .then(res => {
-        // console.log(res.data.posts);
-        console.log(res.data.posts);
-        this.tableData = res.data.posts;
-        this.tableData.reverse();
-        // console.log("makeboard ");
-        // console.log("res.data");
+        console.log("게시판의 정보를 가져오기");
+        console.log(res.data);
+        console.log("게시판이름가져오기");
+        console.log(res.data.name);
+        this.boardName = res.data.name;
+        console.log(this.boardName);
+        this.boardDescription = res.data.description;
       })
       .catch(err => {
         console.log(err);
       });
   },
-  data() {
-    return {
-      tableData: [],
-      page: 1,
-      pageSize: 10,
-      formLabelWidth: "120px",
-      currentRow: null
-    };
+  async updated() {
+    const route = useRoute();
+    const url = `/boards/${route.params.bid}/posts`;
+    console.log("updated");
+    await $axios
+      .get(url)
+      .then(res => {
+        console.log(res.data.posts);
+        this.tableData = res.data.posts;
+        this.tableData.reverse();
+        // crated time 뒤에 소수점 자르기
+        this.tableData.filter(function(item, idx) {
+          item.created_time = item.created_time.substring(0, 19);
+          return item;
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    // 게시판의 정보를 가져오기
+    await $axios
+      .get(`/boards/id/${this.$route.params.bid}`)
+      .then(res => {
+        console.log("게시판의 정보를 가져오기");
+        console.log(res.data);
+        this.boardName = res.data.name;
+        this.boardDescription = res.data.description;
+      })
+      .catch(err => {
+        console.log(err);
+      });
   },
 
   computed: {
@@ -152,7 +223,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .right {
   float: right;
   width: 110px;
@@ -160,5 +231,64 @@ export default {
 .gaon-button {
   background-color: #ffd04b;
   border: none;
+}
+.el-card {
+  padding: 10px;
+  border-radius: 35px;
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.text {
+  font-size: 20px;
+}
+
+.item {
+  margin-bottom: 18px;
+  display: flex;
+}
+.card-body {
+  display: flex;
+}
+.box-card {
+  width: 200px;
+  background: linear-gradient(90deg, #a2df14 7%, #fff 7%);
+}
+.el-table--fit {
+  width: 100%;
+  padding: 25px;
+  border-radius: 35px;
+}
+
+.title .el-card__body {
+  padding: 0px;
+}
+.background {
+  width: 80%;
+  background-color: #fcf3bf;
+  z-index: -1;
+}
+
+.write-btn {
+  position: absolute;
+  right: 0px;
+  margin-top: 90px;
+  background-color: #a2df14;
+  color: white;
+  width: 50px;
+  height: 50px;
+  font-size: larger;
+}
+.write-btn:focus,
+.write-btn:hover {
+  background: #a2df14;
+  border-color: #a2df14;
+  color: #fff;
+  transform: scale(1.2, 1.2);
+}
+#title {
+  padding: 0px;
 }
 </style>
