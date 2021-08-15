@@ -20,6 +20,7 @@
           :action="URL"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
+          :on-change="handleChange"
           :file-list="fileList"
           :auto-upload="false"
           multiple
@@ -41,6 +42,19 @@
         </el-upload>
           <el-button type="info" @click="submitCancle($route.params.pid);">취소</el-button>
           <el-button type="primary" class="gaon-button" @click="editPost('form', $route.params.pid);">글 수정</el-button>
+
+        <el-dialog
+          title="동일한 파일명이 존재합니다."
+          v-model="duplicated"
+          width="30%"
+        >
+          <template #footer>
+            <span class="dialog-footer">
+              <el-button @click="duplicated = false" type="info"
+                >확인</el-button>
+            </span>
+          </template>
+        </el-dialog>
       </el-main>
     </el-contianer>
   </el-container>
@@ -96,9 +110,27 @@ export default {
         content:""
         },
       URL: process.env.VUE_APP_API_URL,
+      duplicated: false
     }
   },
   methods: {
+    handleChange (file, fileList) {
+      // console.log(file)
+      // console.log(fileList)
+      // fileList.pop()
+      // this.fileList.pop()
+      // console.log(fileList)
+      // console.log(this.fileList)
+      let step;
+      const boundary = fileList.length - 1
+      for (step = 0; step < boundary; step++) {
+        if (fileList[step].name == file.name) {
+          this.duplicated = true
+          fileList.pop()
+          break
+        }
+      }
+    },
     submitCancle (pid) {
         // console.log('cancle')
         this.form.title = ''
