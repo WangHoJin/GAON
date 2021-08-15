@@ -13,15 +13,52 @@
     <!-- 공지배너 END  -->
 
     <!-- 공지보내기 START -->
-    <div>
-      <input v-model="noticeMsg" />
-      <input v-model.number="sendtime" type="number" />
-      <img
-        style="cursor:pointer"
-        :src="require(`@/common/img/alram.png`)"
-        @click="makeNotice()"
-      />
-    </div>
+    <el-dialog
+      width="500px"
+      title="새 공지사항 보내기"
+      v-model="noticeFormModal"
+      center
+      top="10vh"
+    >
+      <el-divider></el-divider>
+      <!--  공지 dialog일 때 -->
+      <el-form>
+        <el-form-item
+          label="공지사항 내용을 입력해주세요"
+          :label-width="formLabelWidth"
+          id="notice-make-form-label"
+        >
+          <el-input
+            v-model="noticeMsg"
+            autocomplete="off"
+            placeholder=""
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          label="공지 시간을 설정해주세요(1~3600초)"
+          :label-width="formLabelWidth"
+          id="notice-make-form-label"
+        >
+          <el-input v-model.number="sendtime" type="number"></el-input>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button class="gaon-button" type="warning" @click="makeNotice()"
+            >공지사항 생성</el-button
+          >
+          <el-button
+            @click="
+              noticeFormModal = false;
+              noticeMsg = '';
+              sendtime = 0;
+            "
+            type="info"
+            >취소</el-button
+          >
+        </span>
+      </template>
+    </el-dialog>
     <!-- 공지보내기 END -->
 
     <div id="session" v-if="session">
@@ -71,6 +108,52 @@
             </div>
             <!-- 화상회의 출력 END -->
           </div>
+          <el-button
+            v-if="vOnOff"
+            type="success"
+            icon="el-icon-camera"
+            circle
+            @click="videoOnOff()"
+          ></el-button>
+          <el-button
+            v-else
+            type="danger"
+            icon="el-icon-camera-solid"
+            circle
+            @click="videoOnOff()"
+          ></el-button>
+          <el-button
+            v-if="aOnOff"
+            type="success"
+            icon="el-icon-microphone"
+            circle
+            @click="audioOnOff()"
+          ></el-button>
+          <el-button
+            v-else
+            type="danger"
+            icon="el-icon-turn-off-microphone"
+            circle
+            @click="audioOnOff()"
+          ></el-button>
+          <el-button
+            type="success"
+            icon="el-icon-monitor"
+            circle
+            @click="toggleScreanshare()"
+          ></el-button>
+          <el-button
+            type="danger"
+            icon="el-icon-close"
+            circle
+            @click="leaveSession"
+          ></el-button>
+          <!-- 공지사항 보내기 버튼 -->
+          <img
+            style="cursor:pointer;"
+            :src="require(`@/common/img/notice.png`)"
+            @click="noticeFormModal = true"
+          />
         </el-col>
         <el-col :span="5">
           <input
@@ -135,49 +218,7 @@
       </el-row>
     </div>
     <el-row>
-      <div id="conferenceFooter">
-        <el-button
-          v-if="vOnOff"
-          type="success"
-          icon="el-icon-camera"
-          circle
-          @click="videoOnOff()"
-        ></el-button>
-        <el-button
-          v-else
-          type="danger"
-          icon="el-icon-camera-solid"
-          circle
-          @click="videoOnOff()"
-        ></el-button>
-        <el-button
-          v-if="aOnOff"
-          type="success"
-          icon="el-icon-microphone"
-          circle
-          @click="audioOnOff()"
-        ></el-button>
-        <el-button
-          v-else
-          type="danger"
-          icon="el-icon-turn-off-microphone"
-          circle
-          @click="audioOnOff()"
-        ></el-button>
-        <el-button
-          type="success"
-          icon="el-icon-monitor"
-          circle
-          @click="toggleScreanshare()"
-        ></el-button>
-        <el-button
-          type="danger"
-          icon="el-icon-close"
-          circle
-          @click="leaveSession"
-        ></el-button>
-        <h2>위치좀여</h2>
-      </div>
+      <div id="conferenceFooter"></div>
     </el-row>
   </div>
 </template>
@@ -238,7 +279,9 @@ export default {
       sendtime: 0,
       timer: null,
       totalTime: 0,
-      resetButton: false
+      resetButton: false,
+
+      noticeFormModal: false
     };
   },
   async created() {
@@ -345,6 +388,7 @@ export default {
         });
     },
     makeNotice() {
+      this.noticeFormModal = false;
       var nowtime = new Date();
       var nexttime = Date.parse(nowtime) + this.sendtime * 1000;
       var sig = JSON.stringify({
