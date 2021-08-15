@@ -153,61 +153,77 @@
           />
         </el-col>
         <el-col :span="5">
-          <input
-            v-if="!chatting"
-            class="btn btn-large btn-danger"
-            type="button"
-            id="buttonChatting"
-            @click="chattingOnOff()"
-            value="chatting on"
-          />
-          <input
-            v-else
-            class="btn btn-large btn-danger"
-            type="button"
-            id="buttonChatting"
-            @click="chattingOnOff()"
-            value="chatting off"
-          />
-          <input
-            v-if="!connectionUser"
-            class="btn btn-large btn-danger"
-            type="button"
-            id="buttonConnectionUser"
-            @click="connectionUserOnOff()"
-            value="connectionUser on"
-          />
-          <input
-            v-else
-            class="btn btn-large btn-danger"
-            type="button"
-            id="buttonConnectionUser"
-            @click="connectionUserOnOff()"
-            value="connectionUser off"
-          />
-          <div v-if="chatting">
-            <MessageList :msgs="msgs" />
-            <MessageForm @sendMsg="sendMsg" :user-name="myUserName" />
-          </div>
-          <div v-if="connectionUser">
-            <div v-if="publisher">
-              <el-row>
-                <!-- <ConnetionUserList
+          <el-row style="margin-left:60%;height:50px">
+            <!-- 채팅 on/off 버튼 -->
+            <el-col :span="12">
+              <!-- 채팅 on 버튼 -->
+              <el-button
+                type="warning"
+                icon="el-icon-chat-dot-round"
+                circle
+                v-if="!chatting"
+                id="buttonChatting"
+                @click="chattingOnOff()"
+              ></el-button>
+              <!-- 채팅 off 버튼 -->
+              <el-button
+                type="info"
+                icon="el-icon-chat-round"
+                circle
+                v-else
+                @click="chattingOnOff()"
+              ></el-button>
+            </el-col>
+            <!-- 접속자 현황 on/off 버튼 -->
+            <el-col :span="12">
+              <!-- 접속자 현황 on 버튼 -->
+              <el-button
+                v-if="!connectionUser"
+                type="warning"
+                icon="el-icon-s-custom"
+                circle
+                @click="connectionUserOnOff()"
+              ></el-button>
+              <el-button
+                v-else
+                type="info"
+                icon="el-icon-s-custom"
+                circle
+                @click="connectionUserOnOff()"
+              ></el-button>
+            </el-col>
+          </el-row>
+
+          <!-- 애니메이션 참고 사이트 https://runebook.dev/ko/docs/vue/guide/transitions-enterleave -->
+          <!-- 채팅 창 -->
+          <transition name="slide">
+            <div id="chat-box" v-if="chatting">
+              <MessageList :msgs="msgs" />
+              <MessageForm @sendMsg="sendMsg" :user-name="myUserName" />
+            </div>
+          </transition>
+
+          <!-- 접속자 현황 -->
+          <transition name="slide">
+            <div v-if="connectionUser">
+              <div v-if="publisher">
+                <el-row>
+                  <!-- <ConnetionUserList
                   :publisher="publisher"
                   :subscribers="subscribers"
                   @leaveSession="leaveSession"
                 /> -->
-                <ConnetionUserList
-                  :publisher="publisher"
-                  :subscribers="subscribers"
-                  @leaveSession="leaveSession"
-                />
-              </el-row>
+                  <ConnetionUserList
+                    :publisher="publisher"
+                    :subscribers="subscribers"
+                    @leaveSession="leaveSession"
+                  />
+                </el-row>
+              </div>
             </div>
-          </div>
-          <el-button type="" @click="RollBookCheck = true"
-            >출석체크하세요</el-button
-          >
+          </transition>
+
+          <!-- 출석부 -->
           <div>
             <RollBookCheck :publisher="publisher" :subscribers="subscribers" />
           </div>
@@ -500,6 +516,7 @@ export default {
     connectionUserOnOff() {
       this.connectionUser = !this.connectionUser;
     },
+    //채팅 on/off버튼을 눌렀을 때 실행되는 함수
     chattingOnOff() {
       this.chatting = !this.chatting;
       console.log(" 공유 여부 ");
@@ -793,5 +810,40 @@ export default {
   margin: 20px;
   border-radius: 20px;
   padding: 10px;
+}
+
+.slide-enter-active {
+  animation-duration: 1s;
+  animation-name: slidein;
+}
+
+.slide-leave-active {
+  animation-duration: 1s;
+  animation-name: slideout;
+}
+
+/* 오른쪽에서 왼쪽으로 슬라이드 등장 */
+@keyframes slidein {
+  from {
+    margin-left: 100%;
+    width: 300%;
+  }
+
+  to {
+    margin-left: 0%;
+    width: 100%;
+  }
+}
+/* 왼쪽에서 오른쪽으로 슬라이드 등장 */
+@keyframes slideout {
+  from {
+    margin-left: 0%;
+    width: 100%;
+  }
+
+  to {
+    margin-left: 100%;
+    width: 300%;
+  }
 }
 </style>
