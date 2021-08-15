@@ -43,18 +43,34 @@
       </el-col>
     </el-row>
   </div>
-  <el-button
-    id="back-btn"
-    round
-    v-if="$store.state.roomModule.isClickPlusBtn"
-    @click="
-      $store.state.roomModule.isClickPlusBtn = false;
-      $router.go(-1);
-    "
-    ><img
-      style="width: -webkit-fill-available;"
-      :src="require('@/assets/images/back-icon.svg')"
-  /></el-button>
+  <!-- 뒤로가기 버튼 -->
+  <el-tooltip effect="dark" content="뒤로 가기" placement="bottom">
+    <el-button
+      id="back-btn"
+      round
+      v-if="$store.state.roomModule.isClickPlusBtn"
+      @click="
+        $store.state.roomModule.isClickPlusBtn = false;
+        $router.go(-1);
+      "
+      ><img
+        style="width: -webkit-fill-available;"
+        :src="require('@/assets/images/back-icon.svg')"
+    /></el-button>
+  </el-tooltip>
+  <!-- 로그아웃 버튼 -->
+  <el-tooltip effect="dark" content="로그아웃" placement="bottom">
+    <el-button
+      id="logout-btn"
+      round
+      v-if="$store.state.roomModule.isClickPlusBtn"
+      @click="signOut"
+    >
+      <img
+        style="width: -webkit-fill-available;"
+        :src="require('@/assets/images/exit.svg')"
+    /></el-button>
+  </el-tooltip>
   <!-- dialog시작 -->
   <el-dialog
     title="새로운 방 만들기"
@@ -200,11 +216,40 @@ export default {
   components: {
     // Wave
   },
+  mounted() {
+    gapi.load("auth2", function() {
+      gapi.auth2.init();
+    });
+  },
   beforeUnmount() {
     console.log("beforeUnmount");
     this.$store.state.roomModule.isClickPlusBtn = false;
   },
   methods: {
+    async disconnectGoogle() {
+      let authObject = await gapi.auth2.getAuthInstance();
+      console.log("authObject: " + authObject);
+      console.log(authObject);
+      authObject.signOut().then(function() {
+        console.log("user signed out");
+      });
+      await authObject.disconnect();
+    },
+    clearStorage() {
+      sessionStorage.removeItem("userInfo");
+      localStorage.clear();
+      sessionStorage.clear();
+    },
+    async signOut() {
+      try {
+        await this.disconnectGoogle();
+        this.clearStorage();
+        this.$router.push("/googlelogin");
+      } catch (error) {
+        this.clearStorage();
+        this.$router.push("/googlelogin");
+      }
+    },
     mouseright() {
       console.log("오른쪽 클릭");
     },
@@ -368,7 +413,19 @@ export default {
   /* box-shadow: 2px 2px 3px #999; */
   transform: scale(1.2, 1.2);
 }
-/* .el-row:nth-child(1) .el-card {
-  margin-left: 40px;
-} */
+#logout-btn {
+  position: fixed;
+  top: 0px;
+  /* height: 52px; */
+  left: 120px;
+  box-shadow: 2px 2px 3px #999;
+  background-color: coral;
+  /* background-color: #e67010; */
+  width: 58px;
+  padding: 10px 10px 6px 10px;
+}
+#logout-btn:hover {
+  /* box-shadow: 2px 2px 3px #999; */
+  transform: scale(1.2, 1.2);
+}
 </style>
