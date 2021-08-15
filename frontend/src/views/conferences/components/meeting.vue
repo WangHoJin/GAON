@@ -75,29 +75,26 @@
               v-if="mainOnOff"
               :stream-manager="mainStreamManager"
               :mainStream="true"
-              @click.native="deleteMainVideoStreamManager"
+              v-on:dblclick="deleteMainVideoStreamManager"
             />
           </div>
           <div id="video-container" class="col-md-6">
-            <user-video
-              :stream-manager="publisher"
-              @click.native="updateMainVideoStreamManager(publisher)"
-            />
-            <!-- <img
-              style="cursor:pointer"
-              :src="require(`@/common/img/alram.png`)"
-              id="alertbtn"
-              @click="toggleScreanshare(publisher)"
-              value="채연이꺼"
-            /> -->
+            <div id="myvideo">
+              <user-video
+                id="vid"
+                :stream-manager="publisher"
+                v-on:dblclick="updateMainVideoStreamManager(publisher)"
+              />
+            </div>
 
             <!-- 유저 화상회의 목록 출력 START -->
             <div id="userv" v-for="sub in subscribers">
               <user-video
+                id="vid"
                 :key="sub.stream.connection.connectionId"
                 :stream-manager="sub"
-                @click.native="updateMainVideoStreamManager(sub)"
-              />
+                v-on:dblclick="updateMainVideoStreamManager(sub)"
+              ></user-video>
               <img
                 style="cursor:pointer"
                 :src="require(`@/common/img/alram.png`)"
@@ -287,8 +284,8 @@ export default {
       myUserName: "Participant" + Math.floor(Math.random() * 100),
       myUserId: "",
       tg: false,
-      width: "320",
-      height: "200",
+      width: "640",
+      height: "400",
 
       noticeSig: "",
       reciveMsg: "",
@@ -456,7 +453,7 @@ export default {
           videoSource: "screen",
           publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
           publishVideo: true, // Whether you want to start publishing with your video enabled or not
-          resolution: "320x200", // The resolution of your video
+          resolution: "1920x1080", // The resolution of your video
           frameRate: 30, // The frame rate of your video
           insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
           mirror: false // Whether to mirror your local video or not
@@ -471,8 +468,8 @@ export default {
               this.mainOnOff = false;
             });
         });
-        this.width = "960";
-        this.height = "600";
+        this.width = "1920";
+        this.height = "1080";
         // this.updateMainVideoStreamManager(newPublisher);
         newPublisher.once("accessAllowed", () => {
           try {
@@ -769,18 +766,18 @@ export default {
 };
 </script>
 <style scoped>
-video {
-  height: 320px;
-  width: 200px;
-}
-
 #alertbtn {
+  display: inline;
   position: relative;
-  top: -265px;
-  left: 145px;
+  top: -260px;
+  float: right;
 }
 
 #userv {
+  display: inline-block;
+  margin: 1px;
+}
+#myvideo {
   display: inline-block;
   margin: 1px;
 }
