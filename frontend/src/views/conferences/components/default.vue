@@ -44,7 +44,7 @@
     </el-row>
   </div>
   <!-- 뒤로가기 버튼 -->
-  <el-tooltip effect="dark" content="뒤로 가기" placement="bottom">
+  <!-- <el-tooltip effect="dark" content="뒤로 가기" placement="bottom">
     <el-button
       id="back-btn"
       round
@@ -57,9 +57,9 @@
         style="width: -webkit-fill-available;"
         :src="require('@/assets/images/back-icon.svg')"
     /></el-button>
-  </el-tooltip>
+  </el-tooltip> -->
   <!-- 로그아웃 버튼 -->
-  <el-tooltip effect="dark" content="로그아웃" placement="bottom">
+  <!-- <el-tooltip effect="dark" content="로그아웃" placement="bottom">
     <el-button
       id="logout-btn"
       round
@@ -70,7 +70,7 @@
         style="width: -webkit-fill-available;"
         :src="require('@/assets/images/exit.svg')"
     /></el-button>
-  </el-tooltip>
+  </el-tooltip> -->
   <!-- dialog시작 -->
   <el-dialog
     title="새로운 방 만들기"
