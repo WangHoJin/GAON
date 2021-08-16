@@ -249,7 +249,7 @@ import RollBookCheck from "./meeting-components/roll-book-check.vue";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-const OPENVIDU_SERVER_URL = "https://i5b101.p.ssafy.io:443";
+const OPENVIDU_SERVER_URL = "https://i5b101.p.ssafy.io:4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
 export default {
