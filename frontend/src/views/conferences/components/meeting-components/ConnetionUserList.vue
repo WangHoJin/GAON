@@ -1,25 +1,26 @@
 <template lang="">
-  <div>
-    <el-table :data="rollbookmemberList" style="width: 100%">
-      <el-table-column label="이름" prop="nickname"> </el-table-column>
-      <el-table-column align="right">
+  <el-card
+    :body-style="{ padding: '10px' }"
+    style="width: 100%; border-radius:3%"
+  >
+    <el-table :data="rollbookmemberList">
+      <el-table-column label="접속현황" prop="nickname"> </el-table-column>
+      <el-table-column width="60px">
         <template #default="scope">
-          <el-button
+          <div
             v-if="rollbookmemberList[scope.$index].state"
-            type="success"
-            icon="el-icon-check"
+            style="background-color:#67C23A; width:13px; height:13px; border-radius: 50%"
             circle
-          ></el-button>
-          <el-button
+          ></div>
+          <div
             v-else
-            type="danger"
-            icon="el-icon-close"
+            style="background-color:#F56C6C; width:13px; height:13px; border-radius: 50%"
             circle
-          ></el-button>
+          ></div>
         </template>
       </el-table-column>
     </el-table>
-  </div>
+  </el-card>
 </template>
 <script>
 import $axios from "axios";
