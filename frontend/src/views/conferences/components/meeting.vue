@@ -464,16 +464,35 @@ export default {
     toggleScreanshare(publisher) {
       if (!this.tg) {
         this.tg = true;
-        var newPublisher = this.OV.initPublisher("user-video", {
-          audioSource: undefined, // The source of audio. If undefined default microphone
-          videoSource: "screen",
-          publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
-          publishVideo: true, // Whether you want to start publishing with your video enabled or not
-          resolution: "1920x1080", // The resolution of your video
-          frameRate: 30, // The frame rate of your video
-          insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
-          mirror: false // Whether to mirror your local video or not
-        });
+        var newPublisher = this.OV.initPublisher(
+          "user-video",
+          {
+            audioSource: undefined, // The source of audio. If undefined default microphone
+            videoSource: "screen",
+            publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+            publishVideo: true, // Whether you want to start publishing with your video enabled or not
+            resolution: "1920x1080", // The resolution of your video
+            frameRate: 30, // The frame rate of your video
+            insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
+            mirror: false // Whether to mirror your local video or not
+          },
+
+          error => {
+            // Function to be executed when the method finishes
+            if (error) {
+              console.error(
+                "Error while initializing publisher: =====================================뉴퍼블리셔 게시하는도중에 에러가 발생했다",
+                error
+              );
+              this.tg = false;
+              // this.session.unpublish(this.publisher);
+              this.publisher = this.tempPublisher;
+              this.session.publish(this.publisher);
+            } else {
+              console.log("Publisher successfully initialized");
+            }
+          }
+        );
 
         newPublisher.once("accessAllowed", event => {
           newPublisher.stream
@@ -506,8 +525,10 @@ export default {
         this.publisher = newPublisher;
         this.mainStreamManager = this.publisher;
         this.session.publish(this.publisher);
+
         // this.updateMainVideoStreamManager(this.publisher);
       } else {
+        this.tg = false;
         this.session.unpublish(this.publisher);
         this.publisher = this.tempPublisher;
         this.session.publish(this.publisher);
