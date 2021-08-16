@@ -835,16 +835,18 @@ export default {
   position: absolute;
   margin: 0px;
   padding: 0px;
-  left: 230px;
-  top: 60px;
+  left: 13%;
+  top: 10%;
+  z-index: 1;
 }
 #icon2 {
   width: 40px;
   position: absolute;
   margin: 0px;
   padding: 0px;
-  left: 230px;
-  top: 110px;
+  left: 13%;
+  top: 15%;
+  z-index: 1;
 }
 .fade-enter-active,
 .fade-leave-active {
