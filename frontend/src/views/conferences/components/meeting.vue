@@ -204,7 +204,7 @@
           </transition>
 
           <!-- 접속자 현황 -->
-          <transition name="slide">
+          <transition name="slide" style="margin:10px 0px;">
             <div v-if="connectionUser">
               <div v-if="publisher">
                 <el-row>
