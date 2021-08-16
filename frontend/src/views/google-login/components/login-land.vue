@@ -20,20 +20,13 @@ export default {};
 }
 
 .wave-one {
-  width: 5000px;
-  height: 5000px;
+  width: 111%;
+  height: 180%;
   position: absolute;
   top: 0%;
-  left: -78%;
+  left: -5%;
   border-radius: 49%;
-  background: radial-gradient(
-    #806751,
-    #806751,
-    #9b7d62,
-    #647e66,
-    #719168,
-    #89ac1f
-  );
+  background: radial-gradient(#647e66, #647e66, #719168, #98c416);
 
   /* animation: move 3s infinite linear; */
 }
