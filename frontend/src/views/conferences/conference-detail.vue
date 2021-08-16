@@ -2,7 +2,14 @@
   <el-row align="center">
     <el-col :span="3" @contextmenu.prevent> <conference-sidevar /></el-col>
     <el-col :span="21">
-      <el-main>
+      <el-main
+        style="
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-bottom: 0px;
+"
+      >
         <!-- {{ $route.params.conferenceId + "번 방 상세 보기 페이지" }}
         <a
           href="https://localhost:8443/api/v1/boards/posts/1/file/1_test"
