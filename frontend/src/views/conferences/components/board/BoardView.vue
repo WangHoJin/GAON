@@ -30,9 +30,9 @@
         </el-button>
           <el-footer v-if="form.uid === uid">
         <el-row :gutter="20" v-if="form.uid === uid">
-          <el-col :span="18"><el-button @click="$router.push( { name : 'board-post-list'})">목록</el-button></el-col>
+          <el-col :span="18"><el-button class="gaon-button"  type="primary" @click="$router.push( { name : 'board-post-list'})">목록</el-button></el-col>
           <el-col :span="6"  style="text-align: -webkit-right;">
-            <el-button @click="editPost($route.params.pid)">수정</el-button>
+            <el-button class="gaon-button"  type="primary" @click="editPost($route.params.pid)">수정</el-button>
             <el-popconfirm
               confirmButtonText='네'
               cancelButtonText='아니요'
@@ -200,5 +200,8 @@ export default {
   .main-wrapper{
   background-color: white;
    /* padding: 20px 20px; */
+  }
+  .el-button {
+    color: white;
   }
 </style>
