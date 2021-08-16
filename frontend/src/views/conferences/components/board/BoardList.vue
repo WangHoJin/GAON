@@ -5,19 +5,14 @@
         <el-row>
           <el-card
             class="box-card"
-            style="padding-bottom: 0px;padding-top: 1px;padding-left: 40px; text-align: left;    max-height: 60px;"
+            style="padding-bottom: 0px;padding-top: 1px;text-align: left;    max-height: 60px;box-shadow: none;  padding-left: 40px;"
           >
             {{ boardName }} |
             <span style="font-size:12px; vertical-align:middle">
               <i class="header-icon el-icon-info"></i>{{ boardDescription }}
             </span>
           </el-card>
-          <el-button
-            icon="el-icon-edit"
-            circle
-            class="write-btn"
-            @click="boardCreate()"
-          ></el-button>
+
           <el-table
             empty-text="글이 없어요. 새 글을 작성해 주세요😥!"
             :data="pagedTableData"
@@ -47,8 +42,17 @@
               :page-size="pageSize"
               :total="tableData.length"
               @current-change="setPage"
+              style="
+              float: left;
+              margin-left: 42%;"
             >
             </el-pagination>
+            <el-button
+              icon="el-icon-edit"
+              circle
+              class="write-btn"
+              @click="boardCreate()"
+            ></el-button>
           </div>
         </el-row>
       </el-main>
@@ -230,8 +234,8 @@ export default {
 }
 .el-table--fit {
   width: 100%;
-  padding: 25px;
-  border-radius: 35px;
+  /* padding: 25px; */
+  /* border-radius: 35px; */
 }
 
 .title .el-card__body {
@@ -244,9 +248,21 @@ export default {
 }
 
 .write-btn {
-  position: absolute;
+  /* position: absolute;
   right: 20px;
-  margin-top: 7px;
+  margin-top: 7px; */
+  /* right: 0;
+  position: absolute; */
+  /* float: inherit;
+  background-color: #a2df14;
+  color: white;
+  width: 50px;
+  height: 50px;
+  font-size: larger; */
+  float: left;
+  /* margin-right: 20%; */
+  right: 0px;
+  position: absolute;
   background-color: #a2df14;
   color: white;
   width: 50px;
