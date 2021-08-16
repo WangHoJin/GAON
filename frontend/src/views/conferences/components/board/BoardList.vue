@@ -44,7 +44,8 @@
               @current-change="setPage"
               style="
               float: left;
-              margin-left: 42%;"
+              margin-left: 42%;
+              margin-top: 15px;"
             >
             </el-pagination>
             <el-button

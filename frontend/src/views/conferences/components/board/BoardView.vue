@@ -20,15 +20,17 @@
       v-html="enterToBr(form.content)"
       >
       </div>
+      <div style="padding: 10px 0px;">
         <el-button  v-for="file in fileList"
-        style="max-width: min-content;padding-right: 25px;"
+        style="max-width: min-content;padding-right: 25px; color:black;"
           @click="download(file.pfid, file.filename)" >
               <span>{{ file.filename }}</span>
               <img
                style="width:25px;vertical-align:middle"
               src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnN2Z2pzPSJodHRwOi8vc3ZnanMuY29tL3N2Z2pzIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgeD0iMCIgeT0iMCIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTIiIHhtbDpzcGFjZT0icHJlc2VydmUiPjxnPjxyZWN0IHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgZmlsbD0iI2Y3Y2MzOCIgaGVpZ2h0PSIzMzYiIHJ4PSIzMiIgd2lkdGg9IjQxNiIgeD0iNzIiIHk9IjE1MiIgZGF0YS1vcmlnaW5hbD0iI2Y3Y2MzOCIgc3R5bGU9IiI+PC9yZWN0PjxwYXRoIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgZD0ibTQ0MCAxMDR2MzA0YTMyIDMyIDAgMCAxIC0zMiAzMmgtMjU2YTMyIDMyIDAgMCAxIC0zMi0zMnYtMzUyYTMyIDMyIDAgMCAxIDMyLTMyaDIwOHoiIGZpbGw9IiNlOWVlZjIiIGRhdGEtb3JpZ2luYWw9IiNlOWVlZjIiIHN0eWxlPSIiPjwvcGF0aD48cGF0aCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGQ9Im00MjQgNDg4aC0zNjhhMzIgMzIgMCAwIDEgLTMyLTMydi0zMjBhMzIgMzIgMCAwIDEgMzItMzJoOTZhMzIgMzIgMCAwIDEgMzIgMzJ2NjRoMTc2YTMyIDMyIDAgMCAxIDMyIDMydjIyNGEzMiAzMiAwIDAgMCAzMiAzMiIgZmlsbD0iI2ZiZTM2YSIgZGF0YS1vcmlnaW5hbD0iI2ZiZTM2YSIgc3R5bGU9IiI+PC9wYXRoPjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgZmlsbD0iI2MzYzZjNyI+PHBhdGggZD0ibTM5MiAxNjBoLTExMmE4IDggMCAwIDEgMC0xNmgxMTJhOCA4IDAgMCAxIDAgMTZ6IiBmaWxsPSIjYzNjNmM3IiBkYXRhLW9yaWdpbmFsPSIjYzNjNmM3IiBzdHlsZT0iIj48L3BhdGg+PHBhdGggZD0ibTI4MCAxMTJoLTU2YTggOCAwIDAgMSAwLTE2aDU2YTggOCAwIDAgMSAwIDE2eiIgZmlsbD0iI2MzYzZjNyIgZGF0YS1vcmlnaW5hbD0iI2MzYzZjNyIgc3R5bGU9IiI+PC9wYXRoPjxwYXRoIGQ9Im00NDAgMTA0aC00OGEzMiAzMiAwIDAgMSAtMzItMzJ2LTQ4eiIgZmlsbD0iI2MzYzZjNyIgZGF0YS1vcmlnaW5hbD0iI2MzYzZjNyIgc3R5bGU9IiI+PC9wYXRoPjxwYXRoIGQ9Im0yNDggMTYwaC0xNmE4IDggMCAwIDEgMC0xNmgxNmE4IDggMCAwIDEgMCAxNnoiIGZpbGw9IiNjM2M2YzciIGRhdGEtb3JpZ2luYWw9IiNjM2M2YzciIHN0eWxlPSIiPjwvcGF0aD48L2c+PHBhdGggeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBkPSJtMTg0Ljg3OSA0MjMuOTk1IDU1LjI5My02NC42MTEtMzEuOTk4LjM1MS0xLjA1NS05NS45OTQtNDcuOTk3LjUyOCAxLjA1NSA5NS45OTQtMzEuOTk4LjM1MXoiIGZpbGw9IiNmNzk1MzkiIGRhdGEtb3JpZ2luYWw9IiNmNzk1MzkiIHN0eWxlPSIiPjwvcGF0aD48L2c+PC9zdmc+" />
         </el-button>
-          <el-footer v-if="form.uid === uid">
+        </div>
+          <!-- <el-footer v-if="form.uid === uid"> -->
         <el-row :gutter="20" v-if="form.uid === uid">
           <el-col :span="18"><el-button class="gaon-button"  type="primary" @click="$router.push( { name : 'board-post-list'})">목록</el-button></el-col>
           <el-col :span="6"  style="text-align: -webkit-right;">
@@ -48,7 +50,7 @@
 
           </el-col>
         </el-row>
-      </el-footer>
+      <!-- </el-footer> -->
       </el-main>
     </el-contianer>
   </el-container>
