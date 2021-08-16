@@ -16,7 +16,7 @@
         </div>
          <div
         class="pa-5"
-        style="min-height: 250px; "
+        style="min-height: 300px; "
       v-html="enterToBr(form.content)"
       >
       </div>
@@ -31,7 +31,7 @@
         </el-button>
         </div>
           <!-- <el-footer v-if="form.uid === uid"> -->
-        <el-row :gutter="20" v-if="form.uid === uid">
+        <el-row :gutter="20" v-if="form.uid === uid" style="height: 30px;">
           <el-col :span="18"><el-button class="gaon-button"  type="primary" @click="$router.push( { name : 'board-post-list'})">목록</el-button></el-col>
           <el-col :span="6"  style="text-align: -webkit-right;">
             <el-button class="gaon-button"  type="primary" @click="editPost($route.params.pid)">수정</el-button>
