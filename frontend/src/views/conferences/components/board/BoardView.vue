@@ -30,7 +30,8 @@
         </el-button>
           <el-footer v-if="form.uid === uid">
         <el-row :gutter="20" v-if="form.uid === uid">
-          <el-col :span="6" :offset="18" style="text-align: -webkit-right;">
+          <el-col :span="18"><el-button @click="$router.push( { name : 'board-post-list'})">목록</el-button></el-col>
+          <el-col :span="6"  style="text-align: -webkit-right;">
             <el-button @click="editPost($route.params.pid)">수정</el-button>
             <el-popconfirm
               confirmButtonText='네'
@@ -95,12 +96,12 @@ export default {
     return {
       form: {
           id: 0,
-          title: "post_title",
-          content: "post_content",
+          title: "",
+          content: "",
           uid: 0,
           bid: 0,
-          created_time: "2021-08-10 00:14:01.130000",
-          modified_time: "2021-08-10 00:14:01.130000"
+          created_time: "",
+          modified_time: ""
         },
         fileList: [
         ],
