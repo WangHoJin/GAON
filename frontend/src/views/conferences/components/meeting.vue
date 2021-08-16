@@ -1,17 +1,30 @@
 <template lang="">
   <div id="main-container" class="container">
     <!-- 공지배너 START  -->
-    <transition name="fade" id="transi">
+    <transition name="fade">
       <div class="noticeB" v-if="totalTime > 0">
         <h2>{{ reciveMsg }}</h2>
         <span>남은시간 [ {{ minutes }}</span>
         <span>:</span>
         <span>{{ seconds }}]</span>
-        <span>[{{ nowtime }} 까지 유효 ]</span>
+        <span>[{{ nowtime }} 까지]</span>
       </div>
     </transition>
     <!-- 공지배너 END  -->
-
+    <!-- 공지사항 보내기 버튼 -->
+    <img
+      id="icon1"
+      style="cursor:pointer;"
+      :src="require(`@/common/img/notice.png`)"
+      @click="noticeFormModal = true"
+    />
+    <!-- 출석체크 버튼 -->
+    <img
+      id="icon2"
+      style="cursor:pointer;"
+      :src="require(`@/common/img/rollbook.png`)"
+      @click="rollbookFormModal = true"
+    />
     <!-- 공지보내기 START -->
     <el-dialog
       width="500px"
@@ -61,16 +74,27 @@
     </el-dialog>
     <!-- 공지보내기 END -->
 
+    <!-- 출석부 다이얼로그 START -->
+    <el-dialog
+      width="500px"
+      title="출석부"
+      v-model="rollbookFormModal"
+      center
+      top="10vh"
+    >
+      <div>
+        <RollBookCheck :publisher="publisher" :subscribers="subscribers" />
+      </div>
+    </el-dialog>
+    <!-- 출석부 다이얼로그  END -->
+
     <div id="session" v-if="session">
       <el-row>
-        <!-- <el-button type="" @click="roll-book-check=true;">출석체크하세요</el-button> -->
-        <!-- <RollBookCheck /> -->
-
         <el-col :span="19">
           <div id="session-header">
             <!-- <h1 id="session-title">{{ mySessionId }}</h1> -->
           </div>
-          <div id="main-video" class="col-md-6">
+          <div id="main-video">
             <user-video
               v-if="mainOnOff"
               :stream-manager="mainStreamManager"
@@ -145,12 +169,6 @@
             circle
             @click="leaveSession"
           ></el-button>
-          <!-- 공지사항 보내기 버튼 -->
-          <img
-            style="cursor:pointer;"
-            :src="require(`@/common/img/notice.png`)"
-            @click="noticeFormModal = true"
-          />
         </el-col>
         <el-col :span="5">
           <el-row style="margin-left:60%;height:50px">
@@ -222,11 +240,6 @@
               </div>
             </div>
           </transition>
-
-          <!-- 출석부 -->
-          <div>
-            <RollBookCheck :publisher="publisher" :subscribers="subscribers" />
-          </div>
         </el-col>
       </el-row>
     </div>
@@ -311,7 +324,8 @@ export default {
       totalTime: 0,
       resetButton: false,
 
-      noticeFormModal: false
+      noticeFormModal: false,
+      rollbookFormModal: false
     };
   },
   async created() {
@@ -457,9 +471,6 @@ export default {
         .catch(error => {
           console.error(error);
         });
-    },
-    rollBookCheckOnOff() {
-      this.rollBookCheck = !this.rollBookCheck;
     },
     toggleScreanshare(publisher) {
       if (!this.tg) {
@@ -798,6 +809,22 @@ export default {
   display: inline-block;
   margin: 1px;
 }
+#icon1 {
+  width: 40px;
+  position: absolute;
+  margin: 0px;
+  padding: 0px;
+  left: 230px;
+  top: 60px;
+}
+#icon2 {
+  width: 40px;
+  position: absolute;
+  margin: 0px;
+  padding: 0px;
+  left: 230px;
+  top: 110px;
+}
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s;
@@ -807,8 +834,8 @@ export default {
 }
 .noticeB {
   background-color: #ffd344;
-  margin: 20px;
-  border-radius: 20px;
+  margin-bottom: 5px;
+  border-radius: 10px;
   padding: 10px;
 }
 
@@ -820,6 +847,16 @@ export default {
 .slide-leave-active {
   animation-duration: 1s;
   animation-name: slideout;
+}
+
+.fade-enter-active {
+  animation-duration: 0.5s;
+  animation-name: fadein;
+}
+
+.fade-leave-active {
+  animation-duration: 0.5s;
+  animation-name: fadeout;
 }
 
 /* 오른쪽에서 왼쪽으로 슬라이드 등장 */
@@ -844,6 +881,26 @@ export default {
   to {
     margin-left: 100%;
     width: 300%;
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 100;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    height: 100%;
+  }
+
+  to {
+    height: 0%;
   }
 }
 </style>
