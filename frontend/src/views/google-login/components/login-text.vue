@@ -93,18 +93,18 @@ h1 span {
     transform: translateY(0);
     opacity: 1;
     -webkit-clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 15%);
-    clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 15%);
+    clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 10%);
   }
   80% {
     transform: translateY(0);
     opacity: 1;
     -webkit-clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 15%);
-    clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 15%);
+    clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 0%);
   }
   100% {
     transform: translateY(0);
     opacity: 1;
-    clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 15%);
+    clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 0%);
     /* clip-path: polygon(100% 0, 100% 0%, 0 100%, 0 100%); */
   }
 }
