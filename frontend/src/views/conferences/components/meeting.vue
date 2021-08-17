@@ -168,7 +168,11 @@
           <!-- 채팅 창 -->
           <transition name="slide">
             <div id="chat-box" v-if="chatting">
-              <MessageList :msgs="msgs" />
+              <MessageList
+                :msgs="msgs"
+                :myId="publisher.stream.connection.connectionId"
+                :fromId="fromId"
+              />
               <MessageForm @sendMsg="sendMsg" :user-name="myUserName" />
             </div>
           </transition>
@@ -333,7 +337,9 @@ export default {
       resetButton: false,
 
       noticeFormModal: false,
-      rollbookFormModal: false
+      rollbookFormModal: false,
+
+      fromId: ""
     };
   },
   async created() {
@@ -350,16 +356,6 @@ export default {
     this.joinSession();
   },
   computed: {
-    // subscribers() {
-    //   console.log("감지 발생");
-    //   this.subscribers.forEach(sub => {
-    //     if (sub.stream.typeOfVideo == "SCREEN") {
-    //       console.log("내가 공유한 놈이다");
-    //       this.updateMainVideoStreamManager(sub);
-    //     }
-    //   });
-    //   return this.subscribers;
-    // }
     minutes: function() {
       const minutes = Math.floor(this.totalTime / 60);
       return this.padTime(minutes);
@@ -412,15 +408,10 @@ export default {
     }
   },
   methods: {
-    //타이머종료시간 설정
-    test() {
-      console.log("테스트");
-    },
     //타이머 시작
     startTimer: function() {
       clearInterval(this.timer);
       var date = new Date();
-      console.log(date);
       this.nowtime =
         date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
       this.timer = setInterval(() => this.countdown(), 1000);
@@ -654,9 +645,7 @@ export default {
       // Receiver of the message (usually before calling 'session.connect')
 
       this.session.on("signal:my-chat", event => {
-        // console.log(event.data); // Message
-        // console.log(event.from); // Connection object of the sender
-        // console.log(event.type); // The type of message ("my-chat")
+        this.fromId = event.from.connectionId;
         const tmp = this.msgs.slice();
         tmp.push(event.data);
         this.msgs = tmp;

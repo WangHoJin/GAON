@@ -43,7 +43,12 @@ export default {
       const msg = this.messageForm.message.trim();
       if (msg != "") {
         event.preventDefault();
-        this.$emit("sendMsg", "[" + this.userName + "] : " + msg);
+        // this.$emit("sendMsg", "[" + this.userName + "] : " + msg);
+        var string = JSON.stringify({
+          userName: this.userName,
+          msg: msg
+        });
+        this.$emit("sendMsg", string);
       }
       this.messageForm.message = "";
     }
