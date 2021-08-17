@@ -8,15 +8,16 @@
           :rows="2"
           placeholder="채팅을 입력하세요."
           v-model="messageForm.message"
+          style="width:100%"
         >
         </el-input>
       </el-col>
-      <el-col :span="2">
+      <el-col :span="6">
         <el-button
           class="my-btn"
           type="primary"
           @click="submitForm"
-          style="border-radius:0px 0px 10px 0px"
+          style="border-radius:0px 0px 10px 0px; width:100%"
           >입력
         </el-button>
       </el-col>
@@ -54,11 +55,5 @@ export default {
 <style scoped>
 .my-btn {
   height: 100%;
-}
-element.style {
-  border-radius: 0px 0px 0px 10px !important;
-}
-#input_textarea .el-textarea__inner {
-  border-radius: 0px 0px 0px 10px !important;
 }
 </style>

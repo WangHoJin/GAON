@@ -176,53 +176,56 @@
           ></el-button>
         </el-col>
         <el-col :span="5">
-          <el-row style="margin-left:60%;height:50px">
+          <!-- 채팅/접속자 현황 버튼들 -->
+          <div
+            style="margin-top:20px; margin-right:10px; height:50px; text-align: right;"
+          >
             <!-- 채팅 on/off 버튼 -->
-            <el-col :span="12">
-              <!-- 채팅 on 버튼 -->
-              <el-button
-                type="warning"
-                icon="el-icon-chat-dot-round"
-                circle
-                v-if="!chatting"
-                id="buttonChatting"
-                @click="chattingOnOff()"
-              ></el-button>
-              <!-- 채팅 off 버튼 -->
-              <el-button
-                type="info"
-                icon="el-icon-chat-round"
-                circle
-                v-else
-                @click="chattingOnOff()"
-              ></el-button>
-            </el-col>
+            <!-- 채팅 on 버튼 -->
+            <el-button
+              type="warning"
+              icon="el-icon-chat-dot-round"
+              circle
+              v-if="!chatting"
+              id="buttonChatting"
+              @click="chattingOnOff()"
+            ></el-button>
+            <!-- 채팅 off 버튼 -->
+            <el-button
+              type="info"
+              icon="el-icon-chat-round"
+              circle
+              v-else
+              @click="chattingOnOff()"
+            ></el-button>
             <!-- 접속자 현황 on/off 버튼 -->
-            <el-col :span="12">
-              <!-- 접속자 현황 on 버튼 -->
-              <el-button
-                v-if="!connectionUser"
-                type="warning"
-                icon="el-icon-s-custom"
-                circle
-                @click="connectionUserOnOff()"
-              ></el-button>
-              <el-button
-                v-else
-                type="info"
-                icon="el-icon-s-custom"
-                circle
-                @click="connectionUserOnOff()"
-              ></el-button>
-            </el-col>
-          </el-row>
+            <!-- 접속자 현황 on 버튼 -->
+            <el-button
+              v-if="!connectionUser"
+              type="warning"
+              icon="el-icon-s-custom"
+              circle
+              @click="connectionUserOnOff()"
+            ></el-button>
+            <el-button
+              v-else
+              type="info"
+              icon="el-icon-s-custom"
+              circle
+              @click="connectionUserOnOff()"
+            ></el-button>
+          </div>
 
           <!-- 애니메이션 참고 사이트 https://runebook.dev/ko/docs/vue/guide/transitions-enterleave -->
           <!-- 채팅 창 -->
           <transition name="slide">
             <div id="chat-box" v-if="chatting">
               <MessageList :msgs="msgs" />
-              <MessageForm @sendMsg="sendMsg" :user-name="myUserName" />
+              <MessageForm
+                style="width:100%"
+                @sendMsg="sendMsg"
+                :user-name="myUserName"
+              />
             </div>
           </transition>
 
