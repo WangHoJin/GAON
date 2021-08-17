@@ -49,26 +49,27 @@ h1 span {
   animation-duration: 2s;
 }
 .second::first-letter {
-  font-size: 90px;
+  font-size: 70px;
   color: #f5df4d;
 }
 .one {
-  top: 42%;
+  top: 41%;
+  left: 1%;
   animation-delay: 3s;
 }
 .two {
-  top: 67%;
-  left: 8%;
+  top: 60%;
+  left: 9.4%;
   animation-delay: 3.1s;
 }
 .three {
-  top: 92%;
-  left: 16%;
+  top: 79%;
+  left: 17.8%;
   animation-delay: 3.2s;
 }
 .four {
-  top: 117%;
-  left: 24%;
+  top: 98%;
+  left: 26.2%;
   animation-delay: 3.3s;
 }
 

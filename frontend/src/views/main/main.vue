@@ -1,8 +1,10 @@
 <template>
-  <el-row>
-    <el-col :span="1" @contextmenu.prevent> <main-sidebar /></el-col>
-    <el-col :span="23" align="center"> <router-view></router-view> </el-col>
-  </el-row>
+  <div class="main-wrapper">
+    <el-row>
+      <el-col :span="1" @contextmenu.prevent> <main-sidebar /></el-col>
+      <el-col :span="23" align="center"> <router-view></router-view> </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
@@ -13,15 +15,6 @@ export default {
   components: {
     MainSidebar
   }
-
-  // computed: {
-  //   ...mapGetters(["rrrs"]),
-  //   ...mapState(["roomModule/rrrr"])
-  // },
-  // methods: {
-  //   ...mapMutations(["setrrrs"]),
-  //   ...mapActions(["raction"])
-  // }
 };
 </script>
 <style>
