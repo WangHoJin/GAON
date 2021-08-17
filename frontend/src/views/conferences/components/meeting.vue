@@ -367,6 +367,40 @@ export default {
         console.log("이상 이상");
         this.sendtime = 3600;
       }
+    },
+    publisher() {
+      deep: true;
+      // console.log(deep);
+      console.log("중복 아디 체크");
+      console.log("현재 나");
+      console.log(this.publisher);
+      if (this.publisher === undefined) {
+        this.leaveSession();
+      } else {
+        console.log(this.publisher.stream.connection.data);
+        const { clientData } = JSON.parse(
+          this.publisher.stream.connection.data
+        );
+        const { idData } = JSON.parse(this.publisher.stream.connection.data);
+        const nickname1 = clientData;
+        const id1 = idData;
+        console.log("접속자");
+        this.subscribers.forEach(sub => {
+          console.log(sub.stream.connection.data);
+          // console.log(JSON.parse(sub.stream.connection.data));
+          const { clientData } = JSON.parse(sub.stream.connection.data);
+          const { idData } = JSON.parse(sub.stream.connection.data);
+          console.log(nickname1);
+          console.log(clientData);
+          if (nickname1 == clientData && id1 == idData) {
+            alert("같은 사용자가 존재합니다");
+            this.$router.push({
+              name: "conference-detail"
+            });
+            setTimeout("location.reload()", 10);
+          }
+        });
+      }
     }
   },
   methods: {
