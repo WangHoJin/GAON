@@ -225,7 +225,7 @@ export default {
           self.disconnectGoogle();
           self.clearStorage();
           self.visible = false;
-          self.$router.push("/quit");
+          self.$router.push("/googlelogin");
         })
         .catch(err => {
           console.log(err);
