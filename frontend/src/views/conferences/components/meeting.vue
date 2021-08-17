@@ -3,11 +3,20 @@
     <!-- 공지배너 START  -->
     <transition name="fade">
       <div class="noticeB" v-if="totalTime > 0">
-        <h2>{{ reciveMsg }}</h2>
-        <span>남은시간 [ {{ minutes }}</span>
-        <span>:</span>
-        <span>{{ seconds }}]</span>
-        <span>[{{ nowtime }} 까지]</span>
+        <h2>📢 {{ reciveMsg }}</h2>
+        <!-- <span>남은시간 [ {{ minutes }}</span> -->
+        <div>
+          <div style=" text-align:left; margin-left:30px; display:inline-block">
+            <span>⏰ [ {{ nowtime }} 까지 ] </span>
+          </div>
+          <div
+            style="color:red; text-align:right; margin-right:30px; display:inline-block"
+          >
+            <span> ⏳ [ {{ minutes }}</span>
+            <span>:</span>
+            <span>{{ seconds }} ]</span>
+          </div>
+        </div>
       </div>
     </transition>
     <!-- 공지배너 END  -->
@@ -82,7 +91,7 @@
 
     <div id="session" v-if="session">
       <el-row>
-        <el-col :span="19">
+        <el-col :span="19" style="margin-top:130px">
           <div id="session-header">
             <!-- <h1 id="session-title">{{ mySessionId }}</h1> -->
           </div>
@@ -122,7 +131,7 @@
             <!-- 화상회의 출력 END -->
           </div>
         </el-col>
-        <el-col :span="5">
+        <el-col :span="5" style="padding:10px">
           <!-- 채팅/접속자 현황 버튼들 -->
           <div
             style="margin-top:20px; margin-right:10px; height:50px; text-align: right;"
@@ -885,7 +894,13 @@ export default {
   z-index: 1;
 }
 
+/* 공지사항 css */
 .noticeB {
+  width: 60%;
+  height: 100px;
+  position: fixed;
+  top: 0px;
+  left: 19%;
   background-color: #ffd344;
   margin-bottom: 5px;
   border-radius: 10px;

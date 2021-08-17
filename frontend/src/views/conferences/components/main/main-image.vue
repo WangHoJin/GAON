@@ -25,9 +25,17 @@ export default {
   height: 100%;
   /* background: linear-gradient(#e67010, #f5df4d); */
   /* background-image: url("school.png"); */
-  background-image: url("main-background-img.jpg");
+  /* background-image: url("main-background-img.jpg"); */
   background-size: 100% 100%;
-  background-repeat: no-repeat;
+  /* background-repeat: no-repeat; */
   z-index: 1;
+
+  background: linear-gradient(
+      0deg,
+      rgba(73, 73, 73, 0.637),
+      rgba(77, 77, 77, 0.5)
+    ),
+    url("main-background-img.jpg");
+  background-size: cover;
 }
 </style>

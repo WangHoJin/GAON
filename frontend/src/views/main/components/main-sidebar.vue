@@ -45,14 +45,12 @@
       </el-menu-item>
     </div>
     <!-- 방 생성 버튼 -->
-    <el-button style="margin-top:5px" type="warning" @click="plusBtn()"
-      ><div
-        class="iconify"
-        id="main-sidebar-make-room"
-        data-inline="false"
-        data-icon="entypo:squared-plus"
-        style="font-size: 20px;"
-      ></div
+    <el-button
+      @click="plusBtn()"
+      id="main-sidebar-make-room"
+      type="warning"
+      icon="el-icon-plus"
+      circle
     ></el-button>
   </el-menu>
 
@@ -334,6 +332,11 @@ export default {
 }
 /* 방 생성 버튼에 대한 css */
 #main-sidebar-make-room {
+  min-height: 0px;
+  width: 35px;
+  height: 35px;
+  margin-top: 30px;
+  padding: 0px;
 }
 .main-sidebar .el-menu {
   margin-top: 0;
