@@ -68,7 +68,7 @@
           </el-table>
           <el-row :gutter="20" style="margin-top:10px">
             <el-col :span="6" :offset="19">
-              <el-button class="gaon-button" v-if="host_id == myid" @click="modifyRollbook">수정하기</el-button>
+              <el-button type="primary" class="gaon-button" v-if="host_id == myid" @click="modifyRollbook">수정하기</el-button>
             </el-col>
           </el-row>
 
@@ -121,6 +121,7 @@ export default {
           if (difference) {
             // this.confirmVisible = true
             this.$confirm('변경내용을 저장하시겠습니까?', {
+              confirmButtonClass: 'confirm-button',
               confirmButtonText: '저장',
               cancelButtonClass: 'cancel-button',
               cancelButtonText: '저장 안함',
@@ -137,6 +138,7 @@ export default {
 
           } else {
             this.$confirm('출석부를 종료하시겠습니까?', {
+              confirmButtonClass: 'confirm-button',
               confirmButtonText: '네',
               cancelButtonText: '아니요'
             })
@@ -203,7 +205,25 @@ export default {
 
 .cancel-button {
   color: #fff;
-    background-color: #f56c6c;
-    border-color: #f56c6c;
+  background-color: #f56c6c;
+  border-color: #f56c6c;
+}
+
+.cancel-button:hover {
+  background: #ff3d02;
+  border-color: #ff3d02;
+  color: #fff;
+}
+
+.confirm-button {
+  background: #ffd04b !important;
+  background-color: #ffd04b !important;
+  border: none !important;
+}
+
+.confirm-button:hover {
+  background: #ebb563 !important;
+  border-color: #ebb563 !important;
+  color: #fff !important;
 }
 </style>
