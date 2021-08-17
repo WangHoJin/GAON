@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="padding-right:1px">
     <el-menu active-text-color="#ffd04b" class="sidebar-tool sidebar-menu">
       <!-- 유저 정보 조회 -->
       <el-divider style="margin-top:0px;margin-bottom:10px"></el-divider>
