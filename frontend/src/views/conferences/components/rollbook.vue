@@ -20,8 +20,20 @@
           </template>
         </el-calendar>
         <el-dialog title="출석부" v-model="dialogTableVisible" :before-close="beforeClose">
-        <el-dialog v-model="modifyDialogVisible">
-          </el-dialog>
+          <!-- <el-dialog
+            top='20vh'
+            v-model="confirmVisible"
+            height="50%"
+            width="40%">
+            <span>변경사항을 저장하시겠습니까?</span>
+            <template #footer>
+              <span class="dialog-footer">
+                <el-button type="primary" @click="dialogVisible = false">저장</el-button>
+                <el-button type="primary" @click="dialogVisible = false">저장 안함</el-button>
+                <el-button @click="confirmVisible = false">취소</el-button>
+              </span>
+            </template>
+          </el-dialog> -->
           <el-table
             class="rollBook"
             :data="
@@ -40,7 +52,7 @@
                 <el-input
                   v-model="search"
                   size="mini"
-                  placeholder="Type to search"
+                  placeholder="이름으로 찾기"
                 />
               </template>
               <!-- 라디오 토글해주면 알아서 tableData의 state(출결상태)가 바뀜 -->
@@ -55,8 +67,8 @@
             </el-table-column>
           </el-table>
           <el-row :gutter="20" style="margin-top:10px">
-            <el-col :span="6" :offset="18">
-              <el-button v-if="host_id == myid" @click="modifyRollbook">수정하기</el-button>
+            <el-col :span="6" :offset="19">
+              <el-button class="gaon-button" v-if="host_id == myid" @click="modifyRollbook">수정하기</el-button>
             </el-col>
           </el-row>
 
@@ -77,7 +89,8 @@ export default {
       host_i: "",
       myid: "",
       dialogTableVisible: false,
-      selectDay: String
+      selectDay: String,
+      confirmVisible: false
     };
   },
   async mounted() {
@@ -89,14 +102,6 @@ export default {
     this.myid = JSON.parse(sessionStorage.getItem("userInfo")).id;
   },
   methods: {
-    open1() {
-      this.$notify({
-        title: '알림',
-        message: h('i', {style: 'color: teal'}, '변경사항이 저장되었습니다.'),
-        type: 'success',
-        duration: '1500'
-      });
-    },
     async beforeClose(done) {
       await $axios
         .get("/rollbook/" + this.$route.params.conferenceId + "/" + this.selectDay)
@@ -114,9 +119,11 @@ export default {
         })
         .then(difference => {
           if (difference) {
+            // this.confirmVisible = true
             this.$confirm('변경내용을 저장하시겠습니까?', {
               confirmButtonText: '저장',
-              cancelButtonText: '저장 안함'
+              cancelButtonClass: 'cancel-button',
+              cancelButtonText: '저장 안함',
             })
                 .then(_ => {
                   this.modifyRollbook()
@@ -168,7 +175,11 @@ export default {
       await $axios.post("/rollbook/", rollbookList).then(res => {
         console.log("res.data.rollbooks");
         console.log(res.data.rollbooks);
-        this.open1()
+        this.$message({
+            type: 'success',
+            message: '변경사항이 저장되었습니다.',
+            duration: '1500'
+          })
       });
     }
   }
@@ -183,5 +194,16 @@ export default {
   width: 100%;
   height: 100%;
   vertical-align: middle;
+}
+
+.gaon-button {
+  background-color: #ffd04b;
+  border: none;
+}
+
+.cancel-button {
+  color: #fff;
+    background-color: #f56c6c;
+    border-color: #f56c6c;
 }
 </style>
