@@ -11,20 +11,7 @@
       </div>
     </transition>
     <!-- 공지배너 END  -->
-    <!-- 공지사항 보내기 버튼 -->
-    <img
-      id="icon1"
-      style="cursor:pointer;"
-      :src="require(`@/common/img/notice.png`)"
-      @click="noticeFormModal = true"
-    />
-    <!-- 출석체크 버튼 -->
-    <img
-      id="icon2"
-      style="cursor:pointer;"
-      :src="require(`@/common/img/rollbook.png`)"
-      @click="rollbookFormModal = true"
-    />
+
     <!-- 공지보내기 START -->
     <el-dialog
       width="500px"
@@ -134,46 +121,6 @@
             </div>
             <!-- 화상회의 출력 END -->
           </div>
-          <el-button
-            v-if="vOnOff"
-            type="success"
-            icon="el-icon-camera"
-            circle
-            @click="videoOnOff()"
-          ></el-button>
-          <el-button
-            v-else
-            type="danger"
-            icon="el-icon-camera-solid"
-            circle
-            @click="videoOnOff()"
-          ></el-button>
-          <el-button
-            v-if="aOnOff"
-            type="success"
-            icon="el-icon-microphone"
-            circle
-            @click="audioOnOff()"
-          ></el-button>
-          <el-button
-            v-else
-            type="danger"
-            icon="el-icon-turn-off-microphone"
-            circle
-            @click="audioOnOff()"
-          ></el-button>
-          <el-button
-            type="success"
-            icon="el-icon-monitor"
-            circle
-            @click="toggleScreanshare()"
-          ></el-button>
-          <el-button
-            type="danger"
-            icon="el-icon-close"
-            circle
-            @click="leaveSession"
-          ></el-button>
         </el-col>
         <el-col :span="5">
           <!-- 채팅/접속자 현황 버튼들 -->
@@ -220,7 +167,11 @@
           <!-- 채팅 창 -->
           <transition name="slide">
             <div id="chat-box" v-if="chatting">
-              <MessageList :msgs="msgs" />
+              <MessageList
+                :msgs="msgs"
+                :myId="publisher.stream.connection.connectionId"
+                :fromId="fromId"
+              />
               <MessageForm
                 style="width:100%"
                 @sendMsg="sendMsg"
@@ -254,6 +205,62 @@
     <el-row>
       <div id="conferenceFooter"></div>
     </el-row>
+  </div>
+  <div id="btngroup">
+    <!-- 공지사항 보내기 버튼 -->
+    <el-button
+      v-if="vOnOff"
+      type="success"
+      icon="el-icon-camera"
+      circle
+      @click="videoOnOff()"
+    ></el-button>
+    <el-button
+      v-else
+      type="danger"
+      icon="el-icon-camera-solid"
+      circle
+      @click="videoOnOff()"
+    ></el-button>
+    <el-button
+      v-if="aOnOff"
+      type="success"
+      icon="el-icon-microphone"
+      circle
+      @click="audioOnOff()"
+    ></el-button>
+    <el-button
+      v-else
+      type="danger"
+      icon="el-icon-turn-off-microphone"
+      circle
+      @click="audioOnOff()"
+    ></el-button>
+    <el-button
+      type="success"
+      icon="el-icon-monitor"
+      circle
+      @click="toggleScreanshare()"
+    ></el-button>
+    <el-button
+      type="danger"
+      icon="el-icon-close"
+      circle
+      @click="leaveSession"
+    ></el-button>
+  </div>
+  <div id="tools">
+    <img
+      style="cursor:pointer;"
+      :src="require(`@/common/img/notice.png`)"
+      @click="noticeFormModal = true"
+    />
+    <!-- 출석체크 버튼 -->
+    <img
+      style="cursor:pointer; width: 48px"
+      :src="require(`@/common/img/rollbook.png`)"
+      @click="rollbookFormModal = true"
+    />
   </div>
 </template>
 <script>
@@ -333,7 +340,9 @@ export default {
       resetButton: false,
 
       noticeFormModal: false,
-      rollbookFormModal: false
+      rollbookFormModal: false,
+
+      fromId: ""
     };
   },
   async created() {
@@ -350,16 +359,6 @@ export default {
     this.joinSession();
   },
   computed: {
-    // subscribers() {
-    //   console.log("감지 발생");
-    //   this.subscribers.forEach(sub => {
-    //     if (sub.stream.typeOfVideo == "SCREEN") {
-    //       console.log("내가 공유한 놈이다");
-    //       this.updateMainVideoStreamManager(sub);
-    //     }
-    //   });
-    //   return this.subscribers;
-    // }
     minutes: function() {
       const minutes = Math.floor(this.totalTime / 60);
       return this.padTime(minutes);
@@ -412,15 +411,10 @@ export default {
     }
   },
   methods: {
-    //타이머종료시간 설정
-    test() {
-      console.log("테스트");
-    },
     //타이머 시작
     startTimer: function() {
       clearInterval(this.timer);
       var date = new Date();
-      console.log(date);
       this.nowtime =
         date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
       this.timer = setInterval(() => this.countdown(), 1000);
@@ -654,9 +648,7 @@ export default {
       // Receiver of the message (usually before calling 'session.connect')
 
       this.session.on("signal:my-chat", event => {
-        // console.log(event.data); // Message
-        // console.log(event.from); // Connection object of the sender
-        // console.log(event.type); // The type of message ("my-chat")
+        this.fromId = event.from.connectionId;
         const tmp = this.msgs.slice();
         tmp.push(event.data);
         this.msgs = tmp;
@@ -892,13 +884,7 @@ export default {
   top: 15%;
   z-index: 1;
 }
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
-}
+
 .noticeB {
   background-color: #ffd344;
   margin-bottom: 5px;
@@ -963,11 +949,33 @@ export default {
 
 @keyframes fadeout {
   from {
-    height: 100%;
+    opacity: 100%;
   }
 
   to {
-    height: 0%;
+    opacity: 0%;
   }
+}
+
+#btngroup {
+  background-color: rgba(110, 110, 110, 0.205);
+  margin: 10px;
+  padding: 5px;
+  border-radius: 15px;
+  width: fit-content;
+  position: fixed;
+  bottom: 0%;
+  left: 50%;
+  margin: -150px 0px 20px -100px;
+  z-index: 1;
+}
+#tools {
+  margin: 10px;
+  padding: 5px;
+  border-radius: 15px;
+  width: fit-content;
+  position: absolute;
+  top: 0%;
+  float: left;
 }
 </style>
