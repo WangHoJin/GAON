@@ -83,7 +83,12 @@
       top="10vh"
     >
       <div>
-        <RollBookCheck :publisher="publisher" :subscribers="subscribers" />
+        <RollBookCheck
+          :publisher="publisher"
+          :subscribers="subscribers"
+          v-on:save="rollbookFormModal = false"
+          v-on:close="rollbookFormModal = false"
+        />
       </div>
     </el-dialog>
     <!-- 출석부 다이얼로그  END -->
@@ -367,11 +372,47 @@ export default {
         console.log("이상 이상");
         this.sendtime = 3600;
       }
+    },
+    publisher() {
+      deep: true;
+      // console.log(deep);
+      console.log("중복 아디 체크");
+      console.log("현재 나");
+      console.log(this.publisher);
+      if (this.publisher === undefined) {
+        this.leaveSession();
+      } else {
+        console.log(this.publisher.stream.connection.data);
+        const { clientData } = JSON.parse(
+          this.publisher.stream.connection.data
+        );
+        const { idData } = JSON.parse(this.publisher.stream.connection.data);
+        const nickname1 = clientData;
+        const id1 = idData;
+        console.log("접속자");
+        this.subscribers.forEach(sub => {
+          console.log(sub.stream.connection.data);
+          // console.log(JSON.parse(sub.stream.connection.data));
+          const { clientData } = JSON.parse(sub.stream.connection.data);
+          const { idData } = JSON.parse(sub.stream.connection.data);
+          console.log(nickname1);
+          console.log(clientData);
+          if (nickname1 == clientData && id1 == idData) {
+            alert("같은 사용자가 존재합니다");
+            this.$router.push({
+              name: "conference-detail"
+            });
+            setTimeout("location.reload()", 10);
+          }
+        });
+      }
     }
   },
   methods: {
     //타이머종료시간 설정
-    setTimertime() {},
+    test() {
+      console.log("테스트");
+    },
     //타이머 시작
     startTimer: function() {
       clearInterval(this.timer);
@@ -620,7 +661,7 @@ export default {
       this.session.on("signal:my-alrarm", event => {
         console.log(event.date + " " + event.from + " " + event.type);
         this.$notify({
-          title: "졸지마세요시발아ㅋㅋㅋㅋ",
+          title: "졸지마세요~!!",
           message: h(
             "i",
             { style: "color: teal" },
@@ -818,7 +859,7 @@ export default {
 #alertbtn {
   display: inline;
   position: relative;
-  top: -260px;
+  top: -227px;
   float: right;
 }
 

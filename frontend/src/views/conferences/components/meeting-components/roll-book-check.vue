@@ -3,9 +3,7 @@
     <el-table :data="rollbookmemberList" style="width: 100%">
       <el-table-column label="이름" prop="nickname"> </el-table-column>
       <el-table-column align="right">
-        <template #header>
-          <el-input v-model="search" size="mini" placeholder="Type to search" />
-        </template>
+        <template #header> </template>
         <!-- 라디오 토글해주면 알아서 tableData의 state(출결상태)가 바뀜 -->
         <template #default="scope">
           <el-radio
@@ -21,7 +19,10 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-button @click="createRollBook()">출석 체크</el-button>
+    <div align="center" style="margin-top:10px">
+      <el-button type="warning" @click="createRollBook()">저장</el-button>
+      <el-button type="info" @click="$emit('close')">닫기</el-button>
+    </div>
   </div>
 </template>
 <script>
@@ -83,6 +84,7 @@ export default {
       return JSON.parse(connection.data);
     },
     createRollBook() {
+      this.$emit("save");
       var today = new Date();
       var year = today.getFullYear();
       var month = ("0" + (today.getMonth() + 1)).slice(-2);
@@ -107,6 +109,7 @@ export default {
         .catch(err => {
           console.log(err);
         });
+      this.$emit("save");
     }
   }
 };
