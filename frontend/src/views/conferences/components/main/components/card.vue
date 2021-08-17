@@ -1,6 +1,6 @@
 <template lang="">
   <div>
-    <el-card class="box-card" style="  min-height: 200px; ">
+    <el-card class="box-card" style="  min-height: 150px; ">
       <template #header>
         <div class="card-header">
           <span>{{ title }}</span>
@@ -51,6 +51,6 @@ export default {
   font-size: 25px;
 }
 .content {
-  padding: 10% 0px 10% 0px;
+  padding: 5% 0px 5% 0px;
 }
 </style>
