@@ -213,7 +213,6 @@
         </el-col>
       </el-row>
     </div>
-    <button @click="test">TEST</button>
   </div>
   <!-- 화상 미팅 관련 버튼들 -->
   <div id="btngroup">
@@ -422,7 +421,21 @@ export default {
   },
   methods: {
     test() {
-      var xmlHttpRequest = new XMLHttpRequest();
+      var xmlHttpRequest;
+      if (window.XMLHttpRequest) {
+        // code for Firefox, Mozilla, IE7, etc.
+        xmlHttpRequest = new XMLHttpRequest();
+      } else if (window.ActiveXObject) {
+        // code for IE5, IE6
+        xmlHttpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+      } else {
+        return;
+      }
+
+      xmlHttpRequest.open("HEAD", window.location.href.toString(), false);
+      xmlHttpRequest.setRequestHeader("ContentType", "text/html");
+      xmlHttpRequest.send("");
+
       var serverDate = xmlHttpRequest.getResponseHeader("Date");
       var date = new Date(serverDate);
       var date2 = new Date();
@@ -432,7 +445,21 @@ export default {
     //타이머 시작
     startTimer: function() {
       clearInterval(this.timer);
-      var xmlHttpRequest = new XMLHttpRequest();
+      var xmlHttpRequest;
+      if (window.XMLHttpRequest) {
+        // code for Firefox, Mozilla, IE7, etc.
+        xmlHttpRequest = new XMLHttpRequest();
+      } else if (window.ActiveXObject) {
+        // code for IE5, IE6
+        xmlHttpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+      } else {
+        return;
+      }
+
+      xmlHttpRequest.open("HEAD", window.location.href.toString(), false);
+      xmlHttpRequest.setRequestHeader("ContentType", "text/html");
+      xmlHttpRequest.send("");
+
       var serverDate = xmlHttpRequest.getResponseHeader("Date");
       var date = new Date(serverDate);
       this.nowtime =
@@ -494,7 +521,21 @@ export default {
     },
     makeNotice() {
       this.noticeFormModal = false;
-      var xmlHttpRequest = new XMLHttpRequest();
+      var xmlHttpRequest;
+      if (window.XMLHttpRequest) {
+        // code for Firefox, Mozilla, IE7, etc.
+        xmlHttpRequest = new XMLHttpRequest();
+      } else if (window.ActiveXObject) {
+        // code for IE5, IE6
+        xmlHttpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+      } else {
+        return;
+      }
+
+      xmlHttpRequest.open("HEAD", window.location.href.toString(), false);
+      xmlHttpRequest.setRequestHeader("ContentType", "text/html");
+      xmlHttpRequest.send("");
+
       var serverDate = xmlHttpRequest.getResponseHeader("Date");
       var nowtime = new Date(serverDate);
       var nexttime = Date.parse(nowtime) + this.sendtime * 1000;
@@ -508,7 +549,21 @@ export default {
     },
     checkNotice() {
       if (this.noticeSig != "") {
-        var xmlHttpRequest = new XMLHttpRequest();
+        var xmlHttpRequest;
+        if (window.XMLHttpRequest) {
+          // code for Firefox, Mozilla, IE7, etc.
+          xmlHttpRequest = new XMLHttpRequest();
+        } else if (window.ActiveXObject) {
+          // code for IE5, IE6
+          xmlHttpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+        } else {
+          return;
+        }
+
+        xmlHttpRequest.open("HEAD", window.location.href.toString(), false);
+        xmlHttpRequest.setRequestHeader("ContentType", "text/html");
+        xmlHttpRequest.send("");
+
         var serverDate = xmlHttpRequest.getResponseHeader("Date");
         var date = new Date(serverDate);
         var time = Date.parse(date);
@@ -693,7 +748,21 @@ export default {
       });
 
       this.session.on("signal:notice", event => {
-        var xmlHttpRequest = new XMLHttpRequest();
+        var xmlHttpRequest;
+        if (window.XMLHttpRequest) {
+          // code for Firefox, Mozilla, IE7, etc.
+          xmlHttpRequest = new XMLHttpRequest();
+        } else if (window.ActiveXObject) {
+          // code for IE5, IE6
+          xmlHttpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+        } else {
+          return;
+        }
+
+        xmlHttpRequest.open("HEAD", window.location.href.toString(), false);
+        xmlHttpRequest.setRequestHeader("ContentType", "text/html");
+        xmlHttpRequest.send("");
+
         var serverDate = xmlHttpRequest.getResponseHeader("Date");
         var date = new Date(serverDate);
         var nowtime = Date.parse(date);
