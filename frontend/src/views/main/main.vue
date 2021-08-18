@@ -2,8 +2,11 @@
   <div class="main-wrapper">
     <el-row>
       <el-col :span="1" @contextmenu.prevent> <main-sidebar /></el-col>
-      <el-col :span="23" align="center"> <router-view></router-view> </el-col>
+      <el-col :span="23" align="center">
+        <router-view></router-view>
+      </el-col>
     </el-row>
+    <span text-align="center">Designed by Freepik</span> | www.flaticon.com
   </div>
 </template>
 
