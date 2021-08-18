@@ -43,7 +43,7 @@ export default {
 </script>
 <style scoped>
 .card-row {
-  padding: 8% 5% 0% 5%;
+  padding: 5% 5% 0% 5%;
   height: 100%;
 }
 </style>

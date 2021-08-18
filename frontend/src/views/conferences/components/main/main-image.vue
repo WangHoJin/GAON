@@ -1,14 +1,17 @@
 <template lang="">
   <div class="main-image">
+    <MainText />
     <MainBanner />
   </div>
 </template>
 <script>
 import MainBanner from "./main-banner.vue";
+import MainText from "./main-text.vue";
 import MainCarousel from "./main-carousel.vue";
 export default {
   components: {
-    MainBanner
+    MainBanner,
+    MainText
   }
 };
 </script>

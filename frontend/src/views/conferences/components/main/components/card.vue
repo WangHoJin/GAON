@@ -39,7 +39,7 @@ export default {
 .box-card {
   width: 100%;
   /* height: 80%; */
-  margin-top: 80%;
+  /* margin-top: 80%; */
   z-index: 2;
   text-align: left;
 
