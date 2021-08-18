@@ -30,14 +30,17 @@ h1 span {
   clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 80%);
   transform: translateY(-50px);
   opacity: 0;
-  animation-name: titleAnimation;
-  animation-timing-function: ease;
+  /* animation-name: titleAnimation;
+  animation-timing-function: ease; */
   animation-duration: 2s;
 }
 .firstText {
   color: #f5df4d;
-  animation-name: titleAnimation2;
-  animation-fill-mode: forwards;
+  opacity: 1;
+  clip-path: none;
+  transform: translateY(0);
+  /* animation-name: titleAnimation2; */
+  /* animation-fill-mode: forwards; */
 }
 .second {
   font-size: 60px;
