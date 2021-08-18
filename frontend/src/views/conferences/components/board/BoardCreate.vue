@@ -128,6 +128,8 @@ export default {
       this.$router.push({ name: "board-post-list" });
     },
     submitUpload() {
+      console.log("파일 서브밋 함수 실행" + "," + this.URL);
+      console.log("env", process.env.VUE_APP_API_URL);
       this.$refs.upload.submit();
       console.log("files are uploaded");
     },
@@ -147,7 +149,7 @@ export default {
               this.form.content = "";
               this.form.uid = "";
               this.URL += `/api/v1/boards/posts/${res.data.post.id}/files/`;
-              // console.log(this.URL)
+              console.log("파일보내는 URL", this.URL);
             })
             .then(res => {
               this.submitUpload();
