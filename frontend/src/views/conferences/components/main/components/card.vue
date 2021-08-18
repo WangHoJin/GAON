@@ -43,24 +43,24 @@ export default {
   z-index: 2;
   text-align: left;
 
-  transform-origin: 50% 0%;
+  /* transform-origin: 50% 0%;
   animation-name: shake;
   animation-duration: 2s;
   animation-iteration-count: 1;
-  animation-delay: 0.5s;
+  animation-delay: 0.5s; */
 }
 
-/* .box-card:hover {
+.box-card:hover {
   transform: scale(1.1, 1.1);
-} */
-@keyframes shake {
+}
+/* @keyframes shake {
   0% {
     transform: scale(1.1, 1.1);
   }
   10% {
     transform: scale(1.15, 1.15);
   }
-  /* 20% {
+   20% {
     transform: rotate(-30deg);
   }
   30% {
@@ -80,8 +80,8 @@ export default {
   }
   100% {
     transform: rotate(0deg);
-  } */
-}
+  }
+} */
 /* @keyframes shake {
   0% {
     transform: rotate(0deg);
