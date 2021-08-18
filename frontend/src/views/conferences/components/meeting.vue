@@ -892,22 +892,24 @@ export default {
       // insert the play code, for ex yours:
       // audio.play();
     },
-    leaveSession() {
-      console.log("나가!");
-      // --- Leave the session by calling 'disconnect' method over the Session object ---
-      if (this.session) this.session.disconnect();
 
-      this.session = undefined;
-      this.mainStreamManager = undefined;
-      this.publisher = undefined;
-      this.subscribers = [];
-      this.OV = undefined;
+    //     leaveSession() {
+    //       console.log("나가!");
+    //       // --- Leave the session by calling 'disconnect' method over the Session object ---
+    //       if (this.session) this.session.disconnect();
 
-      window.removeEventListener("beforeunload", this.leaveSession);
-      this.$router.push({
-        name: "conference-detail"
-      });
-    },
+    //       this.session = undefined;
+    //       this.mainStreamManager = undefined;
+    //       this.publisher = undefined;
+    //       this.subscribers = [];
+    //       this.OV = undefined;
+
+    //       window.removeEventListener("beforeunload", this.leaveSession);
+    //       this.$router.push({
+    //         name: "conference-detail"
+    //       });
+    //     },
+    // >>>>>>> 373187319d40a6d59aa741ba3c199fea0369490a
     updateMainVideoStreamManager(stream) {
       this.mainOnOff = true;
       if (this.mainStreamManager === stream) return;
