@@ -61,12 +61,20 @@
               </template>
               <!-- 라디오 토글해주면 알아서 tableData의 state(출결상태)가 바뀜 -->
               <template #default="scope">
-                <el-radio v-model="tableData[scope.$index].state" label="출석"
-                  >출석</el-radio
-                >
-                <el-radio v-model="tableData[scope.$index].state" label="결석"
-                  >결석</el-radio
-                >
+              <div v-if="host_id === myid">
+                <el-radio v-model="tableData[scope.$index].state" label="출석">출석</el-radio>
+                <el-radio v-model="tableData[scope.$index].state" label="결석">결석</el-radio>
+              </div>
+              <div v-else>
+                <div v-if="tableData[scope.$index].state === '출석'">
+                  <el-radio v-model="tableData[scope.$index].state" label="출석">출석</el-radio>
+                  <el-radio v-model="tableData[scope.$index].state" disabled label="결석">결석</el-radio>
+                </div>
+                <div v-else>
+                  <el-radio v-model="tableData[scope.$index].state" disabled label="출석">출석</el-radio>
+                  <el-radio v-model="tableData[scope.$index].state" label="결석">결석</el-radio>
+                </div>
+              </div>
               </template>
             </el-table-column>
           </el-table>
@@ -95,7 +103,7 @@ export default {
     return {
       tableData: [],
       search: "",
-      host_i: "",
+      host_id: "",
       myid: "",
       dialogTableVisible: false,
       selectDay: String,
@@ -129,34 +137,36 @@ export default {
           return difference;
         })
         .then(difference => {
-          if (difference) {
-            // this.confirmVisible = true
-            this.$confirm("변경내용을 저장하시겠습니까?", {
-              confirmButtonClass: "confirm-button",
-              confirmButtonText: "저장",
-              cancelButtonClass: "cancel-button",
-              cancelButtonText: "저장 안함"
+          if (this.host_id != this.myid || !difference) {
+              this.$confirm('출석부를 종료하시겠습니까?', {
+              confirmButtonClass: 'confirm-button',
+              confirmButtonText: '네',
+              cancelButtonText: '아니요'
             })
-              .then(_ => {
-                this.modifyRollbook();
-                done();
-                this.dialogVisible = false;
-              })
-              .catch(_ => {
-                done();
-                this.dialogVisible = false;
-              });
+                .then(_ => {
+                  done();
+                  this.dialogVisible = false
+                })
+                .catch(_ => {
+                });
+
           } else {
-            this.$confirm("출석부를 종료하시겠습니까?", {
-              confirmButtonClass: "confirm-button",
-              confirmButtonText: "네",
-              cancelButtonText: "아니요"
+            // this.confirmVisible = true
+            this.$confirm('변경내용을 저장하시겠습니까?', {
+              confirmButtonClass: 'confirm-button',
+              confirmButtonText: '저장',
+              cancelButtonClass: 'cancel-button',
+              cancelButtonText: '저장 안함',
             })
-              .then(_ => {
-                done();
-                this.dialogVisible = false;
-              })
-              .catch(_ => {});
+                .then(_ => {
+                  this.modifyRollbook()
+                  done();
+                  this.dialogVisible = false
+                })
+                .catch(_ => {
+                  done();
+                  this.dialogVisible = false
+                });
           }
         });
     },
