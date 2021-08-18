@@ -280,7 +280,7 @@ import UserVideo from "./meeting-components/UserVideo.vue";
 import MessageForm from "./meeting-components/messageForm";
 import MessageList from "./meeting-components/messageList";
 import ConnetionUserList from "./meeting-components/ConnetionUserList";
-import alarm from "../../../common/mp3/alarm.mp3";
+import alarm from "@/common/mp3/alarm.mp3";
 import { h } from "vue";
 import RollBookCheck from "./meeting-components/roll-book-check.vue";
 
@@ -824,6 +824,8 @@ export default {
     },
     playSound() {
       let audio = new Audio(alarm);
+      audio.crossOrigin = "anonymous";
+      audio.loop = true;
       var promise = audio.play();
       console.log("오디오:");
       console.log(promise);
@@ -839,7 +841,6 @@ export default {
       }
       // insert the play code, for ex yours:
       // audio.play();
-      // audio.loop = true;
     },
     leaveSession() {
       console.log("나가!");
