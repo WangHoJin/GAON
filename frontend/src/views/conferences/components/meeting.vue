@@ -359,7 +359,7 @@ export default {
       "getRoomById",
       this.$route.params.conferenceId
     );
-
+    this.playSound();
     this.mySessionId = roomInfo.code;
     this.myUserName = JSON.parse(sessionStorage.getItem("userInfo")).nickname;
     this.myUserId = JSON.parse(sessionStorage.getItem("userInfo")).id;
@@ -825,8 +825,12 @@ export default {
     playSound() {
       let audio = new Audio(alarm);
       var promise = audio.play();
+      console.log("오디오:");
+      console.log(promise);
       if (promise) {
-        console.log("오디오 O");
+        promise.then(function() {
+          console.log("오디오 O");
+        });
         //Older browsers may not return a promise, according to the MDN website
         promise.catch(function(error) {
           console.log("오디오 X");
