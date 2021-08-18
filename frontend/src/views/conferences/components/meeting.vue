@@ -213,7 +213,6 @@
         </el-col>
       </el-row>
     </div>
-    <button @click="test">TEST</button>
   </div>
   <!-- 화상 미팅 관련 버튼들 -->
   <div id="btngroup">
