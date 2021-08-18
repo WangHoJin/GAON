@@ -572,7 +572,6 @@ export default {
         .catch(error => {
           console.error(error);
         });
-      this.playLoading();
     },
     makeNotice() {
       this.noticeFormModal = false;
@@ -887,7 +886,7 @@ export default {
       audioContainer.load();
       this.playAudio(audioContainer);
     },
-    async playAudio(audioContainer) {
+    playAudio(audioContainer) {
       // const source = document.getElementById("audioSource");
       // console.log(source);
       // source.src = this.music;
@@ -897,7 +896,7 @@ export default {
       audioContainer.volume = 0.3;
       console.log("기다료");
       console.log(audioContainer);
-      const playPromise = await audioContainer.play();
+      const playPromise = audioContainer.play();
       console.log("약속");
       console.log(playPromise);
       if (playPromise !== undefined) {
