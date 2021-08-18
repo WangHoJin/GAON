@@ -1,7 +1,7 @@
 <template lang="">
   <div id="main-container" class="container">
     <audio controls preload="none" id="audioContainer">
-      <source id="audioSource" src="" type="audio/mp3" />
+      <source id="audioSource" src="" type="audio/mpeg" />
     </audio>
     <!-- 공지보내기 START -->
     <el-dialog
@@ -572,6 +572,7 @@ export default {
         .catch(error => {
           console.error(error);
         });
+      this.playLoading();
     },
     makeNotice() {
       this.noticeFormModal = false;
@@ -797,7 +798,8 @@ export default {
             "일어나~!~!~!~!~!~!~!~!~!~!~!~!~!!"
           )
         });
-        this.playAudio();
+        this.playLoading();
+        // this.playAudio();
       });
 
       this.session.on("signal:notice", event => {
@@ -876,14 +878,22 @@ export default {
       });
       window.addEventListener("beforeunload", this.leaveSession);
     },
-
-    playAudio() {
+    playLoading() {
       const source = document.getElementById("audioSource");
       console.log(source);
       source.src = this.music;
       const audioContainer = document.getElementById("audioContainer");
       console.log("오디오");
       audioContainer.load();
+      this.playAudio(audioContainer);
+    },
+    playAudio(audioContainer) {
+      // const source = document.getElementById("audioSource");
+      // console.log(source);
+      // source.src = this.music;
+      // const audioContainer = document.getElementById("audioContainer");
+      // console.log("오디오");
+      // audioContainer.load();
       audioContainer.volume = 0.3;
       console.log(audioContainer);
       const playPromise = audioContainer.play();
@@ -894,8 +904,8 @@ export default {
           .then(_ => {})
           .catch(error => {
             console.log("에러");
+            console.log(playPromise);
             console.log(error);
-            audioContainer.load();
           });
       }
     },
