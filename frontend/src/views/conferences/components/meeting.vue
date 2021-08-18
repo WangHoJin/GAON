@@ -743,8 +743,7 @@ export default {
             "일어나~!~!~!~!~!~!~!~!~!~!~!~!~!!"
           )
         });
-        var audio = new Audio(alarm);
-        audio.play();
+        this.playSound();
       });
 
       this.session.on("signal:notice", event => {
@@ -823,7 +822,12 @@ export default {
       });
       window.addEventListener("beforeunload", this.leaveSession);
     },
-
+    playSound() {
+      // insert the play code, for ex yours:
+      let audio = new Audio(alarm);
+      audio.play();
+      // audio.loop = true;
+    },
     leaveSession() {
       console.log("나가!");
       // --- Leave the session by calling 'disconnect' method over the Session object ---
