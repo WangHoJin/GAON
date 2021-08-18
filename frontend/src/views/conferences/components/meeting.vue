@@ -301,15 +301,14 @@ export default {
   },
 
   beforeRouteLeave(to, from, next) {
-    // 게시판을 갈 경우와 가지않을 경우를 구분해주기
     console.log(to.fullPath);
     if (to.fullPath.indexOf("board") != -1) {
       console.log("게시판갈거고 bid는1 " + to.params.bid);
       this.bid = to.params.bid;
-      console.log(this.bid);
+      // console.log(this.bid);
     } else {
-      console.log("게시판안갈거고 bid는2" + this.bid);
-      console.log(typeof this.bid);
+      console.log("게시판안갈거고 id는2" + this.bid);
+      // console.log(typeof this.bid);
       this.bid = false; //재할당
     }
     if (to.fullPath.indexOf("rollbook") != -1) {
@@ -455,7 +454,6 @@ export default {
 
       window.removeEventListener("beforeunload", this.leaveSession);
       // console.log(this.bid);
-      // console.log("이게뭔데자꾸에러쳐떠");
       if (this.bid) {
         // console.log("리브세션에서 실행되는거");
         // console.log(this.bid);
@@ -465,7 +463,7 @@ export default {
         });
         this.bid = "";
       } else {
-        console.log("다른페이지눌렀으면 다른페이지로 ");
+        console.log("회의 메인으로");
         this.$router.push({
           name: "conference-detail"
         });
