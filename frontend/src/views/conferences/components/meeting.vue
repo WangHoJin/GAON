@@ -208,9 +208,7 @@
         </el-col>
       </el-row>
     </div>
-    <el-row>
-      <div id="conferenceFooter"></div>
-    </el-row>
+    <button @click="test">TEST</button>
   </div>
   <div id="btngroup">
     <!-- 공지사항 보내기 버튼 -->
@@ -417,10 +415,20 @@ export default {
     }
   },
   methods: {
+    test() {
+      var xmlHttpRequest = new XMLHttpRequest();
+      var serverDate = xmlHttpRequest.getResponseHeader("Date");
+      var date = new Date(serverDate);
+      var date2 = new Date();
+      console.log("서버시간 : " + date);
+      console.log("로컬시간 : " + date2);
+    },
     //타이머 시작
     startTimer: function() {
       clearInterval(this.timer);
-      var date = new Date();
+      var xmlHttpRequest = new XMLHttpRequest();
+      var serverDate = xmlHttpRequest.getResponseHeader("Date");
+      var date = new Date(serverDate);
       this.nowtime =
         date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
       this.timer = setInterval(() => this.countdown(), 1000);
@@ -480,7 +488,9 @@ export default {
     },
     makeNotice() {
       this.noticeFormModal = false;
-      var nowtime = new Date();
+      var xmlHttpRequest = new XMLHttpRequest();
+      var serverDate = xmlHttpRequest.getResponseHeader("Date");
+      var nowtime = new Date(serverDate);
       var nexttime = Date.parse(nowtime) + this.sendtime * 1000;
       var sig = JSON.stringify({
         nexttime: nexttime,
@@ -492,7 +502,10 @@ export default {
     },
     checkNotice() {
       if (this.noticeSig != "") {
-        var time = Date.parse(new Date());
+        var xmlHttpRequest = new XMLHttpRequest();
+        var serverDate = xmlHttpRequest.getResponseHeader("Date");
+        var date = new Date(serverDate);
+        var time = Date.parse(date);
         var signal = JSON.parse(this.noticeSig);
         if (time < signal.nexttime) {
           this.sendNotice();
@@ -674,7 +687,10 @@ export default {
       });
 
       this.session.on("signal:notice", event => {
-        var nowtime = Date.parse(new Date());
+        var xmlHttpRequest = new XMLHttpRequest();
+        var serverDate = xmlHttpRequest.getResponseHeader("Date");
+        var date = new Date(serverDate);
+        var nowtime = Date.parse(date);
         var data = JSON.parse(event.data);
         var nexttime = data.nexttime;
         var msg = data.noticeMsg;
