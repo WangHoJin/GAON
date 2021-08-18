@@ -280,7 +280,7 @@ import UserVideo from "./meeting-components/UserVideo.vue";
 import MessageForm from "./meeting-components/messageForm";
 import MessageList from "./meeting-components/messageList";
 import ConnetionUserList from "./meeting-components/ConnetionUserList";
-import alarm from "../../../common/mp3/alarm.mp3";
+import alarm from "@/common/mp3/alarm.mp3";
 import { h } from "vue";
 import RollBookCheck from "./meeting-components/roll-book-check.vue";
 
@@ -380,7 +380,7 @@ export default {
       "getRoomById",
       this.$route.params.conferenceId
     );
-
+    this.playSound();
     this.mySessionId = roomInfo.code;
     this.myUserName = JSON.parse(sessionStorage.getItem("userInfo")).nickname;
     this.myUserId = JSON.parse(sessionStorage.getItem("userInfo")).id;
@@ -792,8 +792,7 @@ export default {
             "일어나~!~!~!~!~!~!~!~!~!~!~!~!~!!"
           )
         });
-        var audio = new Audio(alarm);
-        audio.play();
+        this.playSound();
       });
 
       this.session.on("signal:notice", event => {
@@ -872,6 +871,44 @@ export default {
       });
       window.addEventListener("beforeunload", this.leaveSession);
     },
+
+    playSound() {
+      // let audio = new Audio(alarm);
+      // audio.crossOrigin = "anonymous";
+      // audio.loop = true;
+      // var promise = audio.play();
+      // console.log("오디오:");
+      // console.log(promise);
+      // if (promise) {
+      //   promise.then(function() {
+      //     console.log("오디오 O");
+      //   });
+      //   //Older browsers may not return a promise, according to the MDN website
+      //   promise.catch(function(error) {
+      //     console.log("오디오 X");
+      //     console.error(error);
+      //   });
+      // }
+      // insert the play code, for ex yours:
+      // audio.play();
+    },
+    //     leaveSession() {
+    //       console.log("나가!");
+    //       // --- Leave the session by calling 'disconnect' method over the Session object ---
+    //       if (this.session) this.session.disconnect();
+
+    //       this.session = undefined;
+    //       this.mainStreamManager = undefined;
+    //       this.publisher = undefined;
+    //       this.subscribers = [];
+    //       this.OV = undefined;
+
+    //       window.removeEventListener("beforeunload", this.leaveSession);
+    //       this.$router.push({
+    //         name: "conference-detail"
+    //       });
+    //     },
+    // >>>>>>> 373187319d40a6d59aa741ba3c199fea0369490a
 
     updateMainVideoStreamManager(stream) {
       this.mainOnOff = true;
