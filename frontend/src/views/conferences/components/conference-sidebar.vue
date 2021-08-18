@@ -26,7 +26,7 @@
         v-for="i in $store.getters.boards"
         :key="i.id"
         :index="i.id"
-        @click="mvList(i.id)"
+        @click="[mvList(i.id), tossBid(i.id)]"
         @mousedown.right="mouseRightClick($route.params.conferenceId, i)"
         @mousedown.stop
       >
@@ -226,8 +226,14 @@ export default {
     });
   },
   methods: {
-    //해당 게시판으로 이동하기
+    // 클릭한 bid를 detail페이지로 넘겨주기
+    tossBid(bid) {
+      console.log("tossBid");
+      // this.$emit("tossBid", bid);
+    },
+    // 해당 게시판으로 이동하기
     mvList(bid) {
+      console.log("게시판으로이동이먼저해?");
       this.$router.push({ name: "board", params: { bid: bid } });
     },
     // 게시판 생성하기
