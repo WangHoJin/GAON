@@ -299,9 +299,29 @@ export default {
     ConnetionUserList,
     RollBookCheck
   },
+
   beforeRouteLeave(to, from, next) {
-    // console.log(to.fullPath);
+    console.log(to.fullPath);
+    if (to.fullPath.indexOf("board") != -1) {
+      console.log("게시판갈거고 bid는1 " + to.params.bid);
+      this.bid = to.params.bid;
+      // console.log(this.bid);
+    } else {
+      console.log("게시판안갈거고 id는2" + this.bid);
+      // console.log(typeof this.bid);
+      this.bid = false; //재할당
+    }
+    if (to.fullPath.indexOf("rollbook") != -1) {
+      console.log("출석부가야함" + to.params.bid);
+      if (this.session) {
+        this.session.disconnect();
+      }
+      return next();
+    }
     if (to.fullPath == `/conference/${this.$route.params.conferenceId}`) {
+      if (this.session) {
+        this.session.disconnect();
+      }
       return next();
     } else {
       if (this.session) {
@@ -351,7 +371,8 @@ export default {
       noticeFormModal: false,
       rollbookFormModal: false,
 
-      fromId: ""
+      fromId: "",
+      bid: null
     };
   },
   async created() {
@@ -420,6 +441,34 @@ export default {
     }
   },
   methods: {
+    leaveSession() {
+      console.log("나가!");
+      // --- Leave the session by calling 'disconnect' method over the Session object ---
+      if (this.session) this.session.disconnect();
+
+      this.session = undefined;
+      this.mainStreamManager = undefined;
+      this.publisher = undefined;
+      this.subscribers = [];
+      this.OV = undefined;
+
+      window.removeEventListener("beforeunload", this.leaveSession);
+      // console.log(this.bid);
+      if (this.bid) {
+        // console.log("리브세션에서 실행되는거");
+        // console.log(this.bid);
+        this.$router.push({
+          name: "board",
+          params: { bid: this.bid }
+        });
+        this.bid = "";
+      } else {
+        console.log("회의 메인으로");
+        this.$router.push({
+          name: "conference-detail"
+        });
+      }
+    },
     test() {
       var xmlHttpRequest;
       if (window.XMLHttpRequest) {
@@ -822,23 +871,6 @@ export default {
           });
       });
       window.addEventListener("beforeunload", this.leaveSession);
-    },
-
-    leaveSession() {
-      console.log("나가!");
-      // --- Leave the session by calling 'disconnect' method over the Session object ---
-      if (this.session) this.session.disconnect();
-
-      this.session = undefined;
-      this.mainStreamManager = undefined;
-      this.publisher = undefined;
-      this.subscribers = [];
-      this.OV = undefined;
-
-      window.removeEventListener("beforeunload", this.leaveSession);
-      this.$router.push({
-        name: "conference-detail"
-      });
     },
 
     updateMainVideoStreamManager(stream) {
