@@ -1,26 +1,5 @@
 <template lang="">
   <div id="main-container" class="container">
-    <!-- 공지배너 START  -->
-    <transition name="fade">
-      <div class="noticeB" v-if="totalTime > 0">
-        <h2>📢 {{ reciveMsg }}</h2>
-        <!-- <span>남은시간 [ {{ minutes }}</span> -->
-        <div>
-          <div style=" text-align:left; margin-left:30px; display:inline-block">
-            <span>⏰ [ {{ nowtime }} 까지 ] </span>
-          </div>
-          <div
-            style="color:red; text-align:right; margin-right:30px; display:inline-block"
-          >
-            <span> ⏳ [ {{ minutes }}</span>
-            <span>:</span>
-            <span>{{ seconds }} ]</span>
-          </div>
-        </div>
-      </div>
-    </transition>
-    <!-- 공지배너 END  -->
-
     <!-- 공지보내기 START -->
     <el-dialog
       width="500px"
@@ -91,7 +70,29 @@
 
     <div id="session" v-if="session">
       <el-row>
-        <el-col :span="19" style="margin-top:130px">
+        <el-col :span="19">
+          <!-- 공지배너 START  -->
+          <transition name="fade">
+            <div class="noticeB" v-if="totalTime > 0">
+              <h2>📢 {{ reciveMsg }}</h2>
+              <!-- <span>남은시간 [ {{ minutes }}</span> -->
+              <div>
+                <div
+                  style=" text-align:left; margin-left:30px; display:inline-block"
+                >
+                  <span>⏰ [ {{ nowtime }} 까지 ] </span>
+                </div>
+                <div
+                  style="color:red; text-align:right; margin-right:30px; display:inline-block"
+                >
+                  <span> ⏳ [ {{ minutes }}</span>
+                  <span>:</span>
+                  <span>{{ seconds }} ]</span>
+                </div>
+              </div>
+            </div>
+          </transition>
+          <!-- 공지배너 END  -->
           <div id="session-header">
             <!-- <h1 id="session-title">{{ mySessionId }}</h1> -->
           </div>
@@ -896,15 +897,18 @@ export default {
 
 /* 공지사항 css */
 .noticeB {
-  width: 60%;
-  height: 100px;
-  position: fixed;
-  top: 0px;
-  left: 19%;
+  word-break: break-all;
+  width: 90%;
+  /* height: 100px; */
+  /* position: fixed; */
+  /* top: 0px; */
+  /* left: 19%; */
+  /* margin-left: 19%; */
   background-color: #ffd344;
   margin-bottom: 5px;
   border-radius: 10px;
   padding: 10px;
+  margin-left: 5%;
 }
 
 .slide-enter-active {
