@@ -1,7 +1,7 @@
 <template lang="">
   <div id="main-container" class="container">
     <audio id="audioContainer">
-      <source id="audioSource" src="" type="audio/mpeg" />
+      <source id="audioSource" src="" type="audio/mp3" />
     </audio>
     <!-- 공지보내기 START -->
     <el-dialog
@@ -887,6 +887,8 @@ export default {
       audioContainer.volume = 0.3;
       console.log(audioContainer);
       const playPromise = audioContainer.play();
+      console.log("약속");
+      console.log(playPromise);
       if (playPromise !== undefined) {
         playPromise
           .then(_ => {})
