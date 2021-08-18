@@ -2,8 +2,8 @@
   <div class="loginText">
     <h1 class="title">
       <span class="firstText">GAON</span>
-      <span class="secondText">START</span>
-      <span class="thirdText">NOW</span>
+      <!-- <span class="secondText">START</span>
+      <span class="thirdText">NOW</span> -->
       <span class="second one">Gather</span>
       <span class="second two">As</span>
       <span class="second three">One</span>
@@ -53,24 +53,25 @@ h1 span {
   color: #f5df4d;
 }
 .one {
-  top: 41%;
-  left: 1%;
-  animation-delay: 3s;
+  top: 91%;
+  left: 3%;
+  animation-delay: 1.3s;
 }
 .two {
-  top: 60%;
-  left: 9.4%;
-  animation-delay: 3.1s;
+  top: 130%;
+  left: 27.8%;
+  animation-delay: 1.4s;
 }
 .three {
-  top: 79%;
-  left: 17.8%;
-  animation-delay: 3.2s;
+  top: 169%;
+  left: 52.6%;
+  animation-delay: 1.5s;
 }
 .four {
-  top: 98%;
-  left: 26.2%;
-  animation-delay: 3.3s;
+  width: 250px;
+  top: 208%;
+  left: 79.4%;
+  animation-delay: 1.6s;
 }
 
 h1 span {

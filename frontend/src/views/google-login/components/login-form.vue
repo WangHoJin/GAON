@@ -114,14 +114,14 @@ export default {
   left: 40%;
   animation: login-rotation 1s linear;
   animation-fill-mode: forwards;
-  animation-delay: 4.5s;
+  animation-delay: 2s;
 }
 @keyframes login-rotation {
   0% {
     transform: translateY(-300px);
     opacity: 1;
   }
-  60% {
+  30% {
     transform: translateY(200px);
     opacity: 1;
   }

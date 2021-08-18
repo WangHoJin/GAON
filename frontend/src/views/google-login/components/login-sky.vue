@@ -115,7 +115,7 @@ export default {
   background-position: 100% 0;
   background-size: 1200% 100%;
   background-repeat: no-repeat;
-  animation: change-sky-color 2s linear alternate;
+  animation: change-sky-color 1.5s linear alternate;
 }
 
 .sky-right {
@@ -232,7 +232,7 @@ export default {
     transform: translateY(0);
     opacity: 1;
   }
-  70% {
+  30% {
     transform: translateY(-600px);
     opacity: 1;
   }
