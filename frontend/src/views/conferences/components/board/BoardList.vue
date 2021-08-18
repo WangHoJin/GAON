@@ -87,7 +87,11 @@ export default {
         // console.log(res.data.posts);
         console.log(res.data.posts);
         this.tableData = res.data.posts;
-        this.tableData.reverse();
+        this.tableData.sort((a, b) => {
+          return b.id - a.id;
+        })
+        // this.tableData.reverse();
+        console.log(this.tableData)
         // crated time 뒤에 소수점 자르기
         this.tableData.filter(function(item, idx) {
           item.created_time = item.created_time.substring(0, 19);
@@ -122,7 +126,10 @@ export default {
       .then(res => {
         console.log(res.data.posts);
         this.tableData = res.data.posts;
-        this.tableData.reverse();
+        this.tableData.sort((a, b) => {
+          return b.id - a.id;
+        })
+        // this.tableData.reverse();
         // crated time 뒤에 소수점 자르기
         this.tableData.filter(function(item, idx) {
           item.created_time = item.created_time.substring(0, 19);
@@ -149,6 +156,7 @@ export default {
 
   computed: {
     pagedTableData() {
+      console.log(this.tableData)
       return this.tableData.slice(
         this.pageSize * this.page - this.pageSize,
         this.pageSize * this.page
@@ -189,6 +197,7 @@ export default {
           // console.log(res.data.posts);
           this.tableData = res.data.posts;
           this.tableData.reverse();
+          // console.log(this.tableData)
           // console.log("makeboard ");
           // console.log("res.data");
         })
