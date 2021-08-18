@@ -78,20 +78,16 @@ export default {
     CardHeader
   },
   async mounted() {
+    console.log("mounted");
     const route = useRoute();
     const url = `/boards/${route.params.bid}/posts`;
-    console.log("mounted");
     await $axios
       .get(url)
       .then(res => {
-        // console.log(res.data.posts);
-        console.log(res.data.posts);
         this.tableData = res.data.posts;
         this.tableData.sort((a, b) => {
           return b.id - a.id;
         })
-        // this.tableData.reverse();
-        console.log(this.tableData)
         // crated time 뒤에 소수점 자르기
         this.tableData.filter(function(item, idx) {
           item.created_time = item.created_time.substring(0, 19);
@@ -105,12 +101,12 @@ export default {
     await $axios
       .get(`/boards/id/${this.$route.params.bid}`)
       .then(res => {
-        console.log("게시판의 정보를 가져오기");
-        console.log(res.data);
-        console.log("게시판이름가져오기");
-        console.log(res.data.name);
+        // console.log("게시판의 정보를 가져오기");
+        // console.log(res.data);
+        // console.log("게시판이름가져오기");
+        // console.log(res.data.name);
         this.boardName = res.data.name;
-        console.log(this.boardName);
+        // console.log(this.boardName);
         this.boardDescription = res.data.description;
       })
       .catch(err => {
@@ -118,18 +114,16 @@ export default {
       });
   },
   async updated() {
+    console.log("updated");
     const route = useRoute();
     const url = `/boards/${route.params.bid}/posts`;
-    console.log("updated");
     await $axios
       .get(url)
       .then(res => {
-        console.log(res.data.posts);
         this.tableData = res.data.posts;
         this.tableData.sort((a, b) => {
           return b.id - a.id;
         })
-        // this.tableData.reverse();
         // crated time 뒤에 소수점 자르기
         this.tableData.filter(function(item, idx) {
           item.created_time = item.created_time.substring(0, 19);
@@ -144,8 +138,8 @@ export default {
     await $axios
       .get(`/boards/id/${this.$route.params.bid}`)
       .then(res => {
-        console.log("게시판의 정보를 가져오기");
-        console.log(res.data);
+        // console.log("게시판의 정보를 가져오기");
+        // console.log(res.data);
         this.boardName = res.data.name;
         this.boardDescription = res.data.description;
       })
@@ -156,7 +150,6 @@ export default {
 
   computed: {
     pagedTableData() {
-      console.log(this.tableData)
       return this.tableData.slice(
         this.pageSize * this.page - this.pageSize,
         this.pageSize * this.page
@@ -194,12 +187,8 @@ export default {
       await $axios
         .get(url)
         .then(res => {
-          // console.log(res.data.posts);
           this.tableData = res.data.posts;
           this.tableData.reverse();
-          // console.log(this.tableData)
-          // console.log("makeboard ");
-          // console.log("res.data");
         })
         .catch(err => {
           console.log(err);
