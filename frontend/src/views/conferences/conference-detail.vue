@@ -1,6 +1,8 @@
 <template>
   <el-row align="center">
-    <el-col :span="3" @contextmenu.prevent> <conference-sidevar /></el-col>
+    <el-col :span="3" @contextmenu.prevent>
+      <conference-sidevar @tossBid="tossBid"
+    /></el-col>
     <el-col :span="21">
       <el-main
         style="
@@ -57,6 +59,7 @@ import { Base64 } from "js-base64";
 export default {
   data() {
     return {
+      bid: "",
       URL: process.env.VUE_APP_API_URL + "/api/v1/boards/posts/2/files/",
       fileList: [
         {
@@ -73,6 +76,11 @@ export default {
     };
   },
   methods: {
+    tossBid(bid) {
+      console.log("부모가 받은 bid");
+      console.log(bid);
+      this.bid = bid;
+    },
     handleRemove(file, fileList) {
       console.log("지우기버튼누름");
       console.log("file" + file);
