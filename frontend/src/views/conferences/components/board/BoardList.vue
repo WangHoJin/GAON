@@ -3,15 +3,10 @@
     <el-contianer class="main-container">
       <el-main>
         <el-row>
-          <el-card
-            class="box-card"
-            style="padding-bottom: 0px;padding-top: 1px;text-align: left;    max-height: 60px;box-shadow: none;  padding-left: 40px;"
-          >
-            {{ boardName }} |
-            <span style="font-size:12px; vertical-align:middle">
-              <i class="header-icon el-icon-info"></i>{{ boardDescription }}
-            </span>
-          </el-card>
+          <CardHeader
+            :boardName="boardName"
+            :boardDescription="boardDescription"
+          />
 
           <el-table
             empty-text="글이 없어요. 새 글을 작성해 주세요😥!"
@@ -64,6 +59,7 @@
 import { useRouter, useRoute } from "vue-router";
 import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
+import CardHeader from "./components/card-header.vue";
 // API
 import $axios from "axios";
 export default {
@@ -77,6 +73,9 @@ export default {
       boardName: null,
       boardDescription: null
     };
+  },
+  components: {
+    CardHeader
   },
   async mounted() {
     const route = useRoute();
@@ -282,5 +281,8 @@ export default {
 }
 .el-table--fit[data-v-03b67118] {
   margin-top: 5px;
+}
+.el-table {
+  font-family: SpoqaHanSansNeo-Medium;
 }
 </style>

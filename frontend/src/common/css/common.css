@@ -3,13 +3,57 @@ html,
 body {
   height: 100vh;
 }
-
+/* 게시판 제목 */
 @font-face {
-  src: url("../../assets/fonts/BMJUA_ttf.ttf");
+  font-family: "BMDOHYEON_ttf";
+  font-style: normal;
+  font-weight: 800;
+  src: url("../../assets/fonts/BMDOHYEON_ttf.ttf") format("truetype");
+}
+/* 주아체 */
+@font-face {
+  font-family: "jua";
+  font-style: normal;
+  font-weight: 800;
+  src: url("../../assets/fonts/BMJUA_ttf.ttf") format("truetype");
+}
+@font-face {
+  font-family: "SpoqaHanSansNeo-Bold";
+  font-style: normal;
+  font-weight: 800;
+  src: url("../../assets/fonts/SpoqaHanSansNeo-Bold.ttf");
+}
+@font-face {
+  font-family: "SpoqaHanSansNeo-Light";
+  font-style: normal;
+  font-weight: 800;
+  src: url("../../assets/fonts/SpoqaHanSansNeo-Light.ttf");
+}
+/* 중간글씨체 */
+@font-face {
+  font-family: "SpoqaHanSansNeo-Medium";
+  font-style: normal;
+  font-weight: 800;
+  src: url("../../assets/fonts/SpoqaHanSansNeo-Medium.ttf");
+}
+/* @font-face {
+  font-family: "SpoqaHanSansNeo-Regular";
+  font-style: normal;
+  font-weight: 800;
+  src: url("../../assets/fonts/SpoqaHanSansNeo-Regular.ttf");
+} */
+/* * {
+  font-family: "SpoqaHanSansNeo-Medium";
+} */
+.el-button,
+button {
+  font-family: "jua";
+}
+.el-dialog {
   font-family: "jua";
 }
 * {
-  font-family: "jua";
+  /* font-family: "jua"; */
 }
 body {
   margin: 0;

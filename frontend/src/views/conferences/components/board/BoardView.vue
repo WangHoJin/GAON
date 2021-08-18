@@ -7,10 +7,11 @@
         {{ form.title }}
         </p>
           <el-divider></el-divider>
-        <p class="content">
-        {{ form.nickname }}
-        <div class="vertical-border"></div>
-        {{ form.created_time.substring(0, 19) }}
+          <div class="font">
+         <p class="content">
+          {{ form.nickname }}
+         <div class="vertical-border"></div>
+           {{ form.created_time.substring(0, 19) }}
         </p>
                 <el-divider></el-divider>
         </div>
@@ -19,6 +20,7 @@
         style="min-height: 300px; "
       v-html="enterToBr(form.content)"
       >
+      </div>
       </div>
       <div style="padding: 10px 0px;">
         <el-button  v-for="file in fileList"
@@ -171,6 +173,12 @@ export default {
 };
 </script>
 <style scoped>
+.font {
+  font-family:SpoqaHanSansNeo-Light;
+}
+.pa-5{
+  font-family:SpoqaHanSansNeo-Medium;
+}
   .el-row {
     margin-bottom: 20px;
   }
@@ -183,6 +191,7 @@ export default {
   }
   .title {
     text-align: left;
+    font-family: SpoqaHanSansNeo-Bold;
   }
   .content {
     text-align: left;

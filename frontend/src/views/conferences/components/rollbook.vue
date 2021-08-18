@@ -19,7 +19,11 @@
             </div>
           </template>
         </el-calendar>
-        <el-dialog title="출석부" v-model="dialogTableVisible" :before-close="beforeClose">
+        <el-dialog
+          title="출석부"
+          v-model="dialogTableVisible"
+          :before-close="beforeClose"
+        >
           <!-- <el-dialog
             top='20vh'
             v-model="confirmVisible"
@@ -68,10 +72,15 @@
           </el-table>
           <el-row :gutter="20" style="margin-top:10px">
             <el-col :span="6" :offset="19">
-              <el-button type="primary" class="gaon-button" v-if="host_id == myid" @click="modifyRollbook">수정하기</el-button>
+              <el-button
+                type="primary"
+                class="gaon-button"
+                v-if="host_id == myid"
+                @click="modifyRollbook"
+                >수정하기</el-button
+              >
             </el-col>
           </el-row>
-
         </el-dialog>
       </el-main>
     </el-contianer>
@@ -79,8 +88,8 @@
 </template>
 <script>
 import $axios from "axios";
-import { h } from 'vue';
-import { createNamespacedHelpers } from 'vuex';
+import { h } from "vue";
+import { createNamespacedHelpers } from "vuex";
 export default {
   data() {
     return {
@@ -104,90 +113,94 @@ export default {
   methods: {
     async beforeClose(done) {
       await $axios
-        .get("/rollbook/" + this.$route.params.conferenceId + "/" + this.selectDay)
+        .get(
+          "/rollbook/" + this.$route.params.conferenceId + "/" + this.selectDay
+        )
         .then(res => {
-          let difference = false
+          let difference = false;
           let step;
           for (step = 0; step < res.data.rollbooks.length; step++) {
             if (res.data.rollbooks[step].state != this.tableData[step].state) {
-              difference = true
-              break
+              difference = true;
+              break;
             }
           }
           // console.log(difference)
-          return difference
+          return difference;
         })
         .then(difference => {
           if (difference) {
             // this.confirmVisible = true
-            this.$confirm('변경내용을 저장하시겠습니까?', {
-              confirmButtonClass: 'confirm-button',
-              confirmButtonText: '저장',
-              cancelButtonClass: 'cancel-button',
-              cancelButtonText: '저장 안함',
+            this.$confirm("변경내용을 저장하시겠습니까?", {
+              confirmButtonClass: "confirm-button",
+              confirmButtonText: "저장",
+              cancelButtonClass: "cancel-button",
+              cancelButtonText: "저장 안함"
             })
-                .then(_ => {
-                  this.modifyRollbook()
-                  done();
-                  this.dialogVisible = false
-                })
-                .catch(_ => {
-                  done();
-                  this.dialogVisible = false
-                });
-
+              .then(_ => {
+                this.modifyRollbook();
+                done();
+                this.dialogVisible = false;
+              })
+              .catch(_ => {
+                done();
+                this.dialogVisible = false;
+              });
           } else {
-            this.$confirm('출석부를 종료하시겠습니까?', {
-              confirmButtonClass: 'confirm-button',
-              confirmButtonText: '네',
-              cancelButtonText: '아니요'
+            this.$confirm("출석부를 종료하시겠습니까?", {
+              confirmButtonClass: "confirm-button",
+              confirmButtonText: "네",
+              cancelButtonText: "아니요"
             })
-                .then(_ => {
-                  done();
-                  this.dialogVisible = false
-                })
-                .catch(_ => {
-                });
+              .then(_ => {
+                done();
+                this.dialogVisible = false;
+              })
+              .catch(_ => {});
           }
-        })
+        });
     },
     selectday(day) {
       console.log(day);
-      this.selectDay = day
+      this.selectDay = day;
       $axios
         .get("/rollbook/" + this.$route.params.conferenceId + "/" + day)
         .then(res => {
           console.log(res.data.rollbooks);
           this.tableData = res.data.rollbooks;
-          this.dialogTableVisible = true
+          this.dialogTableVisible = true;
         });
     },
     // 출석부 수정
     async modifyRollbook() {
-      let rollbookList = []
-      await this.tableData.forEach((item) => {
+      let rollbookList = [];
+      await this.tableData.forEach(item => {
         rollbookList.push({
           date: item.date,
           rid: item.rid,
           state: item.state,
           uid: item.uid
-        })
-      })
+        });
+      });
       console.log(rollbookList);
       await $axios.post("/rollbook/", rollbookList).then(res => {
         console.log("res.data.rollbooks");
         console.log(res.data.rollbooks);
         this.$message({
-            type: 'success',
-            message: '변경사항이 저장되었습니다.',
-            duration: '1500'
-          })
+          type: "success",
+          message: "변경사항이 저장되었습니다.",
+          duration: "1500"
+        });
       });
     }
   }
 };
 </script>
-<style>
+<style scoped>
+/* * {
+  font-family: "SpoqaHanSansNeo-Bold";
+} */
+
 .is-selected {
   color: #1989fa;
 }
@@ -225,5 +238,8 @@ export default {
   background: #ebb563 !important;
   border-color: #ebb563 !important;
   color: #fff !important;
+}
+.el-calendar {
+  font-family: SpoqaHanSansNeo-Medium;
 }
 </style>
