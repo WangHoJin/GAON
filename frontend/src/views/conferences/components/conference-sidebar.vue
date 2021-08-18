@@ -101,7 +101,7 @@
     <!-- 방 코드 확인 dialog끝 -->
 
     <el-dialog
-      title="방 정보를 수정하시겠습니까?"
+      title="게시판 정보를 수정하시겠습니까?"
       v-model="showModifyDialog"
       width="30%"
     >
@@ -162,11 +162,11 @@
             >취소</el-button
           >
           <el-popconfirm
-            confirmButtonText="OK"
-            cancelButtonText="No, Thanks"
+            confirmButtonText="네"
+            cancelButtonText="아니오"
             icon="el-icon-info"
             iconColor="red"
-            title="Are you sure to delete this?"
+            title="정말 삭제하시겠습니까?"
             @confirm="deleteBoard"
           >
             <template #reference>
