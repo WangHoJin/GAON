@@ -40,8 +40,11 @@
     </el-col>
   </el-row>
 </template>
-<style>
+<style scoped>
 @import "./conferences.css";
+* {
+  /* font-family: "SpoqaHanSansNeo-Bold"; */
+}
 </style>
 <script>
 import ConferenceSidevar from "../conferences/components/conference-sidebar.vue";

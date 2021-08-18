@@ -181,4 +181,7 @@ export default {
   right: 0px;
   margin-top: 134px;
 }
+.el-form * {
+  font-family: "SpoqaHanSansNeo-Medium";
+}
 </style>
