@@ -2,7 +2,9 @@
   <div class="main-wrapper">
     <el-row>
       <el-col :span="1" @contextmenu.prevent> <main-sidebar /></el-col>
-      <el-col :span="23" align="center"> <router-view></router-view> </el-col>
+      <el-col :span="23" align="center">
+        <router-view></router-view>
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -23,5 +25,9 @@ export default {
 }
 .el-row > .el-col {
   width: 100%;
+}
+.free {
+  font-size: 4px;
+  text-align: center;
 }
 </style>
