@@ -6,7 +6,6 @@
         <router-view></router-view>
       </el-col>
     </el-row>
-    <span text-align="center">Designed by Freepik</span> | www.flaticon.com
   </div>
 </template>
 
@@ -26,5 +25,9 @@ export default {
 }
 .el-row > .el-col {
   width: 100%;
+}
+.free {
+  font-size: 4px;
+  text-align: center;
 }
 </style>

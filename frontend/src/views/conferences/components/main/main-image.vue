@@ -2,6 +2,10 @@
   <div class="main-image">
     <MainText />
     <MainBanner />
+    <div class="free">
+      <span class="free">Designed by Freepik | </span>
+      <span class="free">www.flaticon.com</span>
+    </div>
   </div>
 </template>
 <script>
