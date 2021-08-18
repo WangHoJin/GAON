@@ -1,6 +1,6 @@
 <template lang="">
   <div id="main-container" class="container">
-    <audio id="audioContainer">
+    <audio controls preload="none" id="audioContainer">
       <source id="audioSource" src="" type="audio/mp3" />
     </audio>
     <!-- 공지보내기 START -->
