@@ -35,6 +35,7 @@
       </el-menu-item>
       <!-- 게시판 추가 버튼 -->
       <el-button
+        v-if="host_id === uid"
         @click="dialogFormVisible_board = true"
         icon="el-icon-plus"
         circle
@@ -169,12 +170,13 @@
 </template>
 
 <script>
-import { reactive, computed } from "vue";
+import { reactive, computed, onMounted } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import UserInfoBox from "./user/user-info-box.vue";
 // API
 import $axios from "axios";
+import axios from 'axios';
 
 export default {
   name: "sidebar-tool",
@@ -193,6 +195,7 @@ export default {
       dialogFormVisible_modifyUser: false,
       selectedBoardInfo: {},
       uid: 0,
+      host_id: 0,
       roomInfo: {
         rid: this.$route.params.conferenceId,
         name: "",
@@ -202,6 +205,16 @@ export default {
   },
   components: {
     UserInfoBox
+  },
+  created() {
+    const route = useRoute();
+    $axios
+      .get(`/rooms/id/${route.params.conferenceId}`)
+      .then(res => {
+        this.host_id = res.data.host_id
+        this.uid = JSON.parse(sessionStorage.getItem("userInfo")).id
+        console.log(this.host_id)
+      })
   },
   methods: {
     //해당 게시판으로 이동하기
