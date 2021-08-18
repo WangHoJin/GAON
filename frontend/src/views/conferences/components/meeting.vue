@@ -823,9 +823,18 @@ export default {
       window.addEventListener("beforeunload", this.leaveSession);
     },
     playSound() {
-      // insert the play code, for ex yours:
       let audio = new Audio(alarm);
-      audio.play();
+      var promise = audio.play();
+      if (promise) {
+        console.log("오디오 O");
+        //Older browsers may not return a promise, according to the MDN website
+        promise.catch(function(error) {
+          console.log("오디오 X");
+          console.error(error);
+        });
+      }
+      // insert the play code, for ex yours:
+      // audio.play();
       // audio.loop = true;
     },
     leaveSession() {
