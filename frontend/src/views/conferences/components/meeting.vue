@@ -887,7 +887,7 @@ export default {
       audioContainer.load();
       this.playAudio(audioContainer);
     },
-    playAudio(audioContainer) {
+    async playAudio(audioContainer) {
       // const source = document.getElementById("audioSource");
       // console.log(source);
       // source.src = this.music;
@@ -895,8 +895,9 @@ export default {
       // console.log("오디오");
       // audioContainer.load();
       audioContainer.volume = 0.3;
+      console.log("기다료");
       console.log(audioContainer);
-      const playPromise = audioContainer.play();
+      const playPromise = await audioContainer.play();
       console.log("약속");
       console.log(playPromise);
       if (playPromise !== undefined) {
