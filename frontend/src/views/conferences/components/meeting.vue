@@ -77,14 +77,10 @@
               <h2>📢 {{ reciveMsg }}</h2>
               <!-- <span>남은시간 [ {{ minutes }}</span> -->
               <div>
-                <div
-                  style=" text-align:left; margin-left:30px; display:inline-block"
-                >
+                <div style=" display:inline-block">
                   <span>⏰ [ {{ nowtime }} 까지 ] </span>
                 </div>
-                <div
-                  style="color:red; text-align:right; margin-right:30px; display:inline-block"
-                >
+                <div style="color:red; margin-left:5px;display:inline-block">
                   <span> ⏳ [ {{ minutes }}</span>
                   <span>:</span>
                   <span>{{ seconds }} ]</span>
