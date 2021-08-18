@@ -110,9 +110,9 @@ export default {
 .loginForm {
   opacity: 0;
   position: absolute;
-  top: 0%;
+  top: 20%;
   left: 40%;
-  animation: login-rotation 1s linear;
+  animation: login-fadein 1s linear;
   animation-fill-mode: forwards;
   animation-delay: 2s;
 }
@@ -127,6 +127,14 @@ export default {
   }
   100% {
     transform: translateY(200px);
+    opacity: 1;
+  }
+}
+@keyframes login-fadein {
+  from {
+    opacity: 0;
+  }
+  to {
     opacity: 1;
   }
 }

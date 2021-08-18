@@ -1,7 +1,7 @@
 <template>
   <div class="loginText">
     <h1 class="title">
-      <span class="firstText">GAON</span>
+      <span id="firstText">GAON</span>
       <!-- <span class="secondText">START</span>
       <span class="thirdText">NOW</span> -->
       <span class="second one">Gather</span>
@@ -22,7 +22,7 @@ export default {};
   position: absolute;
   /* text-transform: uppercase; */
 }
-h1 span {
+.title span {
   width: 100%;
   float: left;
   color: #ffffff;
@@ -34,7 +34,7 @@ h1 span {
   animation-timing-function: ease; */
   animation-duration: 2s;
 }
-.firstText {
+#firstText {
   color: #f5df4d;
   opacity: 1;
   clip-path: none;
