@@ -49,6 +49,9 @@ export default {
 </script>
 
 <style scoped>
+* {
+  font-family: "BMDOHYEON_ttf";
+}
 #msgs {
   font-size: 15px;
   margin: 2px;
