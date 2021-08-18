@@ -2,7 +2,7 @@
   <el-container class="main-wrapper">
     <el-contianer class="main-container">
       <el-main>
-        <el-calendar>
+        <el-calendar id="calendar">
           <template #dateCell="{data}">
             <div
               id="calendar-day"
@@ -61,20 +61,42 @@
               </template>
               <!-- 라디오 토글해주면 알아서 tableData의 state(출결상태)가 바뀜 -->
               <template #default="scope">
-              <div v-if="host_id === myid">
-                <el-radio v-model="tableData[scope.$index].state" label="출석">출석</el-radio>
-                <el-radio v-model="tableData[scope.$index].state" label="결석">결석</el-radio>
-              </div>
-              <div v-else>
-                <div v-if="tableData[scope.$index].state === '출석'">
-                  <el-radio v-model="tableData[scope.$index].state" label="출석">출석</el-radio>
-                  <el-radio v-model="tableData[scope.$index].state" disabled label="결석">결석</el-radio>
+                <div v-if="host_id === myid">
+                  <el-radio v-model="tableData[scope.$index].state" label="출석"
+                    >출석</el-radio
+                  >
+                  <el-radio v-model="tableData[scope.$index].state" label="결석"
+                    >결석</el-radio
+                  >
                 </div>
                 <div v-else>
-                  <el-radio v-model="tableData[scope.$index].state" disabled label="출석">출석</el-radio>
-                  <el-radio v-model="tableData[scope.$index].state" label="결석">결석</el-radio>
+                  <div v-if="tableData[scope.$index].state === '출석'">
+                    <el-radio
+                      v-model="tableData[scope.$index].state"
+                      label="출석"
+                      >출석</el-radio
+                    >
+                    <el-radio
+                      v-model="tableData[scope.$index].state"
+                      disabled
+                      label="결석"
+                      >결석</el-radio
+                    >
+                  </div>
+                  <div v-else>
+                    <el-radio
+                      v-model="tableData[scope.$index].state"
+                      disabled
+                      label="출석"
+                      >출석</el-radio
+                    >
+                    <el-radio
+                      v-model="tableData[scope.$index].state"
+                      label="결석"
+                      >결석</el-radio
+                    >
+                  </div>
                 </div>
-              </div>
               </template>
             </el-table-column>
           </el-table>
@@ -138,35 +160,33 @@ export default {
         })
         .then(difference => {
           if (this.host_id != this.myid || !difference) {
-              this.$confirm('출석부를 종료하시겠습니까?', {
-              confirmButtonClass: 'confirm-button',
-              confirmButtonText: '네',
-              cancelButtonText: '아니요'
+            this.$confirm("출석부를 종료하시겠습니까?", {
+              confirmButtonClass: "confirm-button",
+              confirmButtonText: "네",
+              cancelButtonText: "아니요"
             })
-                .then(_ => {
-                  done();
-                  this.dialogVisible = false
-                })
-                .catch(_ => {
-                });
-
+              .then(_ => {
+                done();
+                this.dialogVisible = false;
+              })
+              .catch(_ => {});
           } else {
             // this.confirmVisible = true
-            this.$confirm('변경내용을 저장하시겠습니까?', {
-              confirmButtonClass: 'confirm-button',
-              confirmButtonText: '저장',
-              cancelButtonClass: 'cancel-button',
-              cancelButtonText: '저장 안함',
+            this.$confirm("변경내용을 저장하시겠습니까?", {
+              confirmButtonClass: "confirm-button",
+              confirmButtonText: "저장",
+              cancelButtonClass: "cancel-button",
+              cancelButtonText: "저장 안함"
             })
-                .then(_ => {
-                  this.modifyRollbook()
-                  done();
-                  this.dialogVisible = false
-                })
-                .catch(_ => {
-                  done();
-                  this.dialogVisible = false
-                });
+              .then(_ => {
+                this.modifyRollbook();
+                done();
+                this.dialogVisible = false;
+              })
+              .catch(_ => {
+                done();
+                this.dialogVisible = false;
+              });
           }
         });
     },
@@ -207,9 +227,9 @@ export default {
 };
 </script>
 <style scoped>
-/* * {
+* {
   font-family: "SpoqaHanSansNeo-Bold";
-} */
+}
 
 .is-selected {
   color: #1989fa;
@@ -249,7 +269,12 @@ export default {
   border-color: #ebb563 !important;
   color: #fff !important;
 }
-.el-calendar {
-  font-family: SpoqaHanSansNeo-Medium;
-}
+/* #calendar,
+.el-calendar__header * {
+  font-family: none;
+  font-family: "SpoqaHanSansNeo-Medium" !important;
+} */
+/* .el-calendar .el-calendar__header .el-calendar__title {
+  font-family: none;
+} */
 </style>
