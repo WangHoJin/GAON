@@ -131,7 +131,7 @@
         <el-col :span="5" style="padding:10px">
           <!-- 채팅/접속자 현황 버튼들 -->
           <div
-            style="margin-top:20px; margin-right:10px; height:50px; text-align: right;"
+            style="margin-top:10px; margin-right:10px; height:50px; text-align: right;"
           >
             <!-- 채팅 on/off 버튼 -->
             <!-- 채팅 on 버튼 -->
@@ -172,7 +172,12 @@
           <!-- 애니메이션 참고 사이트 https://runebook.dev/ko/docs/vue/guide/transitions-enterleave -->
           <!-- 채팅 창 -->
           <transition name="slide">
-            <div id="chat-box" v-if="chatting">
+            <div
+              id="chat-box"
+              v-if="chatting"
+              style="box-shadow: 5px 5px 5px #99999930;
+"
+            >
               <MessageList
                 :msgs="msgs"
                 :myId="publisher.stream.connection.connectionId"
@@ -212,8 +217,8 @@
       <div id="conferenceFooter"></div>
     </el-row>
   </div>
+  <!-- 화상 미팅 관련 버튼들 -->
   <div id="btngroup">
-    <!-- 공지사항 보내기 버튼 -->
     <el-button
       v-if="vOnOff"
       type="success"
@@ -255,16 +260,17 @@
       @click="leaveSession"
     ></el-button>
   </div>
-  <div id="tools">
+  <!-- 공지사항 보내기 버튼 -->
+  <div id="tools" style="margin-top:10px; margin-left:10px">
     <img
-      style="cursor:pointer;"
       :src="require(`@/common/img/notice.png`)"
       @click="noticeFormModal = true"
     />
+
     <!-- 출석체크 버튼 -->
     <img
-      style="cursor:pointer; width: 48px"
-      :src="require(`@/common/img/rollbook.png`)"
+      style="margin-left: 12px;"
+      :src="require(`@/common/img/book.png`)"
       @click="rollbookFormModal = true"
     />
   </div>
@@ -992,5 +998,16 @@ export default {
   position: absolute;
   top: 0%;
   float: left;
+}
+/* 선생님용 버튼 */
+#tools img {
+  background-color: #405038de;
+  border-radius: 50%;
+  padding: 10px;
+  width: 35px;
+  height: 35px;
+}
+#tools img:hover {
+  transform: scale(1.2, 1.2);
 }
 </style>
