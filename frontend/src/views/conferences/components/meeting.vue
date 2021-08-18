@@ -886,7 +886,16 @@ export default {
       audioContainer.load();
       audioContainer.volume = 0.3;
       console.log(audioContainer);
-      audioContainer.play();
+      const playPromise = audioContainer.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(_ => {})
+          .catch(error => {
+            console.log("에러");
+            console.log(error);
+            audioContainer.load();
+          });
+      }
     },
 
     updateMainVideoStreamManager(stream) {
