@@ -76,7 +76,7 @@
           </el-table>
           <el-row :gutter="20" style="margin-top:10px">
             <el-col :span="6" :offset="19">
-              <el-button type="primary" class="gaon-button" v-if="host_id == myid" @click="modifyRollbook">수정하기</el-button>
+              <el-button type="primary" class="gaon-button" v-if="host_id === myid" @click="modifyRollbook">수정하기</el-button>
             </el-col>
           </el-row>
 
