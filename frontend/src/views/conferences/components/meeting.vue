@@ -1,7 +1,7 @@
 <template lang="">
   <div id="main-container" class="container">
-    <audio controls preload="none" id="audioContainer">
-      <source id="audioSource" src="" type="audio/mp3" />
+    <audio preload="none" id="audioContainer">
+      <source id="audioSource" src="" type="audio/mpeg" />
     </audio>
     <!-- 공지보내기 START -->
     <el-dialog
@@ -261,7 +261,11 @@
     ></el-button>
   </div>
   <!-- 공지사항 보내기 버튼 -->
-  <div id="tools" style="margin-top:10px; margin-left:10px">
+  <div
+    v-if="host_id == myUserId"
+    id="tools"
+    style="margin-top:10px; margin-left:10px"
+  >
     <img
       :src="require(`@/common/img/notice.png`)"
       @click="noticeFormModal = true"
@@ -269,6 +273,7 @@
 
     <!-- 출석체크 버튼 -->
     <img
+      v-if="host_id == myUserId"
       style="margin-left: 12px;"
       :src="require(`@/common/img/book.png`)"
       @click="rollbookFormModal = true"
@@ -378,7 +383,8 @@ export default {
       audioContainer: undefined,
       music: require("../../../common/mp3/alarm.mp3"),
 
-      bid: null
+      bid: null,
+      host_id: ""
     };
   },
   async created() {
@@ -392,6 +398,7 @@ export default {
     console.log("세션 검색");
     console.log(this.getSession(this.mySessionId));
     this.joinSession();
+    this.host_id = roomInfo.host_id;
   },
   computed: {
     minutes: function() {
@@ -797,7 +804,8 @@ export default {
             "일어나~!~!~!~!~!~!~!~!~!~!~!~!~!!"
           )
         });
-        this.playAudio();
+        this.playLoading();
+        // this.playAudio();
       });
 
       this.session.on("signal:notice", event => {
@@ -876,28 +884,37 @@ export default {
       });
       window.addEventListener("beforeunload", this.leaveSession);
     },
-
-    playAudio() {
+    playLoading() {
       const source = document.getElementById("audioSource");
       console.log(source);
       source.src = this.music;
       const audioContainer = document.getElementById("audioContainer");
       console.log("오디오");
       audioContainer.load();
+      this.playAudio(audioContainer);
+    },
+    playAudio(audioContainer) {
+      // const source = document.getElementById("audioSource");
+      // console.log(source);
+      // source.src = this.music;
+      // const audioContainer = document.getElementById("audioContainer");
+      // console.log("오디오");
+      // audioContainer.load();
       audioContainer.volume = 0.3;
       console.log(audioContainer);
-      const playPromise = audioContainer.play();
-      console.log("약속");
-      console.log(playPromise);
-      if (playPromise !== undefined) {
-        playPromise
-          .then(_ => {})
-          .catch(error => {
-            console.log("에러");
-            console.log(error);
-            audioContainer.load();
-          });
-      }
+      setTimeout(() => {
+        audioContainer.play();
+      }, 1000);
+      // const playPromise = audioContainer.play();
+      // if (playPromise !== undefined) {
+      //   playPromise
+      //     .then(_ => {})
+      //     .catch(error => {
+      //       console.log("에러");
+      //       console.log(playPromise);
+      //       console.log(error);
+      //     });
+      // }
     },
 
     updateMainVideoStreamManager(stream) {
