@@ -121,6 +121,7 @@
                 v-on:dblclick="updateMainVideoStreamManager(sub)"
               ></user-video>
               <img
+                v-if="host_id == myUserId"
                 style="cursor:pointer"
                 :src="require(`@/common/img/alram.png`)"
                 id="alertbtn"
