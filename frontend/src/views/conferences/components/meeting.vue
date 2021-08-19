@@ -261,7 +261,11 @@
     ></el-button>
   </div>
   <!-- 공지사항 보내기 버튼 -->
-  <div id="tools" style="margin-top:10px; margin-left:10px">
+  <div
+    v-if="host_id == myUserId"
+    id="tools"
+    style="margin-top:10px; margin-left:10px"
+  >
     <img
       :src="require(`@/common/img/notice.png`)"
       @click="noticeFormModal = true"
@@ -269,6 +273,7 @@
 
     <!-- 출석체크 버튼 -->
     <img
+      v-if="host_id == myUserId"
       style="margin-left: 12px;"
       :src="require(`@/common/img/book.png`)"
       @click="rollbookFormModal = true"
@@ -378,7 +383,8 @@ export default {
       audioContainer: undefined,
       music: require("../../../common/mp3/alarm.mp3"),
 
-      bid: null
+      bid: null,
+      host_id: ""
     };
   },
   async created() {
@@ -392,6 +398,7 @@ export default {
     console.log("세션 검색");
     console.log(this.getSession(this.mySessionId));
     this.joinSession();
+    this.host_id = roomInfo.host_id;
   },
   computed: {
     minutes: function() {
