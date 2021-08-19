@@ -36,7 +36,7 @@
         style="min-width: 0px; padding:0px"
       >
         <i class="el-icon-setting"></i>
-        유저정보</el-menu-item
+        회원 정보</el-menu-item
       >
     </el-submenu>
   </el-menu>
