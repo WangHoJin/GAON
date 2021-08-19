@@ -1,6 +1,6 @@
 <template lang="">
   <div id="main-container" class="container">
-    <audio controls preload="none" id="audioContainer">
+    <audio preload="none" id="audioContainer">
       <source id="audioSource" src="" type="audio/mpeg" />
     </audio>
     <!-- 공지보내기 START -->
@@ -894,20 +894,20 @@ export default {
       // console.log("오디오");
       // audioContainer.load();
       audioContainer.volume = 0.3;
-      console.log("기다료");
       console.log(audioContainer);
-      const playPromise = audioContainer.play();
-      console.log("약속");
-      console.log(playPromise);
-      if (playPromise !== undefined) {
-        playPromise
-          .then(_ => {})
-          .catch(error => {
-            console.log("에러");
-            console.log(playPromise);
-            console.log(error);
-          });
-      }
+      setTimeout(() => {
+        audioContainer.play();
+      }, 1000);
+      // const playPromise = audioContainer.play();
+      // if (playPromise !== undefined) {
+      //   playPromise
+      //     .then(_ => {})
+      //     .catch(error => {
+      //       console.log("에러");
+      //       console.log(playPromise);
+      //       console.log(error);
+      //     });
+      // }
     },
 
     updateMainVideoStreamManager(stream) {
