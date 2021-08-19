@@ -903,9 +903,9 @@ export default {
       // audioContainer.load();
       audioContainer.volume = 0.3;
       console.log(audioContainer);
-      setTimeout(() => {
-        audioContainer.play();
-      }, 1000);
+      audioContainer.play();
+      // setTimeout(() => {
+      // }, 1000);
       // const playPromise = audioContainer.play();
       // if (playPromise !== undefined) {
       //   playPromise
