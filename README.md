@@ -1,146 +1,137 @@
-# 프로젝트 명
+<p align="center">
+  로고  
+</p>
 
-## 일정표
+# 🥘 온라인 스쿨 화상 수업 서비스 🍖
 
-```mermaid
-gantt
-    dateFormat  MM-DD
-    title       GAON 일정표
-    %% excludes    weekends
-    %% (`excludes` accepts specific dates in YYYY-MM-DD format, days of the week ("sunday") or "weekends", but not the word "weekdays".)
+## ✨ 기술 스택
 
-    section 프로젝트 준비
-    주제 선정 및 스켈레톤 코드 분석	:done, 07-12, 5d
-    기능 목록 상세 도출		   :done, 07-19, 1d
-    화면 기획				  :done,07-20, 2d
-   	Jira 등록		: done, 07-22, 1d
-    ERD 작성		: done, 07-23, 1d
-    역할 분배 및 사전 공부		: done, 07-24, 2d
-   
-    
-	  section 회원 관리
-    [F] 로그인/로그아웃		: done, 07-26, 4d
-    [B] 로그인/로그아웃		: done, 07-26, 4d
-    [F] 가입, 수정, 탈퇴		 : done, 07-26, 5d
-    [B] 가입, 수정, 탈퇴		 : done, 07-26, 5d
-     
-   section 백앤드 설정
-    AWS 설정		:done, 07-26, 2d
-    AWS 도커 연동 : done, 07-27, 2d
-    Docker, WEB RTC, Socket를 AWS랑 연동		 : done, 08-03, 3d
+⭐ **Front-end** : <img src="https://https://img.shields.io/badge/React-3-61DAFB?style=flat-square&logo=React&logoColor=skyblue"/> <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=JavaScript&logoColor=black"/> <img src="https://img.shields.io/badge/CSS3-1572B6?style=flat-square&logo=CSS3&logoColor=white"/>
 
-    section 채널 관리
-    [F] 방 만들기 	: done, ch1, 07-30, 4d
-    [B] 방 만들기 	: done, ch1, 07-29, 4d
-    [F] 방 초대, 방 참여   :  done, ch2, after ch1, 3d
-    [B] 방 초대, 방 참여   :  done, ch2, after ch1, 3d
-   
-    게시판 : done, 08-08, 4d
-    
-    section Web RTC
-    화상회의 : done, rtc1, 08-02, 2d
-    채팅      :done, rtc2, after rtc1, 3d
-    출석체크   : active, 08-10, 4d
-    접속현황  : done, 08-10, 4d
-    상단 플로팅 알람 : active, 08-10, 4d
-    개인 알람 보내기 : active, 08-10, 4d
-    
-    section 산출물
-    시퀸스 다이어그램 작성   :08-15, 1d
-    README 작성  			:08-15, 1d
-    QA 및 버그 찾기  	  :08-15, 2d
-    
-    section 기타
-    UCC제작 :08-15, 7d
-    발표준비 :08-17, 3d
+⭐ **Back-end** : <img src="https://img.shields.io/badge/Java-8-007396?style=flat-square&logo=Java&logoColor=white"/> <img src="https://img.shields.io/badge/Spring-2.4.5-6DB33F?style=flat-square&logo=Spring&logoColor=white"/> <img src="https://img.shields.io/badge/Gradle-7.1.1-green?style=flat-square&logo=Gradle&logoColor=white"> <img src="https://img.shields.io/badge/MySQL-8.0.22-4479A1?style=flat-square&logo=MySQL&logoColor=white"/> <img src="https://img.shields.io/badge/Swagger-3.0.0-85EA2D?style=flat-square&logo=Swagger&logoColor=black"/> <img src="https://img.shields.io/badge/Django-3-61DAFB?style=flat-square&logo=Django&logoColor=black"/>
+
+⭐ **CI / CD** : <img src="https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=Docker&logoColor=white"/> <img src="https://img.shields.io/badge/GitLab-FCA121?style=flat-square&logo=GitLab&logoColor=black"/> <img src="https://img.shields.io/badge/NGINX-269539?style=flat-square&logo=NGINX&logoColor=black"/> <img src="https://img.shields.io/badge/Jira-0052CC?style=flat-square&logo=Jira&logoColor=white"/>
+
+## 🙆‍♂️ 팀원 역할 🙆‍♀️
+
+| 팀원   | 역할 | 비고                   |
+| ------ | ---- | ---------------------- |
+| 김민정 | 팀장 | Backend, 배포          |
+| 오수형 | 팀원 | Backend                |
+| 왕호진 | 팀원 | webRTC, Frontend       |
+| 김채연 | 팀원 | Frontend, UX/UI Design |
+| 정대진 | 팀원 | Frontend               |
+
+<br/>
+
+## 💻 개발 기간
+
+- 2021.07.19 ~ 2021.08.27 (6주)
+
+<br/>
+
+## 🎨 프로젝트 구조
+
+비어있음
+
+<br/>
+
+## 🎨 배포 구조
+
+비어있음
+
+<br/>
+
+## 📑 주요 기능
+
+# 통일해야할것 및 코딩규칙
+
+## **✔️ 프로젝트 기여방법**
+
+### **1. Custom git flow**
+
+- 기존의 git flow 방식에서 우리의 프로젝트에 맞게 변경하였다.
+- release를 삭제하고, fix라는 브랜치를 추가하였다.
+
+1. **master**: 배포되었거나 배포될 소스가 저장되는 브랜치
+2. **develop**: 다음 배포를 위해서 개발을 진행하는 브랜치, 개발 최신 상태를 항상 유지하도록 한다.
+3. **hotfix**: 배포버전(master)에 생긴 문제로 긴급한 troubleshooting이 필요할 때 개발이 진행되는 브랜치
+4. **feature**: 기능 단위 개발이 진행되는 브랜치
+5. **fix**: 기능 개발이 끝난 후, 일어나는 이슈에 대한 처리가 진행되는 브랜치
+6. **docs**: README나 .gitignore 같은 문서의 작성/수정이 이루어지는 브랜치
+
+- feature와 fix는 이슈별로 depth를 타고 내려간다.
+- 즉, feature와 fix branch를 만들 때는, **/** 뒤에 처리하는 이슈 번호를 붙이도록 한다.ex) feature/#0 , fix/#0
+- feature 와 fix branch에서 개발이 완료되면 parent인 develop branch로 merge된다.
+- **_master branch에는 직접적으로 접근할 수 없다._**
+
+### **2. Git convention**
+
+### **2-1. Commit Message Format**
+
+- 모든 커밋 메시지는 다음과 같은 형식을 **반드시** 따르도록 한다.
+
+`<type>: <message> (#<issue number>)`
+
+```sql
+feat: Add user login api (#S05P21B303-93)
+fix: Fix bug to can't login using google login (#S05P21B303-93)
+docs: Update README.m
 ```
 
-## ERD 
-<div align="center"> 
-![ERD](/uploads/2e323de6da887834ccf7cf2a6471edfe/ERD.png)
-</div>
+### **2-2. Type**
 
-## 목차
+[제목 없음](https://www.notion.so/5e3d055e22444c76b1e953570d0ca763)
 
-- [프로젝트 소개](#프로젝트-소개)   
-- [텍스트 ... ](#프로젝트-소개)   
-- [프로젝트 명세](#프로젝트-명세)
-  - [배포 환경](#배포-환경)
-  - [개발 환경](#개발-환경)
-  - [Design Resources](#design-resources)
-  - [핵심 라이브러리](#핵심-라이브러리)
-<br>
+### **2-3. Message**
 
-## 프로젝트 소개
-소개 입력
-<br>
+- 커밋 메시지는 명령문으로 작성한다.
+- 첫 글자는 대문자가 되도록 한다.
 
-## 프로젝트 명세
-### 배포 환경
-- __URL__ : 
-- __배포 여부__ : O / X
-- __접속 가능__ : 접속 가능 / 수정 중
-- __HTTPS 적용__ : O / X
-- __PORT__ : // 3rd Party에서 사용하는 포트가 있다면 기입해주세요. <- 기입 후 해당 주석 삭제
-<br>
+### **2-4. Issue number**
 
-### 개발 환경
-#### Front-end / Android
-- __Framework__ : Vue.js / React / Android / Unity
-- __지원 환경__ : Web / Mobile / Web App / Native App
-- __담당자__ : 팀원 A, 팀원 B,
-<br>
+- 커밋과 관련된 이슈는 커밋 메시지 마지막에 **반드시** 연결하도록 한다.
+- 지라에 등록된 이슈와 연동되도록 한다.
 
-#### Back-end
-- __Framework__ : Spring boot / Node.js / Django / Flask
-- __Database__ : MySQL / MariaDB
-- __담당자__ : 팀원 A, 팀원 B,
-<br>
+## **✔️** 코딩규칙
 
-#### Design
-- __Framework 사용__ : O / X
-  - [Vuetify](https://vuetifyjs.com/)
-  - [Element Plus](https://element-plus.org/)
-- __Design Tool 사용__ : Adobe XD, Photoshop, Blender, Zeplin 등 (없을 경우 빈칸)
-- __담당자__ : 팀원 A, 팀원 B,
-<br>
+### 1. if문
 
-### Design Resources
-__외부 템플릿 또는 에셋__ (이미지 또는 링크 첨부)
-- 무료 이미지, 아이콘, 폰트 등은 제외
-- [Vue Argon Design System](https://www.creative-tim.com/product/vue-argon-design-system?affiliate_id=116187) (무료)
-  - __사용 기능__ : 디자인 전반 적용
-- [Vue Black Dashboard Pro](https://www.creative-tim.com/product/vue-black-dashboard-pro?affiliate_id=116187) (유료)
-  - __사용 기능__ : 캘린더 컴포넌트 사용
-<br>
+- 한줄 일 때, Block 처리하기
+- else if / else /중괄호는 조건문 바로 옆에 붙이기
 
-__자체 제작 산출물__ (필요시 이미지 또는 설명 첨부)
-- LOGO
-- CardView
-- Button
-- Calendar
-<br>
+```java
+if(condition){
+ statement;
+} else if(condition2){
+statement2;
+} else{
+statement3;
+}
+```
 
-### 핵심 라이브러리
-기본 제공하는 라이브러리 외 핵심 기능 구현에 사용한 라이브러리가 있다면 작성해주세요.   
-예시 ) VR/AR 라이브러리, 애니메이션 라이브러리, 텍스트/사진/동영상 지원, 편집 라이브러리 등
+### 2. for
 
-- __AR CORE__
-  - __링크__ : https://developers.google.com/ar
-  - __소개__ : 구글에서 제공하는 AR 지원 라이브러리
-  - __사용 기능__ : 이미지 인식, 이미지 위 영상 표시
-  - __담당자__ : 팀원 A, 
+- 단순 반복문은 iterator를 i,j,k,...,z순으로 명명하기
 
-- __COLOR THIEF__
-  - __링크__ : https://lokeshdhakar.com/projects/color-thief/
-  - __소개__ : 이미지에서 색상을 추출해주는 라이브러리
-  - __사용 기능__ : 커버 사진에서 색상 추출 -> 배경 색상 변경
-  - __담당자__ : 팀원 A,
+### 3. 주석 규칙
 
-- __Animate.css__
-  - __링크__ : https://animate.style/
-  - __소개__ : css 애니메이션 지원 라이브러리
-  - __사용 기능__ : 메인 페이지 진입 시 애니메이션 사용
-  - __담당자__ : 팀원 A,,
+- 유지 보수 차원에서 기능에 대한 주석은 `꼭 달아주기!`
+- 주석 상대방이 이해할 수 있도록 달기 : 주석은 함수(메서드) 단위로 달기
+- `/* */` : 설명 여러줄 필요할 때 코드 위에 작성
+- `//` : 간단한 주석 코드 옆에 작성
 
+## **✔️** 지라 이슈 규칙
 
+- 에픽의 단위 : 요구사항 정의서의 범주
+- 스토리의 단위 : 요구사항 정의서의 요구사항 명
+- 부작업의 단위 : 요구사항 정의서의 부작업
+- 이슈 이름은 다음의 형식을 지킨다.
+
+> 💡 (type) issue name
+
+```
+ex) (backend) 회원 정보 수정,
+		(frontend) 회원 가입 페이지
+		...
+```
