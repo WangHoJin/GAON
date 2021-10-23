@@ -1,6 +1,4 @@
-<p align="center">
-  로고  
-</p>
+![GAON](https://user-images.githubusercontent.com/41902365/138561384-4a0005c0-926d-4354-b5f0-a2b4d001cc18.png)
 
 # 🥘 온라인 스쿨 화상 수업 서비스 🍖
 
