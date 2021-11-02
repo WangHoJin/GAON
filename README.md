@@ -16,7 +16,7 @@
 | ------ | ---- | ---------------------- |
 | 김민정 | 팀장 | Backend, 배포          |
 | 오수형 | 팀원 | Backend                |
-| 왕호진 | 팀원 | webRTC, Frontend       |
+| 왕호진 | 팀원 | Backend, webRTC       |
 | 김채연 | 팀원 | Frontend, UX/UI Design |
 | 정대진 | 팀원 | Frontend               |
 
